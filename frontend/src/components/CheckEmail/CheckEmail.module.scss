@@ -1,0 +1,26 @@
+.check_email__container {
+	width: 624px;
+	position: flex;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+
+	.check_email__content {
+		margin-top: 184px;
+
+		.check_email__title {
+			color: #000;
+			font-size: 32px;
+			font-weight: 700;
+		}
+
+		.check_email__text {
+			margin: 60px auto;
+			width: 624px;
+			color: #000;
+			text-align: center;
+			font-size: 24px;
+			font-weight: 400;
+		}
+	}
+}
