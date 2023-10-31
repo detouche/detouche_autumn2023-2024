@@ -1,12 +1,12 @@
 .button {
-	background-color: #7b7b7b;
-	color: #ffffff;
+	background-color: var(--button-background-color);
+	color: var(--button-text-color);
 	width: 490px;
 	height: 53px;
 	padding: 13px 20px;
 	justify-content: center;
 	align-items: center;
-	border: solid #7b7b7b;
+	border: solid var(--button-border-color);
 	border-radius: 12px;
 	font-size: 20px;
 	font-weight: 600;
@@ -14,13 +14,17 @@
 	cursor: pointer;
 }
 
-.button:hover,
+.button:hover {
+	border: solid var(--button-hover-border-color);
+	background-color: var(--button-hover-background-color);
+}
+
 .button:active {
-	border: solid #636363;
-	background-color: #636363;
+	border: solid var(--button-active-border-color);
+	background-color: var(--button-active-background-color);
 }
 
 .button:disabled {
-	color: #cccccc;
+	color: var(--button-disable-text-color);
 	cursor: not-allowed;
 }
