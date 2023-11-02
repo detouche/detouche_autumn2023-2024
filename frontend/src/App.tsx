@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
 
-import { Registration } from './components/Registration'
-import { Login } from './components/Login'
-import { CheckEmail } from './components/CheckEmail'
-import { PasswordReset } from './components/PasswordReset'
-import { PasswordResetConfirmed } from './components/PasswordResetConfirmed'
+import { Registration } from './pages/Registration'
+import { Login } from './pages/Login'
+import { CheckEmail } from './pages/CheckEmail'
+import { PasswordReset } from './pages/PasswordReset'
+import { PasswordResetConfirmed } from './pages/PasswordResetConfirmed'
 
 import './App.module.scss'
 

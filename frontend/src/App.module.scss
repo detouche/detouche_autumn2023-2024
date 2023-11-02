@@ -1,0 +1,31 @@
+:root {
+	// Input
+	--input-background-color: #fff;
+	--input-valid-border-color: #e3e3e3;
+	--input-invalid-border-color: #e83434;
+	--input-placeholder-color: #c1c1c1;
+	--input-focus-border-color: #bbb;
+	--input-focus-box-shadow-color: 0, 0, 0, 0.05;
+	--input-hover-border-color: #bbb;
+	--input-hover-box-shadow-color: 0, 0, 0, 0.05;
+
+	// Button
+	--button-background-color: #7b7b7b;
+	--button-text-color: #ffffff;
+	--button-border-color: #7b7b7b;
+	--button-hover-border-color: #636363;
+	--button-hover-background-color: #636363;
+	--button-active-border-color: #636363;
+	--button-active-background-color: #636363;
+	--button-disable-text-color: #cccccc;
+
+	// Navigate button
+	--navigate-button-text-color: #7b7b7b;
+	--navigate-button-hover-text-color: #636363;
+	--navigate-button-active-text-color: #636363;
+	--navigate-button-disabled-text-color: #cccccc;
+
+	// Pages
+	--primary-text-color: #000;
+	--primary-error-text-color: #e83434;
+}

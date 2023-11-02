@@ -1,13 +1,12 @@
-.password_reset_container {
+.registration_container {
 	width: 490px;
-	background: #fff;
 	position: flex;
 	text-align: center;
 	margin-right: auto;
 	margin-left: auto;
 
-	.password_reset_title {
-		color: #000;
+	.registration_title {
+		color: var(--primary-text-color);
 		font-size: 32px;
 		font-weight: 700;
 		margin-top: 0px;
@@ -15,22 +14,22 @@
 		margin-top: 120px;
 	}
 
-	.password_reset_input__group {
+	.registration_input__group {
 		margin-top: 16px;
 		text-align: left;
 	}
 
-	.password_reset_label {
-		color: #000;
+	.registration_label {
+		color: var(--primary-text-color);
 		font-size: 16px;
 		font-weight: 400;
 		display: block;
 		margin-bottom: 8px;
 	}
 
-	.password_reset_error__validation {
+	.registration_error__validation {
 		margin-top: 8px;
-		color: #e83434;
+		color: var(--primary-error-text-color);
 		font-size: 16px;
 		font-weight: 300;
 	}

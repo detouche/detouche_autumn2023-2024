@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import { Logo } from '../Logo'
-import { Button } from '../UI/Button'
+import { Logo } from '../../components/Logo'
+import { Button } from '../../components/UI/Button'
 
 import style from './CheckEmail.module.scss'
 

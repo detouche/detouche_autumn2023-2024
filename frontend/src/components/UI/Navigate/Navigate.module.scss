@@ -6,7 +6,7 @@
 	width: 490px;
 
 	.navigate_button {
-		color: #7b7b7b;
+		color: var(--navigate-button-text-color);
 		font-size: 20px;
 		font-weight: 600;
 		background: none;
@@ -15,13 +15,15 @@
 		cursor: pointer;
 	}
 
-	.navigate_button:hover,
+	.navigate_button:hover {
+		color: var(--navigate-button-hover-text-color);
+	}
 	.navigate_button:active {
-		color: #636363;
+		color: var(--navigate-button-active-text-color);
 	}
 
 	.navigate_button:disabled {
-		color: #cccccc;
+		color: var(--navigate-button-disabled-text-color);
 		cursor: not-allowed;
 	}
 }
