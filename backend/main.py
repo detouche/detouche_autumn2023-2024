@@ -6,13 +6,15 @@ from auth.auth import auth_backend
 from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate
 from auth.services.user import get_user_manager
-from auth.services.user import verify_router
 
 app = FastAPI(title="Система внешнего обучения")
 
+origins = ['http://localhost:5173', 'http://127.0.0.1:5173',
+           'https://localhost:5173', 'https://127.0.0.1:5173']
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
@@ -24,7 +26,7 @@ fastapi_users = FastAPIUsers(
 )
 
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend),
+    fastapi_users.get_auth_router(auth_backend, requires_verification=True),
     prefix="/auth",
     tags=["auth"],
 )
@@ -42,7 +44,7 @@ app.include_router(
 )
 
 app.include_router(
-    verify_router,
+    fastapi_users.get_verify_router(UserRead),
     prefix="/auth",
     tags=["auth"],
 )
@@ -50,13 +52,20 @@ app.include_router(
 current_user = fastapi_users.current_user()
 
 
+# current_active_verified_user = fastapi_users.current_user(active=True, verified=True)
+
 @app.get("/protected-route")
 def protected_route(user: User = Depends(current_user)):
     return f"Hello, {user.name}"
 
 
+
+
+
 @app.get("/unprotected-route")
-def unprotected_route():
+async def unprotected_route():
+    # test = await user_rep.find_user_by_email(email='openped@mail.ru')
+    # print(test)
     return f"Hello, anonym"
 
 # app.include_router(
