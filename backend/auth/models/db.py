@@ -22,27 +22,38 @@ user = Table(
     metadata,
     Column("id", Integer, primary_key=True),
     Column("email", String, nullable=False),
-    Column("name", String, nullable=False),
-    Column("surname", String, nullable=False),
-    Column("patronymic", String, nullable=False),
-    Column("role_id", Integer, ForeignKey(role.c.id)),
+    Column("name", String, nullable=True),
+    Column("surname", String, nullable=True),
+    Column("patronymic", String, nullable=True),
+    Column("role_id", Integer, ForeignKey(role.c.id), nullable=True),
     Column("hashed_password", String, nullable=False),
     Column("is_active", Boolean, default=True, nullable=False),
     Column("is_superuser", Boolean, default=False, nullable=False),
     Column("is_verified", Boolean, default=False, nullable=False),
 )
 
+employee = Table(
+    "employee",
+    metadata,
+    Column("id", Integer, primary_key=True),
+    Column("email", String, nullable=False),
+)
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    surname = Column(String, nullable=False)
-    patronymic = Column(String, nullable=False)
+    name = Column(String, nullable=True)
+    surname = Column(String, nullable=True)
+    patronymic = Column(String, nullable=True)
     email = Column(String, nullable=False)
-    role_id = Column(Integer, ForeignKey(role.c.id))
+    role_id = Column(Integer, ForeignKey(role.c.id), nullable=True)
     hashed_password: str = Column(String(length=1024), nullable=False)
     is_active: bool = Column(Boolean, default=True, nullable=False)
 
+class Employee(Base):
+    __tablename__ = "employee"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String, nullable=False)
 # class Division(Base):
 #     __tablename__ = "division"
 #

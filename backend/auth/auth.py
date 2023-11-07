@@ -1,8 +1,8 @@
-from fastapi_users.authentication import AuthenticationBackend, BearerTransport, Transport, Strategy
+from fastapi_users.authentication import AuthenticationBackend, BearerTransport, Transport, Strategy, CookieTransport
 from fastapi_users.authentication import JWTStrategy
 
-# cookie_transport = CookieTransport(cookie_name="accessToken", cookie_max_age=1500)
-cookie_transport = BearerTransport(tokenUrl="/login")
+cookie_transport = CookieTransport(cookie_name="accessToken", cookie_max_age=1500)
+# cookie_transport = BearerTransport(tokenUrl="/login")
 
 SECRET = "SECRET"
 
@@ -17,9 +17,6 @@ auth_backend = AuthenticationBackend(
     get_strategy=get_jwt_strategy,
 )
 
-
-def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=300)
 
 # class BearerResponseRefresh(BaseModel):
 #     access_token: str

@@ -26,7 +26,24 @@ conf = ConnectionConfig(
 
 
 async def simple_send(email: EmailSchema, token: str = '') -> JSONResponse:
-    html = f"""<p>http://127.0.0.1:8000/auth/verify/{token}"</p>"""
+    formatted_token = token.replace('.', '&')
+    html = f"""<p>http://localhost:5173/registration/{formatted_token}"</p>"""
+
+    # token = jwt.encode(token)
+
+    message = MessageSchema(
+        subject="Fastapi-Mail module",
+        recipients=email,
+        body=html,
+        subtype=MessageType.html)
+
+    fm = FastMail(conf)
+    await fm.send_message(message)
+    return JSONResponse(status_code=200, content={"message": "email has been sent"})
+
+async def simple_send2(email: EmailSchema, token: str = '') -> JSONResponse:
+    formatted_token = token.replace('.', '&')
+    html = f"""<p>http://localhost:5173/password-reset-confirmed/{formatted_token}"</p>"""
 
     # token = jwt.encode(token)
 
