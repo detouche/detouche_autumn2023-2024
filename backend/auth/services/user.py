@@ -10,7 +10,7 @@ from pydantic import EmailStr
 from starlette import status
 
 from auth.models.db import User
-from database import get_user_db
+from auth.repository.user import get_user_db
 from utils.email_server import simple_send, simple_send2
 from ..models.schemas import UserRead
 from config import settings

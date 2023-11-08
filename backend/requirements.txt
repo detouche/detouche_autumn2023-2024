@@ -10,3 +10,4 @@ asyncpg
 fastapi-mail
 pyjwt~=2.8.0
 starlette~=0.27.0
+openpyxl
