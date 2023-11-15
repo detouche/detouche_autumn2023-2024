@@ -10,7 +10,6 @@
 	border-radius: 12px;
 	font-size: 20px;
 	font-weight: 600;
-	margin-top: 40px;
 	cursor: pointer;
 }
 
@@ -27,4 +26,10 @@
 .button:disabled {
 	color: var(--button-disable-text-color);
 	cursor: not-allowed;
+}
+
+.button:focus {
+	border: solid var(--button-focus-border-color);
+	background-color: var(--button-focus-background-color);
+	outline: none;
 }

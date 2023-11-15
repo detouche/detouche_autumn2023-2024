@@ -1,4 +1,4 @@
-import style from './Input.module.scss'
+import style from './Input.module.scss';
 
 export function Input({ ...props }) {
 	return (
@@ -8,5 +8,5 @@ export function Input({ ...props }) {
 			}
 			{...props}
 		/>
-	)
+	);
 }

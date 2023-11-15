@@ -22,12 +22,12 @@ input::placeholder {
 
 input:focus {
 	border: 1px solid var(--input-focus-border-color);
-	box-shadow: 0px 0px 0px 2px rgba(var(--input-focus-box-shadow-color));
+	box-shadow: 0px 0px 0px 3px var(--input-focus-box-shadow-color);
 	outline: none;
 }
 
 input:hover {
 	border: 1px solid var(--input-hover-border-color);
-	box-shadow: 0px 0px 0px 2px rgba(var(--input-hover-box-shadow-color));
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
 	outline: none;
 }

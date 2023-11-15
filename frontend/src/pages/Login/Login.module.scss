@@ -1,17 +1,20 @@
 .login_container {
 	width: 490px;
-	position: flex;
+	background: #fff;
 	text-align: center;
 	margin-right: auto;
 	margin-left: auto;
+	margin-top: 122px;
 
 	.login_title {
 		color: var(--primary-text-color);
 		font-size: 32px;
 		font-weight: 700;
 		margin-top: 0px;
-		margin-bottom: 60px;
-		margin-top: 120px;
+	}
+
+	.login_form_container {
+		margin-top: 60px;
 	}
 
 	.login_input__group {
@@ -32,5 +35,13 @@
 		color: var(--primary-error-text-color);
 		font-size: 16px;
 		font-weight: 300;
+	}
+
+	.login_button__container {
+		margin-top: 40px;
+	}
+
+	.login_navigate__container {
+		margin-top: 12px;
 	}
 }
