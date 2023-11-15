@@ -1,0 +1,32 @@
+.link_error__container {
+	width: 747px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	margin-top: 186px;
+
+	.link_error__title {
+		color: var(--primary-text-color);
+		font-size: 32px;
+		font-weight: 700;
+	}
+
+	.link_error__text {
+		margin-top: 60px;
+		margin-bottom: 0px;
+		width: 747px;
+		color: var(--primary-text-color);
+		text-align: center;
+		font-size: 24px;
+		font-weight: 400;
+		white-space: pre-wrap;
+	}
+
+	.link_error_button__container {
+		margin-top: 60px;
+	}
+	
+	.link_error_navigate__container {
+		margin-top: 12px;
+	}
+}
