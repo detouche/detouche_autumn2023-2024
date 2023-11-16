@@ -5,14 +5,11 @@ import jwt
 from fastapi import Depends, Request, APIRouter, HTTPException, Body
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas, FastAPIUsers, \
     InvalidPasswordException
-from fastapi_users.router.common import ErrorModel, ErrorCode
-from pydantic import EmailStr
 from starlette import status
 
 from auth.models.db import User
 from auth.repository.user import get_user_db
 from utils.email_server import simple_send, simple_send2
-from ..models.schemas import UserRead
 from config import settings
 from ..repository.user import UserRepository
 
@@ -63,7 +60,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     ) -> models.UP:
         await self.validate_password(user_create.password, user_create)
 
-        # TODO: Перенести константу ALLOWED_DOMAINS в .env файл
         ALLOWED_DOMAINS = ['mail.ru', 'ussc.ru', 'udv.group']
         email_in_domain = user_create.email.split('@')[1] in ALLOWED_DOMAINS
         if not email_in_domain:

@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     SECRET: str
     VERIFY_TOKEN_SECRET: str
 
+    # ALLOWED_DOMAINS: list
+
     model_config = SettingsConfigDict(env_file=".env")
 
 

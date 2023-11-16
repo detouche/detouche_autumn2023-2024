@@ -9,6 +9,18 @@ class Employee(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
+    name = Column(String, nullable=True)
+    surname = Column(String, nullable=True)
+    patronymic = Column(String, nullable=True)
+    role_id = Column(Integer, ForeignKey("role.id"), nullable=True)
+    employee_status_id = Column(Integer, ForeignKey("employee_status.id"), nullable=False)
+
+
+class EmployeeStatus(Base):
+    __tablename__ = "employee_status"
+
+    id = Column(Integer, primary_key=True)
+    status_name = Column(String, nullable=False)
 
 
 class StaffUnit(Base):

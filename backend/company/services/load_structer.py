@@ -1,7 +1,7 @@
 import openpyxl
 
 # Укажите путь к вашему файлу XLSX
-file_path = "/home/superiorkilljoy/Projects/detouche_autumn2023-2024/backend/company/services/OrgStructure.xlsx"
+file_path = ""
 
 # Открываем файл
 workbook = openpyxl.load_workbook(file_path)
