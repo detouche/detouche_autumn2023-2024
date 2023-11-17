@@ -1,22 +1,24 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { Logo } from '../../components/Logo'
-import { Button } from '../../components/UI/Button'
+import style from './CheckEmail.module.scss';
 
-import style from './CheckEmail.module.scss'
+import { Logo } from '../../components/Logo';
+import { Button } from '../../components/UI/Button';
 
 export function CheckEmail() {
-	const navigate = useNavigate()
-	const { state } = useLocation()
-	const { successfulMailDeliveryText } = state
+	const navigate = useNavigate();
+	const { state } = useLocation();
+	const { successfulMailDeliveryText } = state || '';
 	return (
-		<div className={style.check_email__container}>
+		<div>
 			<Logo />
-			<div className={style.check_email__content}>
+			<div className={style.check_email__container}>
 				<h1 className={style.check_email__title}>Проверьте свою почту</h1>
 				<p className={style.check_email__text}>{successfulMailDeliveryText}</p>
-				<Button onClick={() => navigate('/login')}>Вход</Button>
+				<div className={style.check_email_button__container}>
+					<Button onClick={() => navigate('/login')}>Вход</Button>
+				</div>
 			</div>
 		</div>
-	)
+	);
 }

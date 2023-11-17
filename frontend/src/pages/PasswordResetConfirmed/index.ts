@@ -1,1 +1,1 @@
-export { PasswordResetConfirmed } from './PasswordResetConfirmed'
+export { PasswordResetConfirmed } from './PasswordResetConfirmed';
