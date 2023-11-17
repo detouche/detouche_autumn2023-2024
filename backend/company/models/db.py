@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Table, func
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, func
 from sqlalchemy.orm import mapped_column
 
 from database import Base
@@ -9,11 +9,11 @@ class Employee(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
-    name = Column(String, nullable=True)
-    surname = Column(String, nullable=True)
-    patronymic = Column(String, nullable=True)
-    role_id = Column(Integer, ForeignKey("role.id"), nullable=True)
-    employee_status_id = Column(Integer, ForeignKey("employee_status.id"), nullable=False)
+    # name = Column(String, nullable=True)
+    # surname = Column(String, nullable=True)
+    # patronymic = Column(String, nullable=True)
+    # role_id = Column(Integer, ForeignKey("role.id"), nullable=True)
+    # employee_status_id = Column(Integer, ForeignKey("employee_status.id"), nullable=False)
 
 
 class EmployeeStatus(Base):
