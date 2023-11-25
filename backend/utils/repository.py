@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from fastapi import Depends
 from sqlalchemy import insert, select, update, delete
+from sqlalchemy.exc import NoResultFound
 
-from database import get_async_session, async_session_maker
+from database import async_session_maker
 
 
 class AbstractRepository(ABC):
@@ -25,6 +25,10 @@ class AbstractRepository(ABC):
 
     @abstractmethod
     async def find_all(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_one(self):
         raise NotImplementedError
 
 
@@ -57,12 +61,23 @@ class SQLALchemyRepository(AbstractRepository):
             return result.rowcount
 
     async def find_one(self, record_id: int):
-        query = select(self.model).where(self.model.id == record_id)
-        result = await self.session.execute(query)
-        return result.scalar_one() if result.scalar() is not None else None
+        async with async_session_maker() as session:
+            query = select(self.model).where(self.model.id == record_id)
+            result = await session.execute(query)
+            return result.scalar_one()
 
     async def delete_one(self, record_id: int):
-        stmt = delete(self.model).where(self.model.id == record_id)
-        result = await self.session.execute(stmt)
-        await self.session.commit()
-        return result.rowcount
+        async with async_session_maker() as session:
+            stmt = delete(self.model).where(self.model.id == record_id)
+            result = await session.execute(stmt)
+            await session.commit()
+            return result.rowcount
+
+    async def get_one(self, record_id: int):
+        async with async_session_maker() as session:
+            try:
+                query = select(self.model).where(self.model.id == record_id)
+                result = await session.execute(query)
+                return result.scalar_one()
+            except NoResultFound:
+                return False

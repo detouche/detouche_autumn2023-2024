@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy import select
 
-from company.models.db import Employee, StaffUnit, Division, StaffUnit_Division, Assignment, Acting
+from company.models.db import Employee, StaffUnit, Division, Assignment, Acting
 from database import get_async_session
 from utils.repository import SQLALchemyRepository
 
@@ -24,10 +24,6 @@ class StaffUnitRepository(SQLALchemyRepository):
 
 class DivisionRepository(SQLALchemyRepository):
     model = Division
-
-
-class StaffUnit_DivisionRepository(SQLALchemyRepository):
-    model = StaffUnit_Division
 
 
 class AssignmentRepository(SQLALchemyRepository):

@@ -11,6 +11,7 @@ from auth.services.user import get_user_manager
 from config import settings
 from company.repository.company import EmployeeRepository
 from company.models.schemas import EmployeeSchema
+from docs.services.course_template import docs_router
 
 app = FastAPI(title="Система внешнего обучения")
 
@@ -50,6 +51,8 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
+
+app.include_router(docs_router, tags=['course-templates'])
 
 current_user = fastapi_users.current_user()
 
