@@ -28,6 +28,7 @@ class StaffUnit(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    division_id = mapped_column(ForeignKey("division.id"), index=True)
 
 
 class Division(Base):
@@ -36,16 +37,8 @@ class Division(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     parent_division_id = mapped_column(ForeignKey("division.id"), index=True)
-    unit_head_id = mapped_column(ForeignKey("staff_unit.id"), index=True)
+    head_employee_id = mapped_column(ForeignKey("employee.id"), index=True)
     status: bool = Column(Boolean, default=False, nullable=False)
-
-
-class StaffUnit_Division(Base):
-    __tablename__ = "staff_unit_division"
-
-    id = Column(Integer, primary_key=True)
-    staff_unit_id = mapped_column(ForeignKey("staff_unit.id"), index=True)
-    division_id = mapped_column(ForeignKey("division.id"), index=True)
 
 
 class Assignment(Base):

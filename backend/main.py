@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import FastAPI, Depends
 from fastapi_users import FastAPIUsers
 from starlette.middleware.cors import CORSMiddleware
@@ -6,15 +8,16 @@ from auth.auth import auth_backend
 from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate
 from auth.services.user import get_user_manager
+from config import settings
+from company.repository.company import EmployeeRepository
+from company.models.schemas import EmployeeSchema
+from docs.services.course_template import docs_router
 
 app = FastAPI(title="Система внешнего обучения")
 
-origins = ['http://localhost:5173', 'http://127.0.0.1:5173',
-           'https://localhost:5173', 'https://127.0.0.1:5173']
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.ORIGINS,
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
@@ -49,47 +52,19 @@ app.include_router(
     tags=["auth"],
 )
 
+app.include_router(docs_router, tags=['course-templates'])
+
 current_user = fastapi_users.current_user()
 
-
-# current_active_verified_user = fastapi_users.current_user(active=True, verified=True)
 
 @app.get("/protected-route")
 def protected_route(user: User = Depends(current_user)):
     return f"Hello, {user.name}"
 
 
-
-
-
-@app.get("/unprotected-route")
-async def unprotected_route():
-    # test = await user_rep.find_user_by_email(email='openped@mail.ru')
-    # print(test)
+@app.post("/unprotected-route")
+async def unprotected_route(employee: EmployeeSchema):
+    employee_dict = employee.model_dump()
+    test = await EmployeeRepository().update_one(employee_dict)
+    print(test)
     return f"Hello, anonym"
-
-# app.include_router(
-#     fastapi_users.get_auth_router(auth_backend_refresh),
-#     prefix="/api/v1/user",
-#     tags=["auth"],
-# )
-
-
-# @app.get("/auth/jwt/refresh")
-# async def refresh_jwt(strategy=Depends(get_jwt_strategy),
-#                       refresh_token=Cookie(), user=Depends(current_user)):
-#     print('gfh')
-#     valid_token = check_refresh_token(refresh_token)
-#     if not valid_token:
-#         raise HTTPException(status_code=401, detail='Invalid token')
-#
-#     token = await strategy.write_token(user)
-#     print(token)
-#     return await cookie_transport.get_login_response(token)
-#
-# def check_refresh_token(token: str) -> bool:
-#     # Check expiry in Redis instead of in cookie
-#     # If expired then return False
-#
-#     # Sample
-#     return True

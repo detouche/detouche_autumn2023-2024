@@ -13,18 +13,15 @@ class Document(Base):
     director_id = Column(Integer, nullable=False)
     administrator_id = Column(Integer, nullable=False)
     autor_id = Column(Integer, nullable=False)
-    user_id = Column(Integer, nullable=False)
+    members_id = Column(Integer, nullable=False)
 
-
-class DocumentStatus(Base):
-    __tablename__ = "document_status"
-
-    id = Column(Integer, primary_key=True)
-    document_id = mapped_column(ForeignKey("document.id"), nullable=False)
+    is_confirmed = Column(Boolean, nullable=False, default=False)
     manager_status = Column(Boolean, nullable=False, default=False)
     director_status = Column(Boolean, nullable=False, default=False)
     administrator_status = Column(Boolean, nullable=False, default=False)
-    is_confirmed = Column(Boolean, nullable=False, default=False)
+    is_completed = Column(Boolean, nullable=False, default=False)
+    course_id = mapped_column(ForeignKey("course.id"), index=True)
+    state = Column(String, nullable=False, default="test")
 
 
 class Course(Base):
@@ -48,22 +45,14 @@ class CourseTemplate(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=True)
     description = Column(String, nullable=True)
-    type = Column(Enum(CourseTypeEnum), nullable=True)
-    category = Column(Enum(CourseCategoryEnum))
+    type = Column(String, nullable=True)
+    category = Column(String, nullable=True)
     education_center = Column(String, nullable=True)
 
 
-class CourseDocument(Base):
-    __tablename__ = "course_document"
+class CourseMember(Base):
+    __tablename__ = "course_member"
 
     id = Column(Integer, primary_key=True)
-    course_id = mapped_column(ForeignKey('course.id'), nullable=False)
-    document_id = mapped_column(ForeignKey('document.id'), nullable=False)
-
-
-class UserCourse(Base):
-    __tablename__ = "user_course"
-
-    id = Column(Integer, primary_key=True)
-    user_id = mapped_column(ForeignKey('user.id'), nullable=False)
+    member_id = mapped_column(ForeignKey('employee.id'), nullable=False)
     course_id = mapped_column(ForeignKey('course.id'), nullable=False)

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class DocumentSchema(BaseModel):
@@ -19,13 +19,14 @@ class DocumentStatusSchema(BaseModel):
     is_confirmed: bool
 
 
+# TODO: формат даты изменить
 class CourseSchema(BaseModel):
     id: int
     title: str
     description: str
     cost: float
-    start_date: datetime
-    end_date: datetime
+    start_date: str
+    end_date: str
     goal: str
     type: str
     category: str
@@ -33,9 +34,13 @@ class CourseSchema(BaseModel):
 
 
 class CourseTemplateSchema(BaseModel):
-    id: int
     title: str
     description: str
     type: str
     category: str
     education_center: str
+
+
+class CourseTemplateIDSchema(CourseTemplateSchema):
+    id: int
+

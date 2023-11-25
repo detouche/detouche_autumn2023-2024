@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -18,7 +20,9 @@ class Settings(BaseSettings):
     SECRET: str
     VERIFY_TOKEN_SECRET: str
 
-    # ALLOWED_DOMAINS: list
+    ALLOWED_DOMAINS: List[str] = []
+
+    ORIGINS: List[str] = []
 
     model_config = SettingsConfigDict(env_file=".env")
 
