@@ -1,7 +1,7 @@
+from docs.models.db import Document, Course, CourseTemplate, CourseMember
 from sqlalchemy import select
 
 from database import async_session_maker
-from docs.models.db import Document, Course, CourseTemplate
 from utils.repository import SQLALchemyRepository
 
 
@@ -21,3 +21,6 @@ class CourseTemplateRepository(SQLALchemyRepository):
             query = select(self.model).where(self.model.title == title)
             result = await session.execute(query)
             return result
+
+class UserCoursesRepository(SQLALchemyRepository):
+    model = CourseMember

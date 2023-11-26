@@ -1,17 +1,19 @@
-from typing import Annotated
-
 from fastapi import FastAPI, Depends
 from fastapi_users import FastAPIUsers
 from starlette.middleware.cors import CORSMiddleware
 
+from company.services.org_structure import org_router
+from config import settings
+
 from auth.auth import auth_backend
 from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate
-from auth.services.user import get_user_manager
-from config import settings
-from company.repository.company import EmployeeRepository
+
 from company.models.schemas import EmployeeSchema
+
 from docs.services.course_template import docs_router
+
+from auth.services.user import get_user_manager
 
 app = FastAPI(title="Система внешнего обучения")
 
@@ -53,6 +55,8 @@ app.include_router(
 )
 
 app.include_router(docs_router, tags=['course-templates'])
+app.include_router(org_router, tags=['org-structure'])
+
 
 current_user = fastapi_users.current_user()
 
@@ -64,7 +68,8 @@ def protected_route(user: User = Depends(current_user)):
 
 @app.post("/unprotected-route")
 async def unprotected_route(employee: EmployeeSchema):
-    employee_dict = employee.model_dump()
-    test = await EmployeeRepository().update_one(employee_dict)
-    print(test)
+    # employee_dict = employee.model_dump()
+    # test = await EmployeeRepository().update_one(employee_dict)
+    # print(test)
+    # test = await employee_repository.find_user_by_email('openped@mail.ru')
     return f"Hello, anonym"

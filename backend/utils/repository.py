@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from sqlalchemy import insert, select, update, delete
 from sqlalchemy.exc import NoResultFound
 
-from database import async_session_maker
+from database import get_async_session, async_session_maker
 
 
 class AbstractRepository(ABC):
@@ -41,6 +41,11 @@ class SQLALchemyRepository(AbstractRepository):
             result = await session.execute(stmt)
             await session.commit()
             return result.scalar_one()
+
+    async def add_one_class(self, data):
+        async with async_session_maker() as session:
+            session.add(data)
+            await session.commit()
 
     async def find_all(self, conditions: dict = None):
         async with async_session_maker() as session:

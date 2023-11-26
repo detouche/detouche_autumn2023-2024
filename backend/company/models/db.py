@@ -56,8 +56,8 @@ class Acting(Base):
     __tablename__ = "acting"
 
     id = Column(Integer, primary_key=True)
-    replacement_id = mapped_column(ForeignKey("user.id"), index=True)
-    substitute_id = mapped_column(ForeignKey("user.id"), index=True)
+    replacement_id = mapped_column(ForeignKey("employee.id"), index=True)
+    substitute_id = mapped_column(ForeignKey("employee.id"), index=True)
     division_id = mapped_column(ForeignKey("division.id"), index=True)
     start_date = Column(DateTime(timezone=True), server_default=func.now())
     end_date = Column(DateTime(timezone=True), server_default=func.now())
