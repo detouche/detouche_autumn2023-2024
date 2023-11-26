@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy import insert, select, func
-from sqlalchemy.sql import text
-from database import async_session_maker
+from sqlalchemy import insert, select, update, delete
+from sqlalchemy.exc import NoResultFound
+
+from database import get_async_session, async_session_maker
 
 
 class AbstractRepository(ABC):
@@ -11,12 +12,24 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def find_user_by_email(self):
+    async def update_one(self):
         raise NotImplementedError
 
-    # @abstractmethod
-    # async def update_one(self):
-    #     raise NotImplementedError
+    @abstractmethod
+    async def delete_one(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def find_one(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def find_all(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_one(self):
+        raise NotImplementedError
 
 
 class SQLALchemyRepository(AbstractRepository):
@@ -29,11 +42,47 @@ class SQLALchemyRepository(AbstractRepository):
             await session.commit()
             return result.scalar_one()
 
-    async def find_user_by_email(self, email):
+    async def add_one_class(self, data):
         async with async_session_maker() as session:
-            stmt = select(self.model).filter(self.model.email == email)
+            session.add(data)
+            await session.commit()
+
+    async def find_all(self, conditions: dict = None):
+        async with async_session_maker() as session:
+            query = select(self.model)
+
+            if conditions:
+                for key, value in conditions.items():
+                    query = query.where(getattr(self.model, key) == value)
+
+            result = await session.execute(query)
+            return result.scalars().all()
+
+    async def update_one(self, record_id: int, data: dict):
+        async with async_session_maker() as session:
+            stmt = update(self.model).where(self.model.id == record_id).values(data)
             result = await session.execute(stmt)
-            found_email = result.scalar_one_or_none()
-            if found_email:
-                return found_email.email
-            return None
+            await session.commit()
+            return result.rowcount
+
+    async def find_one(self, record_id: int):
+        async with async_session_maker() as session:
+            query = select(self.model).where(self.model.id == record_id)
+            result = await session.execute(query)
+            return result.scalar_one()
+
+    async def delete_one(self, record_id: int):
+        async with async_session_maker() as session:
+            stmt = delete(self.model).where(self.model.id == record_id)
+            result = await session.execute(stmt)
+            await session.commit()
+            return result.rowcount
+
+    async def get_one(self, record_id: int):
+        async with async_session_maker() as session:
+            try:
+                query = select(self.model).where(self.model.id == record_id)
+                result = await session.execute(query)
+                return result.scalar_one()
+            except NoResultFound:
+                return False

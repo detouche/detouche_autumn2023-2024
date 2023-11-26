@@ -2,17 +2,13 @@ import re
 from typing import Optional, Union
 
 import jwt
-from fastapi import Depends, Request, APIRouter, HTTPException, Body
-from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas, FastAPIUsers, \
-    InvalidPasswordException
-from fastapi_users.router.common import ErrorModel, ErrorCode
-from pydantic import EmailStr
+from fastapi import Depends, Request, HTTPException
+from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas, InvalidPasswordException
 from starlette import status
 
 from auth.models.db import User
-from database import get_user_db
+from auth.repository.user import get_user_db
 from utils.email_server import simple_send, simple_send2
-from ..models.schemas import UserRead
 from config import settings
 from ..repository.user import UserRepository
 
@@ -63,9 +59,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     ) -> models.UP:
         await self.validate_password(user_create.password, user_create)
 
-        # TODO: Перенести константу ALLOWED_DOMAINS в .env файл
-        ALLOWED_DOMAINS = ['mail.ru', 'ussc.ru', 'udv.group']
-        email_in_domain = user_create.email.split('@')[1] in ALLOWED_DOMAINS
+        email_in_domain = user_create.email.split('@')[1] in settings.ALLOWED_DOMAINS
         if not email_in_domain:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -119,72 +113,3 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
 async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
-
-# @verify_router.post(
-#     "/request-verify-token",
-#     status_code=status.HTTP_202_ACCEPTED,
-#     name="verify:request-token",
-# )
-# async def request_verify_token(request: Request, email: EmailStr = Body(..., embed=True),
-#                                user_manager: BaseUserManager[models.UP, models.ID] = Depends(get_user_manager)):
-#     '''
-#     API-запрос на отправку письма, для активации аккаунта
-#     '''
-#     try:
-#         user = await user_manager.get_by_email(email)
-#         await user_manager.request_verify(user, request)
-#     except (
-#             exceptions.UserNotExists,
-#             exceptions.UserInactive,
-#             exceptions.UserAlreadyVerified,
-#     ):
-#         pass
-#
-#     return None
-#
-#
-# @verify_router.get(
-#     "/verify/{token}",
-#     response_model=UserRead,
-#     name="verify:verify",
-#     responses={
-#         status.HTTP_400_BAD_REQUEST: {
-#             "model": ErrorModel,
-#             "content": {
-#                 "application/json": {
-#                     "examples": {
-#                         ErrorCode.VERIFY_USER_BAD_TOKEN: {
-#                             "summary": "Bad token, not existing user or"
-#                                        "not the e-mail currently set for the user.",
-#                             "value": {"detail": ErrorCode.VERIFY_USER_BAD_TOKEN},
-#                         },
-#                         ErrorCode.VERIFY_USER_ALREADY_VERIFIED: {
-#                             "summary": "The user is already verified.",
-#                             "value": {
-#                                 "detail": ErrorCode.VERIFY_USER_ALREADY_VERIFIED
-#                             },
-#                         },
-#                     }
-#                 }
-#             },
-#         }
-#     },
-# )
-# async def verify(
-#         request: Request,
-#         token: str,
-#         user_manager: BaseUserManager[models.UP, models.ID] = Depends(get_user_manager),
-# ):
-#     try:
-#         user = await user_manager.verify(token, request)
-#         return schemas.model_validate(UserRead, user)
-#     except (exceptions.InvalidVerifyToken, exceptions.UserNotExists):
-#         raise HTTPException(
-#             status_code=status.HTTP_400_BAD_REQUEST,
-#             detail=ErrorCode.VERIFY_USER_BAD_TOKEN,
-#         )
-#     except exceptions.UserAlreadyVerified:
-#         raise HTTPException(
-#             status_code=status.HTTP_400_BAD_REQUEST,
-#             detail=ErrorCode.VERIFY_USER_ALREADY_VERIFIED,
-#         )
