@@ -48,7 +48,7 @@ async def get_course_template(template_id: int) -> CourseTemplateIDSchema:
     return template
 
 
-@docs_router.post("/course-template/delete", response_model=CourseTemplateIDSchema)
+@docs_router.delete("/course-template/delete", response_model=CourseTemplateIDSchema)
 async def delete_course_template(template_id: int) -> CourseTemplateIDSchema:
     """Удаление шаблона"""
     template = await CourseTemplateRepository().get_one(record_id=template_id)

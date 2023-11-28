@@ -10,6 +10,7 @@ from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate
 
 from company.models.schemas import EmployeeSchema
+from docs.services.course_application import application_router
 
 from docs.services.course_template import docs_router
 
@@ -55,6 +56,7 @@ app.include_router(
 )
 
 app.include_router(docs_router, tags=['course-templates'])
+app.include_router(application_router, tags=['course-application'])
 app.include_router(org_router, tags=['org-structure'])
 
 
@@ -67,9 +69,5 @@ def protected_route(user: User = Depends(current_user)):
 
 
 @app.post("/unprotected-route")
-async def unprotected_route(employee: EmployeeSchema):
-    # employee_dict = employee.model_dump()
-    # test = await EmployeeRepository().update_one(employee_dict)
-    # print(test)
-    # test = await employee_repository.find_user_by_email('openped@mail.ru')
+async def unprotected_route():
     return f"Hello, anonym"
