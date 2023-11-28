@@ -8,15 +8,16 @@ from starlette import status
 
 from auth.models.db import User
 from auth.repository.user import get_user_db
+from company.repository.company import EmployeeRepository
 from utils.email_server import simple_send, simple_send2
 from config import settings
-from ..repository.user import UserRepository
+from auth.repository.user import UserRepository
 
 SECRET = settings.SECRET
 VERIFY_TOKEN_SECRET = settings.VERIFY_TOKEN_SECRET
 
 user_repository = UserRepository()
-
+employee_repository = EmployeeRepository()
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = SECRET
@@ -41,13 +42,13 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         :raises InvalidPasswordException: The password is invalid.
         :return: None if the password is valid.
         """
-        validation_space_regexp = r'\s'
-        if re.search(validation_space_regexp, password):
-            raise InvalidPasswordException('Password validation error: Password contains spaces')
-
-        validation_regexp = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!._]).{8,41}$'
-        if re.search(validation_regexp, password) is None:
-            raise InvalidPasswordException('Password validation error: Password does not match the conditions')
+        # validation_space_regexp = r'\s'
+        # if re.search(validation_space_regexp, password):
+        #     raise InvalidPasswordException('Password validation error: Password contains spaces')
+        #
+        # validation_regexp = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!._]).{8,41}$'
+        # if re.search(validation_regexp, password) is None:
+        #     raise InvalidPasswordException('Password validation error: Password does not match the conditions')
 
         return  # pragma: no cover
 
@@ -69,7 +70,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
                 }
             )
 
-        email_in_structure = await user_repository.find_user_by_email(email=user_create.email)
+        email_in_structure = await employee_repository.find_all({'email': user_create.email})
         if email_in_structure is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -90,7 +91,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         )
         password = user_dict.pop("password")
         user_dict["hashed_password"] = self.password_helper.hash(password)
-        # user_dict["role_id"] = 1
+        user_dict["employee_id"] = await employee_repository.find_user_by_email(user_create.email)
 
         created_user = await self.user_db.create(user_dict)
 

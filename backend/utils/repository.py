@@ -55,8 +55,12 @@ class SQLALchemyRepository(AbstractRepository):
                 for key, value in conditions.items():
                     query = query.where(getattr(self.model, key) == value)
 
-            result = await session.execute(query)
-            return result.scalars().all()
+            execute_result = await session.execute(query)
+            data = execute_result.scalars().all()
+            if not data:
+                return None
+
+            return data
 
     async def update_one(self, record_id: int, data: dict):
         async with async_session_maker() as session:

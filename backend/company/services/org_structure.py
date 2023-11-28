@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, Response
 
-from company.services.export_org_structure import export_org_structure
-from company.services.import_org_structure import import_org_structure
+from company.utils.export_org_structure import export_org_structure
+from company.utils.import_org_structure import import_org_structure
 
 org_router = APIRouter(prefix='/org', tags=['org-structure'])
 
