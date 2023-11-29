@@ -1,6 +1,6 @@
 from sqlalchemy import select
 
-from company.models.db import Employee, StaffUnit, Division, Assignment, Acting
+from company.models.db import Employee, StaffUnit, Division, Assignment, Acting, EmployeeStatus
 from database import async_session_maker
 from utils.repository import SQLALchemyRepository
 
@@ -16,6 +16,10 @@ class EmployeeRepository(SQLALchemyRepository):
             if found_email:
                 return found_email.id
             return None
+
+
+class EmployeeStatusRepository(SQLALchemyRepository):
+    model = EmployeeStatus
 
 
 class StaffUnitRepository(SQLALchemyRepository):

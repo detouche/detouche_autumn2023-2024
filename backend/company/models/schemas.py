@@ -4,6 +4,11 @@ from pydantic import BaseModel
 class EmployeeSchema(BaseModel):
     id: int
     email: str
+    name: str
+    surname: str
+    patronymic: str
+    role_id: int
+    employee_status_id: int
 
 
 class DivisionSchema(BaseModel):

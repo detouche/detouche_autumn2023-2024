@@ -11,13 +11,13 @@ from company.repository.company import EmployeeRepository
 from utils.email_server import simple_send, simple_send2
 from config import settings
 from ..auth import auth_backend
-from ..repository.user import UserRepository
+from auth.repository.user import UserRepository
 
 SECRET = settings.SECRET
 VERIFY_TOKEN_SECRET = settings.VERIFY_TOKEN_SECRET
 
 user_repository = UserRepository()
-
+employee_repository = EmployeeRepository()
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = SECRET
@@ -30,7 +30,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         print(f"User {user.id} has registered.")
 
     async def validate_password(
-            self, password: str, user: Union[schemas.UC, models.UP]
+        self, password: str, user: Union[schemas.UC, models.UP]
     ) -> None:
         """
         Validate a password.
@@ -70,7 +70,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
                 }
             )
 
-        email_in_structure = await EmployeeRepository().find_all({'email': user_create.email})
+        email_in_structure = await employee_repository.find_all({'email': user_create.email})
         if email_in_structure is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -91,7 +91,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         )
         password = user_dict.pop("password")
         user_dict["hashed_password"] = self.password_helper.hash(password)
-        user_dict["employee_id"] = await EmployeeRepository().find_user_by_email(user_create.email)
+        user_dict["employee_id"] = await employee_repository.find_user_by_email(user_create.email)
 
         created_user = await self.user_db.create(user_dict)
 
