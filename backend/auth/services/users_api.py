@@ -14,6 +14,60 @@ from company.repository.company import EmployeeRepository, EmployeeStatusReposit
 employee_repository = EmployeeRepository()
 
 
+async def get_employee_info(employee):
+    employee_status_repository = EmployeeStatusRepository()
+    employee_status = await employee_status_repository.find_one(employee.employee_status_id)
+
+    role_repository = RoleRepository()
+    role = await role_repository.find_one(employee.role_id)
+
+    assignment_repository = AssignmentRepository()
+    assignments = await assignment_repository.find_all({'employee_id': employee.id})
+    assignment = assignments[0]
+
+    staff_unit_repository = StaffUnitRepository()
+    staff_unit = await staff_unit_repository.find_one(assignment.staff_units_id)
+
+    division_repository = DivisionRepository()
+    division = await division_repository.find_one(staff_unit.division_id)
+    return {
+        'id': employee.id,
+        'name': employee.name,
+        'surname': employee.surname,
+        'patronymic': employee.patronymic,
+        'role': {
+            'id': employee.role_id,
+            'name': role.name,
+        },
+        'email': employee.email,
+        'employee_status': {
+            'id': employee.employee_status_id,
+            'status_name': employee_status.status_name,
+        },
+        # 'assignment': [
+        #     {column.key: getattr(assignment, column.key) for column in class_mapper(assignment.__class__).mapped_table.c}.update({'staff_units_id': await staff_unit_repository.find_one(assignment.staff_units_id)})
+        #     for assignment in assignments
+        # ],
+        'assignment': {
+            'id': assignment.id,
+            'start_date': assignment.start_date,
+            'end_date': assignment.end_date,
+        },
+        'staff_unit': {
+            'id': staff_unit.id,
+            'name': staff_unit.name,
+        },
+        'division': {
+            'id': division.id,
+            'name': division.name,
+            'parent_division': division.parent_division_id,
+            'head_employee': await employee_repository.find_one(division.head_employee_id),
+            'status': division.status,
+        }
+    }
+
+
+
 def get_users_router(
         get_user_manager: UserManagerDependency[models.UP, models.ID],
         user_schema: Type[schemas.U],
@@ -57,57 +111,6 @@ def get_users_router(
         employee = await employee_repository.find_one(user.employee_id)
         return employee
 
-    async def get_employee_info(employee):
-        employee_status_repository = EmployeeStatusRepository()
-        employee_status = await employee_status_repository.find_one(employee.employee_status_id)
-
-        role_repository = RoleRepository()
-        role = await role_repository.find_one(employee.role_id)
-
-        assignment_repository = AssignmentRepository()
-        assignments = await assignment_repository.find_all({'employee_id': employee.id})
-        assignment = assignments[0]
-
-        staff_unit_repository = StaffUnitRepository()
-        staff_unit = await staff_unit_repository.find_one(assignment.staff_units_id)
-
-        division_repository = DivisionRepository()
-        division = await division_repository.find_one(staff_unit.division_id)
-        return {
-            'id': employee.id,
-            'name': employee.name,
-            'surname': employee.surname,
-            'patronymic': employee.patronymic,
-            'role': {
-                'id': employee.role_id,
-                'name': role.name,
-            },
-            'email': employee.email,
-            'employee_status': {
-                'id': employee.employee_status_id,
-                'status_name': employee_status.status_name,
-            },
-            # 'assignment': [
-            #     {column.key: getattr(assignment, column.key) for column in class_mapper(assignment.__class__).mapped_table.c}.update({'staff_units_id': await staff_unit_repository.find_one(assignment.staff_units_id)})
-            #     for assignment in assignments
-            # ],
-            'assignment': {
-                'id': assignment.id,
-                'start_date': assignment.start_date,
-                'end_date': assignment.end_date,
-            },
-            'staff_unit': {
-                'id': staff_unit.id,
-                'name': staff_unit.name,
-            },
-            'division': {
-                'id': division.id,
-                'name': division.name,
-                'parent_division': division.parent_division_id,
-                'head_employee': await employee_repository.find_one(division.head_employee_id),
-                'status': division.status,
-            }
-        }
 
     @router.get(
         "/me",
