@@ -1,9 +1,8 @@
-import re
 from typing import Optional, Union
 
 import jwt
 from fastapi import Depends, Request, HTTPException
-from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas, InvalidPasswordException
+from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas, FastAPIUsers
 from starlette import status
 
 from auth.models.db import User
@@ -11,6 +10,7 @@ from auth.repository.user import get_user_db
 from company.repository.company import EmployeeRepository
 from utils.email_server import simple_send, simple_send2
 from config import settings
+from ..auth import auth_backend
 from auth.repository.user import UserRepository
 
 SECRET = settings.SECRET
@@ -114,3 +114,12 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
 async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
+
+
+fastapi_users = FastAPIUsers(
+    get_user_manager,
+    [auth_backend],
+)
+
+
+current_user = fastapi_users.current_user()

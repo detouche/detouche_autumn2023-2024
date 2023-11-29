@@ -1,4 +1,3 @@
-from fastapi import Depends
 from sqlalchemy import select
 
 from company.models.db import Employee, StaffUnit, Division, Assignment, Acting, EmployeeStatus

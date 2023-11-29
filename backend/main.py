@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Depends, APIRouter, HTTPException
-from fastapi_users import FastAPIUsers
 from starlette.middleware.cors import CORSMiddleware
 
 from auth.services.users_api import get_users_router, get_employee_info
@@ -11,13 +10,15 @@ from auth.auth import auth_backend
 from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate, UserUpdate
 
+
 from docs.services.course_application import application_router
 
 from docs.services.course_template import docs_router
 
-from auth.utils.user_auth import get_user_manager, employee_repository
+from auth.services.user import fastapi_users
+from auth.utils.user_auth import employee_repository
 
-app = FastAPI(title="Etude API docs", version='0.1.5')
+app = FastAPI(title="Etude API docs", version='0.1.6')
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,10 +28,6 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-fastapi_users = FastAPIUsers(
-    get_user_manager,
-    [auth_backend],
-)
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend, requires_verification=True),
@@ -112,12 +109,6 @@ def protected_route(user: User = Depends(current_user)):
     return f"Hello, hay"
 
 
-@app.get("/unprotected-route")
+@app.post("/unprotected-route")
 async def unprotected_route():
-    # employee_dict = employee.model_dump()
-    # test = await EmployeeRepository().update_one(employee_dict)
-    # print(test)
-    # test = await employee_repository.find_user_by_email('openped@mail.ru')
-    # email_in_structure = await employee_repository.find_all({'email': 'openped@mail.ru'})
-    # print(email_in_structure)
     return f"Hello, anonym"
