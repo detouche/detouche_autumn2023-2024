@@ -3,9 +3,12 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 
 from auth.models.db import User
-from auth.services.user import current_user
+from auth.utils.user_auth import current_user
+from company.services.heads_definer import get_heads_for_user
+
 from docs.models.schemas import DocumentSchema
 from docs.repository.docs import DocumentRepository, CourseRepository, MemberCourseRepository
+
 
 application_router = APIRouter(prefix='/docs', tags=['course-application'])
 
@@ -14,22 +17,22 @@ application_router = APIRouter(prefix='/docs', tags=['course-application'])
 async def create_application(document: DocumentSchema, user: User = Depends(current_user)):
     """Создание заявки на курс"""
     document_dict = document.model_dump()
-    # heads = await get_heads_for_user(user.employee_id)
-    # if heads['manager']['id'] != document_dict['manager_id']:
-    #     raise HTTPException(status_code=400, detail={
-    #         'code': 'MANAGER_VALIDATION_ERROR',
-    #         'reason': '...'
-    #     })
-    # if heads['director']['id'] != document_dict['director_id']:
-    #     raise HTTPException(status_code=400, detail={
-    #         'code': 'DIRECTOR_VALIDATION_ERROR',
-    #         'reason': '...'
-    #     })
-    # if heads['admin']['id'] != document_dict['admin_id']:
-    #     raise HTTPException(status_code=400, detail={
-    #         'code': 'ADMIN_VALIDATION_ERROR',
-    #         'reason': '...'
-    #     })
+    heads = await get_heads_for_user(user.employee_id)
+    if heads['manager']['id'] != document_dict['manager_id']:
+        raise HTTPException(status_code=400, detail={
+            'code': 'MANAGER_VALIDATION_ERROR',
+            'reason': '...'
+        })
+    if heads['director']['id'] != document_dict['director_id']:
+        raise HTTPException(status_code=400, detail={
+            'code': 'DIRECTOR_VALIDATION_ERROR',
+            'reason': '...'
+        })
+    if heads['admin']['id'] != document_dict['admin_id']:
+        raise HTTPException(status_code=400, detail={
+            'code': 'ADMIN_VALIDATION_ERROR',
+            'reason': '...'
+        })
     course_dict = document_dict["course"]
     document_dict["autor_id"] = user.employee_id
     members_list = document_dict["members_id"]

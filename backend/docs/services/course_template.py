@@ -3,7 +3,8 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 
 from auth.models.db import User
-from auth.services.user import current_user
+from auth.utils.user_auth import current_user
+
 from docs.models.schemas import CourseTemplateSchema, CourseTemplateIDSchema
 from docs.repository.docs import CourseTemplateRepository
 
