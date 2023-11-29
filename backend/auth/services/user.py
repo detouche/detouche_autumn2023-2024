@@ -1,15 +1,16 @@
-import re
 from typing import Optional, Union
 
 import jwt
 from fastapi import Depends, Request, HTTPException
-from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas, InvalidPasswordException
+from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas, FastAPIUsers
 from starlette import status
 
 from auth.models.db import User
 from auth.repository.user import get_user_db
+from company.repository.company import EmployeeRepository
 from utils.email_server import simple_send, simple_send2
 from config import settings
+from ..auth import auth_backend
 from ..repository.user import UserRepository
 
 SECRET = settings.SECRET
@@ -29,7 +30,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         print(f"User {user.id} has registered.")
 
     async def validate_password(
-        self, password: str, user: Union[schemas.UC, models.UP]
+            self, password: str, user: Union[schemas.UC, models.UP]
     ) -> None:
         """
         Validate a password.
@@ -41,13 +42,13 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         :raises InvalidPasswordException: The password is invalid.
         :return: None if the password is valid.
         """
-        validation_space_regexp = r'\s'
-        if re.search(validation_space_regexp, password):
-            raise InvalidPasswordException('Password validation error: Password contains spaces')
-
-        validation_regexp = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!._]).{8,41}$'
-        if re.search(validation_regexp, password) is None:
-            raise InvalidPasswordException('Password validation error: Password does not match the conditions')
+        # validation_space_regexp = r'\s'
+        # if re.search(validation_space_regexp, password):
+        #     raise InvalidPasswordException('Password validation error: Password contains spaces')
+        #
+        # validation_regexp = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!._]).{8,41}$'
+        # if re.search(validation_regexp, password) is None:
+        #     raise InvalidPasswordException('Password validation error: Password does not match the conditions')
 
         return  # pragma: no cover
 
@@ -69,7 +70,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
                 }
             )
 
-        email_in_structure = await user_repository.find_user_by_email(email=user_create.email)
+        email_in_structure = await EmployeeRepository().find_all({'email': user_create.email})
         if email_in_structure is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -90,7 +91,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         )
         password = user_dict.pop("password")
         user_dict["hashed_password"] = self.password_helper.hash(password)
-        # user_dict["role_id"] = 1
+        user_dict["employee_id"] = await EmployeeRepository().find_user_by_email(user_create.email)
 
         created_user = await self.user_db.create(user_dict)
 
@@ -113,3 +114,12 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
 async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
+
+
+fastapi_users = FastAPIUsers(
+    get_user_manager,
+    [auth_backend],
+)
+
+
+current_user = fastapi_users.current_user()

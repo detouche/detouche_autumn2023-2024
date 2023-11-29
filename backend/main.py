@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Depends
-from fastapi_users import FastAPIUsers
 from starlette.middleware.cors import CORSMiddleware
 
 from company.services.org_structure import org_router
@@ -9,12 +8,12 @@ from auth.auth import auth_backend
 from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate
 
-from company.models.schemas import EmployeeSchema
+
 from docs.services.course_application import application_router
 
 from docs.services.course_template import docs_router
 
-from auth.services.user import get_user_manager
+from auth.services.user import fastapi_users
 
 app = FastAPI(title="Система внешнего обучения")
 
@@ -26,10 +25,6 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-fastapi_users = FastAPIUsers(
-    get_user_manager,
-    [auth_backend],
-)
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend, requires_verification=True),
