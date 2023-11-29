@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Table, func, Enum, Float
+from typing import List
+
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Table, func, Enum, Float, ARRAY
 from sqlalchemy.orm import mapped_column
 
 from database import Base
-from .myenums import CourseTypeEnum, CourseCategoryEnum
 
 
 class Document(Base):
@@ -13,7 +14,7 @@ class Document(Base):
     director_id = Column(Integer, nullable=False)
     administrator_id = Column(Integer, nullable=False)
     autor_id = Column(Integer, nullable=False)
-    members_id = Column(Integer, nullable=False)
+    members_id = Column(ARRAY(Integer), nullable=False)
 
     is_confirmed = Column(Boolean, nullable=False, default=False)
     manager_status = Column(Boolean, nullable=False, default=False)
@@ -31,11 +32,11 @@ class Course(Base):
     title = Column(String, nullable=True)
     description = Column(String, nullable=True)
     cost = Column(Float, nullable=True)
-    start_date = Column(DateTime(timezone=True), server_default=func.now())
-    end_date = Column(DateTime(timezone=True), server_default=func.now())
+    start_date = Column(String, nullable=True)
+    end_date = Column(String, nullable=True)
     goal = Column(String, nullable=True)
-    type = Column(Enum(CourseTypeEnum), nullable=True)
-    category = Column(Enum(CourseCategoryEnum), nullable=True)
+    type = Column(String, nullable=True)
+    category = Column(String, nullable=True)
     education_center = Column(String, nullable=True)
 
 

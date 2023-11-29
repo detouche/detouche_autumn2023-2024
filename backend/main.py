@@ -10,6 +10,8 @@ from auth.auth import auth_backend
 from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate, UserUpdate
 
+from docs.services.course_application import application_router
+
 from docs.services.course_template import docs_router
 
 from auth.utils.user_auth import get_user_manager
@@ -63,6 +65,7 @@ app.include_router(
 )
 
 app.include_router(docs_router, tags=['course-templates'])
+app.include_router(application_router, tags=['course-application'])
 app.include_router(org_router, tags=['org-structure'])
 
 
