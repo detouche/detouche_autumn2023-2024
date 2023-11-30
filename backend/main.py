@@ -10,15 +10,15 @@ from auth.auth import auth_backend
 from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate, UserUpdate
 
-
 from docs.services.course_application import application_router
 
 from docs.services.course_template import docs_router
 
 
 from auth.utils.user_auth import fastapi_users, current_user
+from docs.services.search_documents import search_document_router
 
-app = FastAPI(title="Etude API docs", version='0.1.7')
+app = FastAPI(title="Etude API docs", version='0.1.8')
 
 app.add_middleware(
     CORSMiddleware,
@@ -65,12 +65,8 @@ app.include_router(
 app.include_router(docs_router, tags=['course-templates'])
 app.include_router(application_router, tags=['course-application'])
 app.include_router(org_router, tags=['org-structure'])
-
-
-
-
-
 app.include_router(heads_definer_router, tags=['course-application'])
+app.include_router(search_document_router, tags=['search-document'])
 
 
 @app.get("/protected-route")

@@ -9,7 +9,6 @@ from config import settings
 from auth.models.db import User
 from company.models.db import Division, StaffUnit, Employee, Assignment, Acting
 from docs.models.db import Document, Course, CourseTemplate, CourseMember
-from docs.models.myenums import CourseTypeEnum, CourseCategoryEnum
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy import insert, select, update, delete
+from sqlalchemy import insert, select, update, delete, or_, and_
+from sqlalchemy.sql.operators import eq
 from sqlalchemy.exc import NoResultFound
 
 from database import get_async_session, async_session_maker
@@ -47,13 +48,26 @@ class SQLALchemyRepository(AbstractRepository):
             session.add(data)
             await session.commit()
 
-    async def find_all(self, conditions: dict = None):
+    async def find_all(self, conditions: dict = None, OR=False, AND=False):
         async with async_session_maker() as session:
             query = select(self.model)
 
             if conditions:
-                for key, value in conditions.items():
-                    query = query.where(getattr(self.model, key) == value)
+                if OR:
+                    filters = []
+                    for key, value in conditions.items():
+                        filters.append(getattr(self.model, key).__eq__(value))
+
+                    query = query.where(or_(*filters))
+                elif AND:
+                    filters = []
+                    for key, value in conditions.items():
+                        filters.append(getattr(self.model, key).__eq__(value))
+
+                    query = query.where(and_(*filters))
+                else:
+                    for key, value in conditions.items():
+                        query = query.where(getattr(self.model, key) == value)
 
             execute_result = await session.execute(query)
             data = execute_result.scalars().all()
