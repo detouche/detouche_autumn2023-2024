@@ -5,7 +5,8 @@ import { Login } from './pages/Login';
 import { CheckEmail } from './pages/CheckEmail';
 import { PasswordReset } from './pages/PasswordReset';
 import { PasswordResetConfirmed } from './pages/PasswordResetConfirmed';
-import { UserPage } from './pages/UserPage';
+import { CreateApplication } from './pages/CreateApplication';
+import { MyApplication } from './pages/MyApplication';
 import { VerifyEmail } from './pages/VerifyEmail';
 import { LinkError } from './pages/LinkError';
 import { VerifyError } from './pages/VerifyError';
@@ -25,10 +26,11 @@ function App() {
 					path='/password-reset-confirmed/:token'
 					element={<PasswordResetConfirmed />}
 				/>
-				<Route path='/user-page' element={<UserPage />} />
+				<Route path='/create-application' element={<CreateApplication />} />
 				<Route path='/registration/:token' element={<VerifyEmail />} />
 				<Route path='/link-error' element={<LinkError />} />
 				<Route path='/verify-error' element={<VerifyError />} />
+				<Route path='/my-application' element={<MyApplication />} />
 				<Route path='*' element={<NotFound404 />} />
 			</Routes>
 		</>

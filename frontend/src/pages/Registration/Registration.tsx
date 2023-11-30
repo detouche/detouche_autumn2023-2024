@@ -1,9 +1,11 @@
 // import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import style from './Registration.module.scss';
 
+import { EyeShowPassword } from '../../components/EyeShowPassword';
 import { Button } from '../../components/UI/Button';
 import { Input } from '../../components/UI/Input';
 import { useInput } from '../../hooks/UseInput';
@@ -11,25 +13,33 @@ import { Logo } from '../../components/Logo';
 import { NavigateButton } from '../../components/UI/NavigateButton';
 
 export function Registration() {
+	axios.defaults.withCredentials = true;
 	const email = useInput('', {
 		correctEmail: true,
 	});
 	const password = useInput('', {
 		correctPassword: true,
 	});
-	
+	const [showPassword, setShowPassword] = useState(false);
 	// const [error, setError] = useState('error');
-
 	// const [resp, setResp] = useState(null)
-
 	const navigate = useNavigate();
 	const handleClickPrimaryButton = async e => {
 		e.preventDefault();
 		try {
-			const response = await axios.post(`http://localhost:8000/auth/register`, {
-				email: email.value,
-				password: password.value,
-			});
+			const response = await axios.post(
+				`http://localhost:8000/auth/register`,
+				{
+					email: email.value,
+					password: password.value,
+				},
+				{
+					withCredentials: true,
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
 			if (response) {
 				navigate('/check-email', {
 					state: {
@@ -104,15 +114,24 @@ export function Registration() {
 					</div>
 					<div className={style.registration_input__group}>
 						<label className={style.registration_label}>Пароль</label>
-						<Input
-							onChange={e => password.onChange(e)}
-							onBlur={() => password.onBlur()}
-							value={password.value}
-							type='password'
-							name='password'
-							placeholder='Введите пароль'
-							errorValidation={password.isDirty && password.passwordError}
-						/>
+						<div className={style.registration_password__group_container}>
+							<Input
+								onChange={e => password.onChange(e)}
+								onBlur={() => password.onBlur()}
+								value={password.value}
+								type={showPassword ? 'text' : 'password'}
+								name='password'
+								placeholder='Введите пароль'
+								errorValidation={password.isDirty && password.passwordError}
+								maxLength='41'
+							/>
+							<div className={style.registration_eye_icon__container}>
+								<EyeShowPassword
+									showPassword={showPassword}
+									setShowPassword={setShowPassword}
+								/>
+							</div>
+						</div>
 						{password.isDirty && password.passwordError && (
 							<div className={style.registration_error__validation}>
 								Длина пароля должна быть не менее 8 символов.

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import style from './Login.module.scss';
 
+import { EyeShowPassword } from '../../components/EyeShowPassword';
 import { Button } from '../../components/UI/Button';
 import { Input } from '../../components/UI/Input';
 import { useInput } from '../../hooks/UseInput';
@@ -17,6 +19,7 @@ export function Login() {
 	const password = useInput('', {
 		correctPassword: true,
 	});
+	const [showPassword, setShowPassword] = useState(false);
 	const navigate = useNavigate();
 	const handleClickPrimaryButton = async e => {
 		e.preventDefault();
@@ -35,11 +38,20 @@ export function Login() {
 				}
 			);
 			if (response) {
-				navigate('/user-page', {
-					state: {
-						successfulMailDeliveryText: `${email.value}`,
-					},
-				});
+				try {
+					const response = await axios.get(`http://localhost:8000/users/me`, {
+						withCredentials: true,
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					});
+					const user_surname = response.data.surname;
+					const user_name = response.data.name;
+					const user_patronymic = response.data.patronymic;
+					const initials_user_name = `${user_surname} ${user_name[0]}. ${user_patronymic[0]}.`;
+					localStorage.setItem('initials_user_name', `${initials_user_name}`);
+					navigate('/create-application');
+				} catch (error) { return }
 			}
 		} catch (error) {
 			if (error.response.status === 400) {
@@ -59,6 +71,7 @@ export function Login() {
 	const message = async () => {
 		await axios.get('http://localhost:8000/protected-route');
 	};
+
 	return (
 		<div>
 			<Logo />
@@ -88,15 +101,24 @@ export function Login() {
 					</div>
 					<div className={style.login_input__group}>
 						<label className={style.login_label}>Пароль</label>
-						<Input
-							onChange={e => password.onChange(e)}
-							onBlur={() => password.onBlur()}
-							value={password.value}
-							type='password'
-							name='password'
-							placeholder='Введите пароль'
-							errorValidation={password.isDirty && password.passwordError}
-						/>
+						<div className={style.login_password__group_container}>
+							<Input
+								onChange={e => password.onChange(e)}
+								onBlur={() => password.onBlur()}
+								value={password.value}
+								type={showPassword ? 'text' : 'password'}
+								name='password'
+								placeholder='Введите пароль'
+								errorValidation={password.isDirty && password.passwordError}
+								maxLength='41'
+							/>
+							<div className={style.login_eye_icon__container}>
+								<EyeShowPassword
+									showPassword={showPassword}
+									setShowPassword={setShowPassword}
+								/>
+							</div>
+						</div>
 						{password.isDirty && password.passwordError && (
 							<div className={style.login_error__validation}>
 								Длина пароля должна быть не менее 8 символов.

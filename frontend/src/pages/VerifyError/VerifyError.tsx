@@ -8,6 +8,7 @@ import { Button } from '../../components/UI/Button';
 import { Logo } from '../../components/Logo';
 
 export function VerifyError() {
+	axios.defaults.withCredentials = true;
 	const navigate = useNavigate();
 	const { state } = useLocation();
 	const { email } = state || 'test@mail.ru';
