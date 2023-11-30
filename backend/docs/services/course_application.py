@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, HTTPException, Depends
 
 from auth.models.db import User
@@ -8,7 +6,7 @@ from company.services.heads_definer import get_heads_for_user
 
 from docs.models.schemas import DocumentSchema
 from docs.repository.docs import DocumentRepository, CourseRepository, MemberCourseRepository
-
+from docs.services.search_documents import DocumentState
 
 application_router = APIRouter(prefix='/docs', tags=['course-application'])
 
@@ -28,12 +26,13 @@ async def create_application(document: DocumentSchema, user: User = Depends(curr
             'code': 'DIRECTOR_VALIDATION_ERROR',
             'reason': '...'
         })
-    if heads['admin']['id'] != document_dict['admin_id']:
+    if heads['admin']['id'] != document_dict['administrator_id']:
         raise HTTPException(status_code=400, detail={
             'code': 'ADMIN_VALIDATION_ERROR',
             'reason': '...'
         })
     course_dict = document_dict["course"]
+    document_dict['state'] = DocumentState.ON_CONFIRMATION.name
     document_dict["autor_id"] = user.employee_id
     members_list = document_dict["members_id"]
     if len(members_list) == 0:
@@ -45,26 +44,25 @@ async def create_application(document: DocumentSchema, user: User = Depends(curr
         course_dict["course_id"] = course_id
         document_id = await DocumentRepository().add_one(document_dict)
         for member in members_list:
-            member_course_dict = {"member_id": member, "course_id":course_id}
+            member_course_dict = {"member_id": member, "course_id": course_id}
             await MemberCourseRepository().add_one(member_course_dict)
     else:
-        raise HTTPException(status_code=409, detail="Передавать iD курса не надо")
+        raise HTTPException(status_code=409, detail="Передавать ID курса не надо")
     return await DocumentRepository().find_one(document_id)
 
 
-
-@application_router.get("/course-application", response_model=List[DocumentSchema])
-async def get_all_application(user: User = Depends(current_user)) -> List[DocumentSchema]:
+@application_router.get("/course-application")
+async def get_all_application(user: User = Depends(current_user)):
     """Список всех заявок на курсы"""
     applications = await DocumentRepository().find_all()
     result = []
     for application in applications:
         application = await DocumentRepository().get_one(application.id)
         course = await CourseRepository().get_one(application.course_id)
-        print(course)
         if not course:
             raise HTTPException(status_code=409, detail="Существующая заявка не связана с курсом")
-        application_schema = {"id": application.id} | DocumentSchema.to_read_model(application, course) if course else None
+        application_schema = {"id": application.id} | DocumentSchema.to_read_model(application,
+                                                                                   course).model_dump()  # if course else None
         result.append(application_schema)
     return result
 
@@ -80,7 +78,6 @@ async def get_application(application_id: int, user: User = Depends(current_user
     return application_schema
 
 
-
 @application_router.delete("/course-application/delete", response_model=DocumentSchema)
 async def delete_application(application_id: int, user: User = Depends(current_user)):
     """Удалить заявку"""
@@ -94,8 +91,10 @@ async def delete_application(application_id: int, user: User = Depends(current_u
         await CourseRepository().delete_one(application.course_id)
     return DocumentSchema.to_read_model(application, course)
 
+
 @application_router.post("/course-application/update", response_model=DocumentSchema)
-async def update_application(application: DocumentSchema, application_id:int, user: User = Depends(current_user)) -> DocumentSchema:
+async def update_application(application: DocumentSchema, application_id: int,
+                             user: User = Depends(current_user)) -> DocumentSchema:
     """Обновить данные в заявке"""
     application_dict = application.model_dump(exclude_unset=True)
     course_dict = application_dict["course"]

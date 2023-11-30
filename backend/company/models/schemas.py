@@ -39,3 +39,18 @@ class ActingSchema(BaseModel):
     division_id: int
     start_date: str
     end_date: str
+
+
+class DocumentStatus(BaseModel):
+    text: str
+    type: str
+
+
+class SearchDocumentResponse(BaseModel):
+    id: int
+    page_type: str
+    title: str
+    status: DocumentStatus
+    course_type: str
+    course_category: str
+    education_center: str

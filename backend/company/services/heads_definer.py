@@ -15,7 +15,7 @@ async def get_admin():
 division_repository = DivisionRepository()
 
 
-@heads_definer_router.get("/define-heads")
+@heads_definer_router.get("/define-heads/{employee_id}")
 async def get_heads_for_user(employee_id: int, user: User = Depends(current_user)):
     try:
         employee = await employee_repository.find_one(employee_id)

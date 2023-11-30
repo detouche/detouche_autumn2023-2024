@@ -21,13 +21,13 @@ class DocumentSchema(BaseModel):
     administrator_id: int
     autor_id: int
     members_id: List[int]
-    is_confirmed: bool
-    manager_status: bool
-    director_status: bool
-    administrator_status: bool
+    is_confirmed: bool = False
+    manager_status: bool = False
+    director_status: bool = False
+    administrator_status: bool = False
     course_id: Optional[int] = None
-    state: str
-    is_completed: bool
+    state: str = '1'
+    is_completed: bool = False
     course: CourseSchema | None = None
 
     def to_read_model(application, course):
