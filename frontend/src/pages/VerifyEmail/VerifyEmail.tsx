@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export function VerifyEmail() {
+	axios.defaults.withCredentials = true;
 	const navigate = useNavigate();
 	const { token } = useParams();
 	const formatted_token = token?.replace(new RegExp('&', 'g'), '.');

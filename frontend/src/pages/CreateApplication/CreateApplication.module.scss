@@ -1,0 +1,507 @@
+.create_application_container {
+	margin-left: 104px;
+	margin-top: 40px;
+
+	.create_application_title {
+		color: var(--page-primary-color);
+		font-size: 32px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.create_application_title_h2 {
+		color: #323232;
+		font-size: 24px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.create_application_section {
+		display: flex;
+		margin-top: 40px;
+	}
+
+	.create_application_first_section {
+		width: 670px;
+		margin-right: 50px;
+		max-height: 606px;
+		overflow-x: auto;
+	}
+
+	.attention_figure {
+		background-color: #e83434;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		margin-left: 4px;
+		margin-top: 2px;
+	}
+
+	.create_application_second_section {
+		padding-left: 50px;
+		width: 1006px;
+		border-left: solid 2px #eee;
+		max-height: 606px;
+		overflow-x: auto;
+	}
+
+	.create_application_tags_group {
+		display: flex;
+		list-style: none;
+		padding: 0px;
+		max-width: 1006px;
+		margin: 0px;
+		margin-top: 10px;
+	}
+
+	.create_application_tags {
+		border-radius: 8px;
+		background: #e4e4e4;
+		padding: 4px 8px;
+		color: #323232;
+		font-size: 14px;
+		font-weight: 400;
+	}
+
+	.create_application_tags_group li:not(:first-child) {
+		margin-left: 10px;
+	}
+
+	.create_application_course_description {
+		margin: 0px;
+		margin-top: 30px;
+	}
+
+	.create_application_course_description_title_group {
+		display: flex;
+	}
+
+	.create_application_course_description_title_group button {
+		margin-left: 12px;
+		cursor: pointer;
+		padding: 0px;
+		background-color: transparent;
+		background: none;
+		border: none;
+	}
+
+	.create_application_course_description_title {
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.create_application_course_description_text {
+		margin: 0px;
+		max-width: 700px;
+		margin-top: 16px;
+	}
+
+	.create_application_course_description_text p {
+		margin: 0px;
+		max-width: 700px;
+	}
+
+	.create_application_course_info {
+		display: flex;
+		list-style: none;
+		padding: 0px;
+		margin: 0px;
+		margin-top: 30px;
+	}
+
+	.create_application_course_info li:not(:first-child) {
+		margin-left: 40px;
+	}
+
+	.create_application_course_info_training_center_group {
+		display: flex;
+	}
+
+	.create_application_course_info_price_group {
+		display: flex;
+	}
+
+	.create_application_course_info_price_group button {
+		margin-left: 12px;
+		cursor: pointer;
+		padding: 0px;
+		background-color: transparent;
+		background: none;
+		border: none;
+	}
+
+	.create_application_course_info_price_group_title {
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.create_application_course_info_training_center_group_title {
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.create_application_course_info_training_center_group button {
+		margin-left: 12px;
+		cursor: pointer;
+		padding: 0px;
+		background-color: transparent;
+		background: none;
+		border: none;
+	}
+
+	.create_application_course_info_price_text {
+		margin: 0px;
+		margin-top: 16px;
+	}
+
+	.create_application_course_info_price_text p {
+		margin: 0px;
+		max-width: 700px;
+	}
+
+	.create_application_course_info_training_center_text {
+		margin: 0px;
+		margin-top: 16px;
+	}
+
+	.create_application_course_info_training_center_text p {
+		margin: 0px;
+		max-width: 700px;
+	}
+
+	.create_application_stages_section {
+		margin-top: 50px;
+	}
+
+	.create_application_stages_figure {
+		margin-top: 40px;
+	}
+
+	.create_application_stages_info_group {
+		margin-top: 12px;
+		list-style: none;
+		display: flex;
+		padding: 0px;
+	}
+
+	.create_application_stages_info_group li:not(:last-child) {
+		margin-right: 100px;
+	}
+
+	.create_application_stages_agreed_group {
+		display: flex;
+	}
+
+	.create_application_stages_agreed_group button {
+		margin-left: 12px;
+		cursor: pointer;
+		padding: 0px;
+		background-color: transparent;
+		background: none;
+		border: none;
+	}
+
+	.create_application_stages_agreed_group_title {
+		margin: 0px;
+		max-width: 152px;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.create_application_stages_agreed_text {
+		margin: 0px;
+		width: 220px;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.create_application_stages_agreed_text p {
+		margin: 0px;
+		margin-top: 8px;
+	}
+
+	.create_application_stages_finance_group {
+		display: flex;
+	}
+
+	.create_application_stages_finance_group button {
+		margin-top: auto;
+		margin-left: 12px;
+		cursor: pointer;
+		padding: 0px;
+		background-color: transparent;
+		background: none;
+		border: none;
+	}
+
+	.create_application_stages_finance_group_title {
+		margin: 0px;
+		max-width: 152px;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.create_application_stages_finance_text {
+		margin: 0px;
+		width: 220px;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.create_application_stages_finance_text p {
+		margin: 0px;
+		margin-top: 8px;
+	}
+
+	.create_application_stages_processing_group {
+		display: flex;
+	}
+
+	.create_application_stages_processing_group button {
+		margin-left: 12px;
+		cursor: pointer;
+		padding: 0px;
+		background-color: transparent;
+		background: none;
+		border: none;
+	}
+
+	.create_application_stages_processing_group_title {
+		margin: 0px;
+		max-width: 152px;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.create_application_stages_processing_text {
+		margin: 0px;
+		width: 220px;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.create_application_stages_processing_text p {
+		margin: 0px;
+		margin-top: 8px;
+	}
+
+	.create_application_course_select_group {
+		z-index: 2;
+	}
+
+	.create_application_course_select_label {
+		display: flex;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 400;
+	}
+
+	.create_application_course_select_container {
+		margin-top: 8px;
+	}
+
+	.create_application_title_h2_error {
+		color: #323232;
+		opacity: 0.2;
+		font-size: 50px;
+		font-weight: 800;
+		margin-top: 40px;
+		display: flex;
+		justify-content: center;
+	}
+
+	.create_application_date_label {
+		display: flex;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 400;
+	}
+
+	.create_application_date_container {
+		margin-top: 20px;
+	}
+
+	.create_application_date_group {
+		display: flex;
+	}
+
+	.create_application_date_start_label {
+		color: #323232;
+		font-size: 16px;
+		font-weight: 400;
+	}
+
+	.create_application_date_end_label {
+		color: #323232;
+		font-size: 16px;
+		font-weight: 400;
+	}
+
+	.create_application_date_start_group {
+		margin-top: 12px;
+	}
+
+	.create_application_date_end_group {
+		margin-top: 12px;
+	}
+
+	.create_application_date_start_input {
+		border-radius: 8px;
+		border: 1px solid #e3e3e3;
+		background: #fff;
+		padding: 14px;
+		color: #323232;
+		font-size: 20px;
+		font-weight: 400;
+		width: 268px;
+	}
+
+	.create_application_date_start_input_container {
+		margin-top: 8px;
+	}
+
+	.create_application_date_end_input {
+		padding: 14px;
+		border-radius: 8px;
+		border: 1px solid #e3e3e3;
+		background: #fff;
+		color: #323232;
+		font-size: 20px;
+		font-weight: 400;
+		width: 268px;
+	}
+
+	.create_application_date_end_input_container {
+		margin-top: 8px;
+	}
+
+	.create_application_date_line {
+		margin: 0px 20px;
+		margin-top: 40px;
+	}
+
+	.create_application_price_container {
+		margin-top: 20px;
+	}
+
+	.create_application_price_label {
+		display: flex;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 400;
+	}
+
+	.create_application_price_input {
+		border-radius: 8px;
+		border: 1px solid #e3e3e3;
+		background: #fff;
+		margin-top: 8px;
+		width: 634px;
+		padding: 14px;
+		color: #323232;
+		font-size: 20px;
+		font-weight: 400;
+	}
+
+	.create_application_member_group {
+		margin-top: 20px;
+	}
+
+	.create_application_member_label {
+		display: flex;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 400;
+	}
+
+	.create_application_member_select_container {
+		margin-top: 8px;
+	}
+
+	.create_application_button {
+		border-radius: 12px;
+		background: #e99e36;
+		padding: 10px 14px;
+		color: #fff;
+		font-size: 20px;
+		font-weight: 600;
+		outline: none;
+		border-color: #e99e36;
+		border: 1px solid;
+		cursor: pointer;
+	}
+
+	.create_application_button_container {
+		margin-top: 30px;
+		text-align: center;
+	}
+
+	.create_application_object_teaching_input {
+		border-radius: 8px;
+		border: 1px solid #e3e3e3;
+		background: #fff;
+		margin-top: 8px;
+		width: 634px;
+		padding: 14px;
+		color: #323232;
+		font-size: 20px;
+		font-weight: 400;
+	}
+
+	.create_application_object_teaching_label {
+		display: flex;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 400;
+	}
+
+	.create_application_object_teaching_container {
+		margin-top: 20px;
+	}
+}
+
+.create_application_date_end_input:focus {
+	outline: none;
+	border: 1px solid #323232;
+}
+
+.create_application_date_start_input:focus {
+	outline: none;
+	border: 1px solid #323232;
+}
+
+.create_application_price_input:focus {
+	outline: none;
+	border: 1px solid #323232;
+}
+
+.create_application_object_teaching_input:focus {
+	outline: none;
+	border: 1px solid #323232;
+}
+
+*::-webkit-scrollbar,
+html *::-webkit-scrollbar {
+	border-radius: 15px;
+	height: 8px;
+	width: 8px;
+	background-color: #c9cacd;
+}
+*::-webkit-scrollbar-thumb,
+html *::-webkit-scrollbar-thumb {
+	border-radius: 15px;
+	background-color: #c98424;
+	border: 3px solid #c98424;
+}

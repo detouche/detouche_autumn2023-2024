@@ -10,6 +10,7 @@ import { Logo } from '../../components/Logo';
 import { NavigateButton } from '../../components/UI/NavigateButton';
 
 export function PasswordReset() {
+	axios.defaults.withCredentials = true;
 	const email = useInput('', {
 		correctEmail: true,
 	});
