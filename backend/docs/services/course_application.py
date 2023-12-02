@@ -74,7 +74,7 @@ async def get_application(application_id: int, user: User = Depends(current_user
     if not application:
         raise HTTPException(status_code=409, detail="Такой заявки не существует")
     course = await CourseRepository().get_one(application.course_id)
-    application_schema = {"id": application.id} | DocumentSchema.to_read_model(application, course) if course else None
+    application_schema = {"id": application.id} | DocumentSchema.to_read_model(application, course).model_dump() if course else None
     return application_schema
 
 
