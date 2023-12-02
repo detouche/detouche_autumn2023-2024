@@ -1,4 +1,8 @@
-from pydantic import BaseModel
+from typing import List
+
+from pydantic import BaseModel, field_serializer
+
+from company.models.db import StaffUnit
 
 
 class EmployeeSchema(BaseModel):
@@ -54,3 +58,52 @@ class SearchDocumentResponse(BaseModel):
     course_type: str
     course_category: str
     education_center: str
+
+
+class OrgUnitEmployee(BaseModel):
+    id: int
+    name: str
+    surname: str
+    patronymic: str
+    email: str
+    staff_unit: StaffUnit
+
+    @field_serializer("staff_unit")
+    def serialize_staff_unit(self, staff_unit: StaffUnit, _info):
+        return {
+            'id': staff_unit.id,
+            'name': staff_unit.name,
+            'division_id': staff_unit.division_id
+        }
+
+    class Config:
+        from_attributes = True
+        arbitrary_types_allowed = True
+
+
+class OrgUnit(BaseModel):
+    id: int
+    name: str
+    status: bool
+    children: list | None = None
+    employees: List[OrgUnitEmployee] | None = None
+
+    @field_serializer("children")
+    def serialize_staff_unit(self, children, _info):
+        if not children:
+            return None
+        children_list = []
+        for child in children:
+            children_list.append(OrgUnit(
+                id=child['id'],
+                name=child['name'],
+                status=child['status'],
+            ))
+        return children_list
+
+
+class OrgTree(BaseModel):
+    id: int
+    title: str
+    status: bool
+    children: List[OrgUnit]
