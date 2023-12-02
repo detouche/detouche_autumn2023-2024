@@ -11,6 +11,7 @@ import { VerifyEmail } from './pages/VerifyEmail';
 import { LinkError } from './pages/LinkError';
 import { VerifyError } from './pages/VerifyError';
 import { NotFound404 } from './pages/NotFound404';
+import { OrganizationStructureFile } from './pages/OrganizationStructureFile';
 
 import './App.module.scss';
 
@@ -31,6 +32,10 @@ function App() {
 				<Route path='/link-error' element={<LinkError />} />
 				<Route path='/verify-error' element={<VerifyError />} />
 				<Route path='/my-application' element={<MyApplication />} />
+				<Route
+					path='/organization-structure-file'
+					element={<OrganizationStructureFile />}
+				/>
 				<Route path='*' element={<NotFound404 />} />
 			</Routes>
 		</>

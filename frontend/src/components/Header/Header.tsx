@@ -22,7 +22,7 @@ export function Header() {
 				navigate('/login');
 			}
 		} catch (error) {
-			return;
+			navigate('/login');
 		}
 	};
 	return (
