@@ -23,7 +23,7 @@ export function AllApplication() {
 		const getCourseData = async () => {
 			try {
 				const response = await axios.post(
-					`http://localhost:8000/docs/search-document?request=all`,
+					`http://localhost:8000/docs/search-document?request=all`, {},
 					{
 						withCredentials: true,
 						headers: {

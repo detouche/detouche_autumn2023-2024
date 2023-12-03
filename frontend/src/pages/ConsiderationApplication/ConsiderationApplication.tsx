@@ -24,6 +24,7 @@ export function ConsiderationApplication() {
 			try {
 				const response = await axios.post(
 					`http://localhost:8000/docs/search-document?request=investigation`,
+					{},
 					{
 						withCredentials: true,
 						headers: {

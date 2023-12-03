@@ -24,6 +24,7 @@ export function ProgressApplication() {
 			try {
 				const response = await axios.post(
 					`http://localhost:8000/docs/search-document?request=in_work`,
+					{},
 					{
 						withCredentials: true,
 						headers: {
@@ -52,9 +53,7 @@ export function ProgressApplication() {
 			)}
 			<Header />
 			<div className={style.progress_application_container}>
-				<h1 className={style.progress_application_title}>
-					В работе
-				</h1>
+				<h1 className={style.progress_application_title}>В работе</h1>
 				<div className={style.progress_application_table_container}>
 					<table
 						className={style.progress_application_table}
@@ -70,9 +69,7 @@ export function ProgressApplication() {
 								>
 									<p>Название курса</p>
 								</td>
-								<td
-									className={style.progress_application_table_column_state}
-								>
+								<td className={style.progress_application_table_column_state}>
 									<p>Статус</p>
 								</td>
 								<td
@@ -112,9 +109,7 @@ export function ProgressApplication() {
 										<p>{data.title}</p>
 									</td>
 									<td
-										className={
-											style.progress_application_table_content_state
-										}
+										className={style.progress_application_table_content_state}
 									>
 										<p>
 											<div className={style.status_figure}></div>
