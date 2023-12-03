@@ -12,6 +12,9 @@ import { LinkError } from './pages/LinkError';
 import { VerifyError } from './pages/VerifyError';
 import { NotFound404 } from './pages/NotFound404';
 import { OrganizationStructureFile } from './pages/OrganizationStructureFile';
+import { ConsiderationApplication } from './pages/ConsiderationApplication';
+import { ProgressApplication } from './pages/ProgressApplication';
+import { AllApplication } from './pages/AllApplication';
 
 import './App.module.scss';
 
@@ -32,6 +35,12 @@ function App() {
 				<Route path='/link-error' element={<LinkError />} />
 				<Route path='/verify-error' element={<VerifyError />} />
 				<Route path='/my-application' element={<MyApplication />} />
+				<Route
+					path='/consideration-application'
+					element={<ConsiderationApplication />}
+				/>
+				<Route path='/progress-application' element={<ProgressApplication />} />
+				<Route path='/all-application' element={<AllApplication />} />
 				<Route
 					path='/organization-structure-file'
 					element={<OrganizationStructureFile />}

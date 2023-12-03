@@ -50,7 +50,10 @@ export function Drawer({ ...props }) {
 						<p className={style.drawer_icon_list__element_text}> Мои заявки </p>
 					</li>
 					<li
-						onClick={() => setActivePageDrawer(4)}
+						id='4'
+						onClick={() =>
+							handleClickPrimaryButton(4, '/consideration-application')
+						}
 						className={`${style.drawer_icon_list__element} ${
 							4 === activePageDrawer ? style.drawer_active_page : ''
 						}`}
@@ -61,7 +64,8 @@ export function Drawer({ ...props }) {
 						</p>
 					</li>
 					<li
-						onClick={() => setActivePageDrawer(5)}
+						id='5'
+						onClick={() => handleClickPrimaryButton(5, '/progress-application')}
 						className={`${style.drawer_icon_list__element} ${
 							5 === activePageDrawer ? style.drawer_active_page : ''
 						}`}
@@ -81,7 +85,8 @@ export function Drawer({ ...props }) {
 						</p>
 					</li>
 					<li
-						onClick={() => setActivePageDrawer(7)}
+						id='7'
+						onClick={() => handleClickPrimaryButton(7, '/all-application')}
 						className={`${style.drawer_icon_list__element} ${
 							7 === activePageDrawer ? style.drawer_active_page : ''
 						}`}
