@@ -1,6 +1,8 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
+
+from docs.models.db import DocumentCommand
 
 
 # TODO: формат даты изменить
@@ -29,8 +31,9 @@ class DocumentSchema(BaseModel):
     state: str = '1'
     is_completed: bool = False
     course: CourseSchema | None = None
+    commands: list | None
 
-    def to_read_model(application, course):
+    def to_read_model(application, course, commands):
         return DocumentSchema(
         manager_id=application.manager_id,
         director_id=application.director_id,
@@ -44,6 +47,7 @@ class DocumentSchema(BaseModel):
         course_id=application.course_id,
         state=application.state,
         is_completed=application.is_completed,
+        commands=commands,
         course=CourseSchema(
             title=course.title,
             description=course.description,
