@@ -6,8 +6,9 @@ import style from './Sidebar.module.scss';
 export function Sidebar({ course_id, onClose }) {
 	const [courseData, setCourseData] = useState({});
 	const [courseDataText, setCourseDataText] = useState({});
+	const [courseDataCommand, setCourseDataCommand] = useState([]);
 	useEffect(() => {
-		const ge = async () => {
+		const getData = async () => {
 			try {
 				const response = await axios.get(
 					`http://localhost:8000/docs/course-application/${course_id}`,
@@ -20,18 +21,33 @@ export function Sidebar({ course_id, onClose }) {
 				);
 				setCourseData(response.data);
 				setCourseDataText(response.data.course);
-			} catch (error) {
-				return;
-			}
+				setCourseDataCommand(response.data.commands);
+			} catch (error) {}
 		};
-		ge();
+		getData();
 	}, [course_id]);
 
 	const formatterDate = date => {
 		const dateComponents = date.split('-');
 		const formattedDate = `${dateComponents[2]}.${dateComponents[1]}.${dateComponents[0]}`;
-		console.log(formattedDate);
 		return formattedDate;
+	};
+
+	const buttonCommandClick = async command => {
+		console.log(`Нажата кнопка "${command}"`);
+		try {
+			const response = await axios.post(
+				`http://localhost:8000/docs/execute?document_id=${course_id}&command=${command}`,
+				{},
+				{
+					withCredentials: true,
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+			window.location.reload();
+		} catch (error) {}
 	};
 
 	return (
@@ -44,21 +60,37 @@ export function Sidebar({ course_id, onClose }) {
 							<img src='/img/close_button.svg' alt='close_button' />
 						</button>
 					</div>
-					<div className={style.sidebar_button_group}>
-						<ul className={style.sidebar_button_group}>
-							<li>
-								<button className={style.sidebar_button}>Действие 1</button>
-							</li>
-							<li>
-								<button className={style.sidebar_button}>Действие 2</button>
-							</li>
-							<li>
-								<button className={style.sidebar_button_more}>
-									<img src='/img/more_horiz.svg' alt='more_horiz' />
-								</button>
-							</li>
-						</ul>
-					</div>
+					{courseDataCommand !== null && (
+						<div className={style.sidebar_button_group}>
+							<ul className={style.sidebar_button_group}>
+								{courseDataCommand.map((item, index) => {
+									const key = Object.keys(item)[0];
+									const value = item[key];
+									return (
+										<li>
+											<button
+												key={index}
+												onClick={() => buttonCommandClick(key)}
+												className={
+													key === 'REJECT'
+														? style.sidebar_button_reject
+														: style.sidebar_button_affirmative
+												}
+											>
+												{value}
+											</button>
+										</li>
+									);
+								})}
+								<li>
+									<button className={style.sidebar_button_more}>
+										<img src='/img/more_horiz.svg' alt='more_horiz' />
+									</button>
+								</li>
+							</ul>
+						</div>
+					)}
+
 					<div>
 						<ul className={style.sidebar_tags_group}>
 							<li className={style.sidebar_tags}>{courseDataText.type}</li>
