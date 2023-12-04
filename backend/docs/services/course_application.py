@@ -5,11 +5,12 @@ from auth.utils.user_auth import current_user
 from company.services.heads_definer import get_heads_for_user
 
 from docs.models.schemas import DocumentSchema
-from docs.repository.docs import DocumentRepository, CourseRepository, MemberCourseRepository
+from docs.repository.docs import DocumentRepository, CourseRepository, MemberCourseRepository, DocumentCommandRepository
+from docs.services.command_execute import CommandType, CommandTypeText
 from docs.services.search_documents import DocumentState
 
 application_router = APIRouter(prefix='/docs', tags=['course-application'])
-
+document_command_repository = DocumentCommandRepository()
 
 @application_router.post("/course-application/create", response_model=DocumentSchema)
 async def create_application(document: DocumentSchema, user: User = Depends(current_user)):
@@ -38,16 +39,27 @@ async def create_application(document: DocumentSchema, user: User = Depends(curr
     if len(members_list) == 0:
         raise HTTPException(status_code=409, detail="Не переданы ID участников курса")
     course_id = await CourseRepository().add_one(course_dict)
-    if course_id:
-        del document_dict["course"]
-        document_dict["course_id"] = course_id
-        course_dict["course_id"] = course_id
-        document_id = await DocumentRepository().add_one(document_dict)
-        for member in members_list:
-            member_course_dict = {"member_id": member, "course_id": course_id}
-            await MemberCourseRepository().add_one(member_course_dict)
-    else:
-        raise HTTPException(status_code=409, detail="Передавать ID курса не надо")
+
+    del document_dict["course"]
+    document_dict["course_id"] = course_id
+    course_dict["course_id"] = course_id
+    document_id = await DocumentRepository().add_one(document_dict)
+    for member in members_list:
+        member_course_dict = {"member_id": member, "course_id": course_id}
+        await MemberCourseRepository().add_one(member_course_dict)
+
+    await document_command_repository.add_one({
+        'employee_id': heads['admin']['id'],
+        'document_id': document_id,
+        'command': CommandType.CONFIRM.value,
+    })
+
+    await document_command_repository.add_one({
+        'employee_id': heads['admin']['id'],
+        'document_id': document_id,
+        'command': CommandType.REJECT.value,
+    })
+
     return await DocumentRepository().find_one(document_id)
 
 
@@ -74,7 +86,15 @@ async def get_application(application_id: int, user: User = Depends(current_user
     if not application:
         raise HTTPException(status_code=409, detail="Такой заявки не существует")
     course = await CourseRepository().get_one(application.course_id)
-    application_schema = {"id": application.id} | DocumentSchema.to_read_model(application, course).model_dump() if course else None
+    commands = await document_command_repository.find_all({
+        'document_id': application_id,
+        'employee_id': user.employee_id,
+    })
+
+    if commands:
+        commands = [{f'{command.command}': CommandTypeText[command.command]} for command in commands]
+    application_schema = ({"id": application.id} |
+                          DocumentSchema.to_read_model(application, course, commands).model_dump()) if course else None
     return application_schema
 
 

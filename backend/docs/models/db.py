@@ -57,3 +57,13 @@ class CourseMember(Base):
     id = Column(Integer, primary_key=True)
     member_id = mapped_column(ForeignKey('employee.id'), nullable=False)
     course_id = mapped_column(ForeignKey('course.id'), nullable=False)
+
+
+
+class DocumentCommand(Base):
+    __tablename__ = "document_command"
+
+    id = Column(Integer, primary_key=True)
+    employee_id = mapped_column(ForeignKey('employee.id'), nullable=False)
+    document_id = mapped_column(ForeignKey('document.id'), nullable=False)
+    command = Column(String, nullable=False)
