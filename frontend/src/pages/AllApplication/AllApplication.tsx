@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import style from './MyApplication.module.scss';
+import style from './AllApplication.module.scss';
 
 import { Drawer } from '../../components/Drawer';
 import { Header } from '../../components/Header';
 import { Sidebar } from '../../components/Sidebar';
 
-export function MyApplication() {
+export function AllApplication() {
 	// useEffect(() => {
 	// 	axios.get('http://localhost:3000/messages', {
 	// 		headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -23,7 +23,7 @@ export function MyApplication() {
 		const getCourseData = async () => {
 			try {
 				const response = await axios.post(
-					`http://localhost:8000/docs/search-document?request=my`, {},
+					`http://localhost:8000/docs/search-document?request=all`, {},
 					{
 						withCredentials: true,
 						headers: {
@@ -46,39 +46,48 @@ export function MyApplication() {
 
 	return (
 		<div className={style.main}>
-			<Drawer PageID={3} />
+			<Drawer PageID={7} />
 			{showSidebar && (
 				<Sidebar course_id={courseID} onClose={() => setShowSidebar(false)} />
 			)}
 			<Header />
-
-			<div className={style.my_application_container}>
-				<h1 className={style.my_application_title}>Мои заявки</h1>
-				<div className={style.my_application_table_container}>
+			<div className={style.all_application_container}>
+				<h1 className={style.all_application_title}>Все заявки</h1>
+				<div className={style.all_application_table_container}>
 					<table
-						className={style.my_application_table}
+						className={style.all_application_table}
 						cellPadding={0}
 						cellSpacing={0}
 					>
 						<thead>
-							<tr className={style.my_application_table_column}>
-								<td className={style.my_application_table_column_course_title}>
+							<tr className={style.all_application_table_column}>
+								<td
+									className={
+										style.all_application_table_column_course_title
+									}
+								>
 									<p>Название курса</p>
 								</td>
-								<td className={style.my_application_table_column_state}>
+								<td className={style.all_application_table_column_state}>
 									<p>Статус</p>
 								</td>
-								<td className={style.my_application_table_column_course_type}>
+								<td
+									className={
+										style.all_application_table_column_course_type
+									}
+								>
 									<p>Тип курса</p>
 								</td>
 								<td
-									className={style.my_application_table_column_course_category}
+									className={
+										style.all_application_table_column_course_category
+									}
 								>
 									<p>Направление обучения</p>
 								</td>
 								<td
 									className={
-										style.my_application_table_column_course_education_center
+										style.all_application_table_column_course_education_center
 									}
 								>
 									<p>Учебный центр</p>
@@ -88,35 +97,41 @@ export function MyApplication() {
 						{coursesData !== null &&
 							coursesData.map(data => (
 								<tr
-									className={style.my_application_table_content}
+									className={style.all_application_table_content}
 									onClick={() => openCourse(data.id)}
 								>
 									<td
-										className={style.my_application_table_content_course_title}
+										className={
+											style.all_application_table_content_course_title
+										}
 									>
 										<p>{data.title}</p>
 									</td>
-									<td className={style.my_application_table_content_state}>
+									<td
+										className={style.all_application_table_content_state}
+									>
 										<p>
 											<div className={style.status_figure}></div>
 											{data.status.text}
 										</p>
 									</td>
 									<td
-										className={style.my_application_table_content_course_type}
+										className={
+											style.all_application_table_content_course_type
+										}
 									>
 										<p>{data.course_type}</p>
 									</td>
 									<td
 										className={
-											style.my_application_table_content_course_category
+											style.all_application_table_content_course_category
 										}
 									>
 										<p>{data.course_category}</p>
 									</td>
 									<td
 										className={
-											style.my_application_table_content_course_education_center
+											style.all_application_table_content_course_education_center
 										}
 									>
 										<p>{data.education_center}</p>
@@ -126,7 +141,26 @@ export function MyApplication() {
 					</table>
 					{coursesData === null && (
 						<div>
-							<h2 className={style.my_application_title_h2_error}>
+							{/* <div className={style.all_application_loader}>
+								<svg
+									className={style.spinner}
+									width='57px'
+									height='57px'
+									viewBox='0 0 66 66'
+									xmlns='http://www.w3.org/2000/svg'
+								>
+									<circle
+										className={style.path}
+										fill='none'
+										stroke-width='6'
+										stroke-linecap='round'
+										cx='33'
+										cy='33'
+										r='30'
+									></circle>
+								</svg>
+							</div> */}
+							<h2 className={style.all_application_title_h2_error}>
 								Нет данных
 							</h2>
 						</div>

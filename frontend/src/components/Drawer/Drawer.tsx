@@ -35,7 +35,9 @@ export function Drawer({ ...props }) {
 						}`}
 					>
 						<img src='/img/add.svg' alt='add' />
-						<p className={style.drawer_icon_list__element_text}> Создание заявки </p>
+						<p className={style.drawer_icon_list__element_text}>
+							Создание заявки
+						</p>
 					</li>
 					<li
 						id='3'
@@ -48,16 +50,22 @@ export function Drawer({ ...props }) {
 						<p className={style.drawer_icon_list__element_text}> Мои заявки </p>
 					</li>
 					<li
-						onClick={() => setActivePageDrawer(4)}
+						id='4'
+						onClick={() =>
+							handleClickPrimaryButton(4, '/consideration-application')
+						}
 						className={`${style.drawer_icon_list__element} ${
 							4 === activePageDrawer ? style.drawer_active_page : ''
 						}`}
 					>
 						<img src='/img/remove_red_eye.svg' alt='remove_red_eye' />
-						<p className={style.drawer_icon_list__element_text}> На рассмотрении </p>
+						<p className={style.drawer_icon_list__element_text}>
+							На рассмотрении
+						</p>
 					</li>
 					<li
-						onClick={() => setActivePageDrawer(5)}
+						id='5'
+						onClick={() => handleClickPrimaryButton(5, '/progress-application')}
 						className={`${style.drawer_icon_list__element} ${
 							5 === activePageDrawer ? style.drawer_active_page : ''
 						}`}
@@ -72,10 +80,13 @@ export function Drawer({ ...props }) {
 						}`}
 					>
 						<img src='/img/history.svg' alt='history' />
-						<p className={style.drawer_icon_list__element_text}> История заявок </p>
+						<p className={style.drawer_icon_list__element_text}>
+							История заявок
+						</p>
 					</li>
 					<li
-						onClick={() => setActivePageDrawer(7)}
+						id='7'
+						onClick={() => handleClickPrimaryButton(7, '/all-application')}
 						className={`${style.drawer_icon_list__element} ${
 							7 === activePageDrawer ? style.drawer_active_page : ''
 						}`}
@@ -84,13 +95,18 @@ export function Drawer({ ...props }) {
 						<p className={style.drawer_icon_list__element_text}> Все заявки </p>
 					</li>
 					<li
-						onClick={() => setActivePageDrawer(8)}
+						id='8'
+						onClick={() =>
+							handleClickPrimaryButton(8, '/organization-structure')
+						}
 						className={`${style.drawer_icon_list__element} ${
 							8 === activePageDrawer ? style.drawer_active_page : ''
 						}`}
 					>
 						<img src='/img/workspaces_filled.svg' alt='workspaces_filled' />
-						<p className={style.drawer_icon_list__element_text}> Структура организации </p>
+						<p className={style.drawer_icon_list__element_text}>
+							Структура организации
+						</p>
 					</li>
 					<li
 						onClick={() => setActivePageDrawer(9)}
@@ -100,6 +116,20 @@ export function Drawer({ ...props }) {
 					>
 						<img src='/img/badge.svg' alt='badge' />
 						<p className={style.drawer_icon_list__element_text}> ВрИО</p>
+					</li>
+					<li
+						id='10'
+						onClick={() =>
+							handleClickPrimaryButton(10, '/organization-structure-file')
+						}
+						className={`${style.drawer_icon_list__element} ${
+							10 === activePageDrawer ? style.drawer_active_page : ''
+						}`}
+					>
+						<img src='/img/file_copy.svg' alt='add' />
+						<p className={style.drawer_icon_list__element_text}>
+							Экспорт/Импорт структуры
+						</p>
 					</li>
 				</ul>
 			</div>

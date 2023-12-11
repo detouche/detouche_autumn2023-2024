@@ -1,0 +1,86 @@
+.organization_structure_container {
+	margin-left: 104px;
+	margin-top: 40px;
+
+	ul {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.organization_structure_tree_container {
+		margin-top: 30px;
+		width: 1725px;
+		height: 700px;
+		overflow-x: auto;
+	}
+
+	.organization_structure_title {
+		color: var(--page-primary-color);
+		font-size: 32px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.organization_structure_tree_element_title {
+		color: #000;
+		font-size: 20px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.organization_structure_tree_element_description {
+		color: #5c5f62;
+		font-size: 16px;
+		font-weight: 400;
+		margin: 0px;
+	}
+
+	.organization_structure_tree_element_container {
+		transition: all 0.2s ease;
+		display: flex;
+		padding: 6px 16px;
+		align-items: center;
+	}
+
+	.organization_structure_tree_element_text_container {
+		padding: 10px 20px;
+		width: 100%;
+	}
+
+	.organization_structure_tree_arrow {
+		transition: all 0.2s ease;
+	}
+
+	.organization_structure_tree_arrow img {
+		transition: all 0.2s ease;
+		width: 32px;
+		height: 32px;
+	}
+
+	.organization_structure_tree_children {
+		padding-left: 50px;
+	}
+
+	.organization_structure_title_h2_error {
+		color: #323232;
+		opacity: 0.2;
+		font-size: 50px;
+		font-weight: 800;
+		margin-top: 40px;
+		display: flex;
+		justify-content: center;
+	}
+}
+
+.organization_structure_tree_element_text_container:hover {
+	cursor: pointer;
+	width: 100%;
+	border-radius: 8px;
+	background-color: #f4f4f4;
+}
+
+.organization_structure_tree_arrow img:hover {
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #f4f4f4;
+}
