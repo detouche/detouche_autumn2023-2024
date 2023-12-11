@@ -95,7 +95,10 @@ export function Drawer({ ...props }) {
 						<p className={style.drawer_icon_list__element_text}> Все заявки </p>
 					</li>
 					<li
-						onClick={() => setActivePageDrawer(8)}
+						id='8'
+						onClick={() =>
+							handleClickPrimaryButton(8, '/organization-structure')
+						}
 						className={`${style.drawer_icon_list__element} ${
 							8 === activePageDrawer ? style.drawer_active_page : ''
 						}`}

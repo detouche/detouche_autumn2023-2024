@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
 
 import style from './CreateApplication.module.scss';
 
@@ -33,6 +34,7 @@ export function CreateApplication() {
 		title: '',
 	});
 	const isMulti = true;
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const getUserInfo = async () => {
@@ -213,8 +215,9 @@ export function CreateApplication() {
 					},
 				}
 			);
+			navigate('/my-application');
 		} catch (error) {
-			return
+			return;
 		}
 	};
 

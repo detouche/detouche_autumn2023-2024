@@ -15,6 +15,7 @@ import { OrganizationStructureFile } from './pages/OrganizationStructureFile';
 import { ConsiderationApplication } from './pages/ConsiderationApplication';
 import { ProgressApplication } from './pages/ProgressApplication';
 import { AllApplication } from './pages/AllApplication';
+import { OrganizationStructure } from './pages/OrganizationStructure';
 
 import './App.module.scss';
 
@@ -44,6 +45,10 @@ function App() {
 				<Route
 					path='/organization-structure-file'
 					element={<OrganizationStructureFile />}
+				/>
+				<Route
+					path='/organization-structure'
+					element={<OrganizationStructure />}
 				/>
 				<Route path='*' element={<NotFound404 />} />
 			</Routes>
