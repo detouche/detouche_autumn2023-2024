@@ -27,7 +27,11 @@ conf = ConnectionConfig(
 
 async def simple_send(email: EmailSchema, token: str = '') -> JSONResponse:
     formatted_token = token.replace('.', '&')
-    html = f"""<p>http://localhost:5173/registration/{formatted_token}"</p>"""
+    html = f"""
+    <a href="http://localhost:5173/registration/{formatted_token}">ссылка</a>
+    <p>http://localhost:5173/registration/{formatted_token}</p>
+    
+    """
 
     # token = jwt.encode(token)
 

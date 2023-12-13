@@ -10,10 +10,10 @@ class Document(Base):
     __tablename__ = "document"
 
     id = Column(Integer, primary_key=True)
-    manager_id = Column(Integer, nullable=False)
-    director_id = Column(Integer, nullable=False)
-    administrator_id = Column(Integer, nullable=False)
-    autor_id = Column(Integer, nullable=False)
+    manager_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    director_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    administrator_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    autor_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     members_id = Column(ARRAY(Integer), nullable=False)
 
     is_confirmed = Column(Boolean, nullable=False, default=False)
@@ -21,7 +21,7 @@ class Document(Base):
     director_status = Column(Boolean, nullable=False, default=False)
     administrator_status = Column(Boolean, nullable=False, default=False)
     is_completed = Column(Boolean, nullable=False, default=False)
-    course_id = mapped_column(ForeignKey("course.id"), index=True)
+    course_id = mapped_column(ForeignKey("course.id",ondelete='CASCADE', onupdate='CASCADE'), index=True)
     state = Column(String, nullable=False, default="test")
 
 

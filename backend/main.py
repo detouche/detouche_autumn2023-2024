@@ -19,7 +19,7 @@ from docs.services.course_template import docs_router
 from auth.utils.user_auth import fastapi_users, current_user
 from docs.services.search_documents import search_document_router
 
-app = FastAPI(title="Etude API docs", version='0.1.9')
+app = FastAPI(title="Etude API docs", version='0.2.0')
 
 app.add_middleware(
     CORSMiddleware,
