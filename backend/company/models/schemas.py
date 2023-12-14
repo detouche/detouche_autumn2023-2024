@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 
 from pydantic import BaseModel, field_serializer
 
@@ -61,7 +62,7 @@ class SearchDocumentResponse(BaseModel):
 
 
 class OrgUnitEmployee(BaseModel):
-    id: int
+    id: UUID
     name: str
     surname: str
     patronymic: str
@@ -82,7 +83,7 @@ class OrgUnitEmployee(BaseModel):
 
 
 class OrgUnit(BaseModel):
-    id: int
+    id: UUID
     name: str
     status: bool
     children: list | None = None
@@ -103,7 +104,7 @@ class OrgUnit(BaseModel):
 
 
 class OrgTree(BaseModel):
-    id: int
+    id: UUID
     title: str
     status: bool
     children: List[OrgUnit]
