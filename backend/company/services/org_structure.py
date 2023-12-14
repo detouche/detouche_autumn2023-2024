@@ -416,7 +416,7 @@ async def get_staff_unit(id: UUID) -> StaffUnitInfoSchema:
 
 
 @org_router.get('/staff-unit-search')
-async def search_staff_unit(term: str, division_id: UUID, limit: int = 5):
+async def search_staff_unit(division_id: UUID, term: str, limit: int = 5):
     async with (async_session_maker() as session):
         filters = []
 
@@ -434,6 +434,19 @@ async def search_staff_unit(term: str, division_id: UUID, limit: int = 5):
         results = await session.execute(select(StaffUnit).filter(and_(*filters)).limit(limit))
         results = results.scalars().all()
 
+        results = [await get_staff_unit(result.id) for result in results]
+
+        if not results:
+            raise HTTPException(status_code=404, detail="No results found")
+
+    return results
+
+
+@org_router.get('/staff-unit/all/{division_id}')
+async def get_all_staff_unit(division_id: UUID):
+    async with (async_session_maker() as session):
+        results = await session.execute(select(StaffUnit).filter(StaffUnit.division_id == division_id))
+        results = results.scalars().all()
         results = [await get_staff_unit(result.id) for result in results]
 
         if not results:
