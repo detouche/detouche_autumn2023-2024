@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict
 from uuid import UUID
 
 from fastapi import APIRouter, UploadFile, Response, Depends, HTTPException
@@ -9,7 +9,7 @@ from sqlalchemy import select, literal_column, or_, and_
 from auth.models.db import User
 from auth.services.users_api import get_employee_info
 from auth.utils.user_auth import current_user
-from company.models.db import Employee, StaffUnit, Assignment
+from company.models.db import Employee, StaffUnit, Assignment, Division
 from company.models.schemas import OrgTree, OrgUnitEmployee, OrgUnit
 from company.repository.company import DivisionRepository, EmployeeRepository, StaffUnitRepository, \
     EmployeeStatusRepository, AssignmentRepository
@@ -22,7 +22,7 @@ org_router = APIRouter(prefix='/org', tags=['org-structure'])
 
 
 @org_router.post("/structure-upload")
-async def structure_upload(file: UploadFile): #, user: User = Depends(current_user)
+async def structure_upload(file: UploadFile):  # , user: User = Depends(current_user)
     parsed_structure = await import_org_structure(file.file)
     return {
         "filename": file.filename,
@@ -64,7 +64,7 @@ async def get_tree(user: User = Depends(current_user)):
 
 
 @org_router.post("/get-child")
-async def get_child(division_id: int, user: User = Depends(current_user)):
+async def get_child(division_id: UUID, user: User = Depends(current_user)):
     try:
         division = await division_repository.find_one(division_id)
     except:
@@ -114,19 +114,24 @@ class EmployeeSchema(BaseModel):
     role_id: int = 1
     employee_status_id: int
 
+
 class AssignmentSchema(BaseModel):
     start_date: datetime = Field(default_factory=datetime.now)
     end_date: datetime = Field(default_factory=datetime.now)
 
+
 class StaffUnitSchema(BaseModel):
     id: UUID
+
 
 class CreateEmployeeSchema(BaseModel):
     employee: EmployeeSchema
     assignment: AssignmentSchema
     staff_unit: StaffUnitSchema
 
+
 assignment_repository = AssignmentRepository()
+
 
 @org_router.post('/employee')
 async def create_employee(request: CreateEmployeeSchema):
@@ -169,8 +174,6 @@ async def create_employee(request: CreateEmployeeSchema):
     })
 
 
-
-
 @org_router.delete('/employee')
 async def delete_employee(employee_id: UUID):
     try:
@@ -181,7 +184,6 @@ async def delete_employee(employee_id: UUID):
             'reason': 'Employee with that id is not found'
         })
     await employee_repository.delete_one(employee_id)
-
 
 
 class UpdateEmployeeSchema(BaseModel):
@@ -270,8 +272,7 @@ async def get_employee(id: UUID):
     return await get_employee_info(employee)
 
 
-
-@org_router.get('/employee-search/{term}')
+@org_router.get('/employee-search')
 async def search_employees(term: str, limit: int = 5):
     async with (async_session_maker() as session):
         filters = []
@@ -340,8 +341,290 @@ async def delete_staff_unit(staff_unit_id: UUID):
 
 class UpdateStaffUnitSchema(BaseModel):
     id: UUID
-    name: str = None
-    division_id: UUID = None
+    name: str
+    division_id: UUID
+
+
+@org_router.patch('/staff-unit')
+async def update_staff_unit(request: UpdateStaffUnitSchema):
+    try:
+        await staff_unit_repository.find_one(request.id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'STAFF_UNIT_NOT_FOUND',
+            'reason': 'Staff unit with that id is not found'
+        })
+
+    try:
+        await division_repository.find_one(request.division_id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'DIVISION_NOT_FOUND',
+            'reason': 'Division with that id is not found'
+        })
+
+    staff_units = await staff_unit_repository.find_all({
+        'name': request.name,
+        'division_id': request.division_id
+    }, AND=True)
+
+    if staff_units:
+        raise HTTPException(status_code=400, detail={
+            'code': 'STAFF_UNIT_ALREADY_EXISTS',
+            'reason': 'Staff unit with that name is already exists in division'
+        })
+    await staff_unit_repository.update_one(record_id=request.id, data={
+        'name': request.name,
+        'division_id': request.division_id
+    })
+
+
+class DivisionSchema(BaseModel):
+    id: UUID
+    name: str
+    parent_division_id: UUID
+    head_employee_id: UUID
+    status: bool
+
+class StaffUnitInfoSchema(BaseModel):
+    id: UUID
+    name: str
+    division: DivisionSchema
+
+@org_router.get('/staff-unit/{id}')
+async def get_staff_unit(id: UUID) -> StaffUnitInfoSchema:
+    try:
+        staff_unit = await staff_unit_repository.find_one(id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'STAFF_UNIT_NOT_FOUND',
+            'reason': 'Staff unit with that id is not found'
+        })
+
+    division = await division_repository.find_one(staff_unit.division_id)
+    return StaffUnitInfoSchema(
+        id=staff_unit.id,
+        name=staff_unit.name,
+        division=DivisionSchema(
+            id=division.id,
+            name=division.name,
+            parent_division_id=division.parent_division_id,
+            head_employee_id=division.head_employee_id,
+            status=division.status,
+        )
+    )
+
+
+@org_router.get('/staff-unit-search')
+async def search_staff_unit(term: str, division_id: UUID, limit: int = 5):
+    async with (async_session_maker() as session):
+        filters = []
+
+        search_terms = term.split()
+
+        if search_terms:
+            for ter in search_terms:
+                for_term = []
+                for field in ["name"]:
+                    for_term.append(getattr(StaffUnit, field).ilike(f"%{ter.strip()}%"))
+                filters.append(or_(*for_term))
+        if not filters:
+            raise HTTPException(status_code=400, detail="Invalid search terms")
+        filters.append(StaffUnit.division_id == division_id)
+        results = await session.execute(select(StaffUnit).filter(and_(*filters)).limit(limit))
+        results = results.scalars().all()
+
+        results = [await get_staff_unit(result.id) for result in results]
+
+        if not results:
+            raise HTTPException(status_code=404, detail="No results found")
+
+    return results
+
+
+class CreateDivisionSchema(BaseModel):
+    name: str
+    parent_division_id: UUID
+    head_employee_id: UUID = None
+    status: bool
+
+@org_router.post('/division')
+async def create_division(request: CreateDivisionSchema):
+    try:
+        parent_division_id = await division_repository.find_one(request.parent_division_id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'PARENT_DIVISION_NOT_FOUND',
+            'reason': 'Parent division with that id is not found'
+        })
+
+    if request.head_employee_id is not None:
+        try:
+            head_employee_id = await employee_repository.find_one(request.head_employee_id)
+        except:
+            raise HTTPException(status_code=404, detail={
+                'code': 'HEAD_EMPLOYEE_NOT_FOUND',
+                'reason': 'Head employee with that id is not found'
+            })
+
+    divisions = await division_repository.find_all({
+        'name': request.name,
+        'parent_division_id': request.parent_division_id}, AND=True)
+
+    if divisions:
+        raise HTTPException(status_code=400, detail={
+            'code': 'DIVISION_ALREADY_EXISTS',
+            'reason': 'Division with that name is already exists in division'
+        })
+
+    await division_repository.add_one({
+        'name': request.name,
+        'parent_division_id': request.parent_division_id,
+        'head_employee_id': request.head_employee_id,
+        'status': request.status
+    })
+
+
+@org_router.delete('/division')
+async def delete_division(division_id: UUID):
+    try:
+        await division_repository.find_one(division_id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'DIVISION_NOT_FOUND',
+            'reason': 'Division with that id is not found'
+        })
+    await division_repository.delete_one(division_id)
+
+
+class UpdateDivisionSchema(BaseModel):
+    id: UUID
+    name: str
+    parent_division_id: UUID
+    head_employee_id: UUID
+    status: bool
+
+@org_router.patch('/division')
+async def update_division(request: UpdateDivisionSchema):
+    try:
+        await division_repository.find_one(request.id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'DIVISION_NOT_FOUND',
+            'reason': 'Division with that id is not found'
+        })
+
+    try:
+        await division_repository.find_one(request.parent_division_id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'PARENT_DIVISION_NOT_FOUND',
+            'reason': 'Parent division with that id is not found'
+        })
+
+    try:
+        head_employee_id = await employee_repository.find_one(request.head_employee_id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'HEAD_EMPLOYEE_NOT_FOUND',
+            'reason': 'Head employee with that id is not found'
+        })
+
+    if request.id == request.parent_division_id:
+        raise HTTPException(status_code=400, detail={
+            'code': 'INVALID_PARENT_DIVISION',
+            'reason': 'Parent division is same that current division'
+        })
+
+    divisions = await division_repository.find_all({
+        'name': request.name,
+        'parent_division_id': request.parent_division_id}, AND=True)
+
+    if divisions:
+        raise HTTPException(status_code=400, detail={
+            'code': 'DIVISION_ALREADY_EXISTS',
+            'reason': 'Division with that name is already exists in division'
+        })
+
+    await division_repository.update_one(record_id=request.id, data={
+        'name': request.name,
+        'parent_division_id': request.parent_division_id,
+        'head_employee_id': request.head_employee_id,
+        'status': request.status,
+    })
 
 
 
+# class DivisionInfoSchema(BaseModel):
+#     id: UUID
+#     name: str
+#     status: bool
+#     parent_division: UUID
+#     head_employee: dict
+#
+#     class Config:
+#         arbitrary_types_allowed = True
+
+
+@org_router.get('/division/{id}')
+async def get_division(id: UUID):
+    try:
+        division = await division_repository.find_one(id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'DIVISION_NOT_FOUND',
+            'reason': 'Division with that id is not found'
+        })
+    try:
+        parent_division = await division_repository.find_one(division.parent_division_id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'PARENT_DIVISION_NOT_FOUND',
+            'reason': 'Parent division for division with that id is not found'
+        })
+    if division.head_employee_id:
+        head_employee = await get_employee_info(await employee_repository.find_one(division.head_employee_id))
+    else:
+        head_employee = None
+
+    return {
+        'id': division.id,
+        'name': division.name,
+        'status': division.status,
+        'parent_division': parent_division,
+        'head_employee': head_employee
+    }
+    # return DivisionInfoSchema(
+    #     id=division.id,
+    #     name=division.name,
+    #     status=division.status,
+    #     parent_division=division.parent_division_id,
+    #     head_employee=head,
+    # )
+
+
+@org_router.get('/division-search')
+async def search_division(term: str, limit: int = 5):
+    async with (async_session_maker() as session):
+        filters = []
+
+        search_terms = term.split()
+
+        if search_terms:
+            for ter in search_terms:
+                for_term = []
+                for field in ["name"]:
+                    for_term.append(getattr(Division, field).ilike(f"%{ter.strip()}%"))
+                filters.append(or_(*for_term))
+        if not filters:
+            raise HTTPException(status_code=400, detail="Invalid search terms")
+
+        results = await session.execute(select(Division).filter(and_(*filters)).limit(limit))
+        results = results.scalars().all()
+
+        results = [await get_division(result.id) for result in results]
+
+        if not results:
+            raise HTTPException(status_code=404, detail="No results found")
+
+    return results
