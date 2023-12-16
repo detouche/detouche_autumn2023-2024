@@ -1,4 +1,5 @@
 from typing import List, Optional
+from uuid import UUID
 
 from pydantic import BaseModel, field_serializer
 
@@ -18,20 +19,20 @@ class CourseSchema(BaseModel):
     education_center: str
 
 class DocumentSchema(BaseModel):
-    manager_id: int
-    director_id: int
-    administrator_id: int
-    autor_id: int
-    members_id: List[int]
+    manager_id: UUID
+    director_id: UUID
+    administrator_id: UUID
+    autor_id: UUID
+    members_id: List[UUID]
     is_confirmed: bool = False
     manager_status: bool = False
     director_status: bool = False
     administrator_status: bool = False
-    course_id: Optional[int] = None
+    course_id: Optional[UUID] = None
     state: str = '1'
     is_completed: bool = False
     course: CourseSchema | None = None
-    commands: list | None
+    commands: list | None = None
 
     def to_read_model(application, course, commands):
         return DocumentSchema(
@@ -70,5 +71,5 @@ class CourseTemplateSchema(BaseModel):
 
 
 class CourseTemplateIDSchema(CourseTemplateSchema):
-    id: int
+    id: UUID
 

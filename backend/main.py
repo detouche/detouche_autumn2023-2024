@@ -1,17 +1,19 @@
+from uuid import UUID
+
 from fastapi import FastAPI, Depends
 from starlette.middleware.cors import CORSMiddleware
 
 from auth.services.users_api import get_users_router
-from company.services.heads_definer import heads_definer_router
 from company.services.org_structure import org_router
 from config import settings
 
 from auth.auth import auth_backend
 from auth.models.db import User
 from auth.models.schemas import UserRead, UserCreate, UserUpdate
+from docs.repository.docs import DocumentRepository
 from docs.services.command_execute import execute_router
 
-from docs.services.course_application import application_router
+from docs.services.course_application import application_router, get_admins
 
 from docs.services.course_template import docs_router
 
@@ -19,7 +21,7 @@ from docs.services.course_template import docs_router
 from auth.utils.user_auth import fastapi_users, current_user
 from docs.services.search_documents import search_document_router
 
-app = FastAPI(title="Etude API docs", version='0.2.0')
+app = FastAPI(title="Etude API docs", version='0.2.1')
 
 app.add_middleware(
     CORSMiddleware,
@@ -66,7 +68,6 @@ app.include_router(
 app.include_router(docs_router, tags=['course-templates'])
 app.include_router(application_router, tags=['course-application'])
 app.include_router(org_router, tags=['org-structure'])
-app.include_router(heads_definer_router, tags=['course-application'])
 app.include_router(search_document_router, tags=['search-document'])
 app.include_router(execute_router, tags=['course-application'])
 
@@ -78,4 +79,9 @@ def protected_route(user: User = Depends(current_user)):
 
 @app.post("/unprotected-route")
 async def unprotected_route():
-    return f"Hello, anonym"
+    async def test(member, id):
+        tes = await DocumentRepository().find_one(id)
+        print(tes.members_id)
+        return member in tes.members_id
+
+    return await test(UUID('35cdc47d-ad9a-4d7d-a735-567b79f6f0c8'), UUID('651587b0-b40b-4e68-938c-9de9f4bcd93d'))
