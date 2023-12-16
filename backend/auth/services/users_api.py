@@ -61,7 +61,7 @@ async def get_employee_info(employee):
             'id': division.id,
             'name': division.name,
             'parent_division': division.parent_division_id,
-            'head_employee': await employee_repository.find_one(division.head_employee_id),
+            'head_employee': await employee_repository.find_one(division.head_employee_id) if division.head_employee_id else None,
             'status': division.status,
         }
     }

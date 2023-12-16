@@ -1,6 +1,7 @@
+import uuid
 from typing import List
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Table, func, Enum, Float, ARRAY
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Table, func, Enum, Float, ARRAY, UUID
 from sqlalchemy.orm import mapped_column
 
 from database import Base
@@ -9,26 +10,26 @@ from database import Base
 class Document(Base):
     __tablename__ = "document"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     manager_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     director_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     administrator_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     autor_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-    members_id = Column(ARRAY(Integer), nullable=False)
+    members_id = Column(ARRAY(UUID), nullable=False)
 
     is_confirmed = Column(Boolean, nullable=False, default=False)
     manager_status = Column(Boolean, nullable=False, default=False)
     director_status = Column(Boolean, nullable=False, default=False)
     administrator_status = Column(Boolean, nullable=False, default=False)
     is_completed = Column(Boolean, nullable=False, default=False)
-    course_id = mapped_column(ForeignKey("course.id",ondelete='CASCADE', onupdate='CASCADE'), index=True)
+    course_id = mapped_column(ForeignKey("course.id", ondelete='CASCADE', onupdate='CASCADE'), index=True)
     state = Column(String, nullable=False, default="test")
 
 
 class Course(Base):
     __tablename__ = "course"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=True)
     description = Column(String, nullable=True)
     cost = Column(Float, nullable=True)
@@ -43,7 +44,7 @@ class Course(Base):
 class CourseTemplate(Base):
     __tablename__ = "course_template"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=True)
     description = Column(String, nullable=True)
     type = Column(String, nullable=True)
@@ -54,16 +55,16 @@ class CourseTemplate(Base):
 class CourseMember(Base):
     __tablename__ = "course_member"
 
-    id = Column(Integer, primary_key=True)
-    member_id = mapped_column(ForeignKey('employee.id'), nullable=False)
-    course_id = mapped_column(ForeignKey('course.id'), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    member_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    course_id = mapped_column(ForeignKey('course.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
 
 
 
 class DocumentCommand(Base):
     __tablename__ = "document_command"
 
-    id = Column(Integer, primary_key=True)
-    employee_id = mapped_column(ForeignKey('employee.id'), nullable=False)
-    document_id = mapped_column(ForeignKey('document.id'), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    employee_id = mapped_column(ForeignKey('employee.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    document_id = mapped_column(ForeignKey('document.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     command = Column(String, nullable=False)

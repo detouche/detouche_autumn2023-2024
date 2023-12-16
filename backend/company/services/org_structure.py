@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from typing import Optional, Dict
 from uuid import UUID
 
@@ -272,23 +273,56 @@ async def get_employee(id: UUID):
     return await get_employee_info(employee)
 
 
-@org_router.get('/employee-search')
-async def search_employees(term: str, limit: int = 5):
+async def get_head_employee_ids(employee_id: UUID):
     async with (async_session_maker() as session):
+        try:
+            employee = await employee_repository.find_one(employee_id)
+        except:
+            raise HTTPException(status_code=404, detail={
+                'code': 'EMPLOYEE_NOT_FOUND',
+                'reason': 'Employee with that id is not found'
+            })
+        employee_info = await get_employee_info(employee)
+
+        with_recursive_cte = select(Division).where(Division.id == employee_info['division']['id']).cte(
+            name="ParentChain", recursive=True)
+
+        recursive_term = select(Division).join(with_recursive_cte,
+                                               Division.id == with_recursive_cte.c.parent_division_id)
+        with_recursive_cte = with_recursive_cte.union_all(recursive_term)
+
+        stmt = select(with_recursive_cte.c.head_employee_id)
+
+        result = await session.execute(stmt)
+        return result.scalars().all()
+
+
+
+class SearchOptionEnum(Enum):
+    ADMIN = 'ADMIN'
+    HEAD_EMPLOYEE = 'HEAD_EMPLOYEE'
+
+
+
+@org_router.get('/employee-search')
+async def search_employees(term: str = '', limit: int = 5, option: SearchOptionEnum = None, member_id: UUID = None):
+    async with async_session_maker() as session:
         filters = []
 
         search_terms = term.split()
 
-        if search_terms:
-            for ter in search_terms:
-                for_term = []
-                for field in ["name", "surname", "patronymic"]:
-                    for_term.append(getattr(Employee, field).ilike(f"%{ter.strip()}%"))
-                filters.append(or_(*for_term))
-        if not filters:
-            raise HTTPException(status_code=400, detail="Invalid search terms")
-        results = await session.execute(select(Employee).filter(and_(*filters)).limit(limit))
-        results = results.scalars().all()
+        for term in search_terms:
+            filters.append(or_(*[getattr(Employee, field).ilike(f"%{term.strip()}%") for field in ["name", "surname", "patronymic"]]))
+
+        if option == SearchOptionEnum.ADMIN:
+            filters.append(Employee.role_id == 2)
+
+        if option == SearchOptionEnum.HEAD_EMPLOYEE:
+            head_employees_ids = await get_head_employee_ids(member_id)
+            filters.append(Employee.id.in_(head_employees_ids))
+
+        query = select(Employee).filter(and_(*filters)).limit(limit)
+        results = (await session.execute(query)).scalars().all()
 
         results = [await get_employee_info(result) for result in results]
 
@@ -589,7 +623,10 @@ async def get_division(id: UUID):
             'reason': 'Division with that id is not found'
         })
     try:
-        parent_division = await division_repository.find_one(division.parent_division_id)
+        if division.parent_division_id:
+            parent_division = await division_repository.find_one(division.parent_division_id)
+        else:
+            parent_division = None
     except:
         raise HTTPException(status_code=404, detail={
             'code': 'PARENT_DIVISION_NOT_FOUND',

@@ -1,4 +1,5 @@
 from enum import Enum
+from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy import select, or_, and_
@@ -237,7 +238,7 @@ class CommandType(Enum):
 
 
 @execute_router.post("/execute")
-async def execute_command(document_id: int, command: CommandType, user: User = Depends(current_user)):
+async def execute_command(document_id: UUID, command: CommandType, user: User = Depends(current_user)):
     try:
         document = await document_repository.find_one(document_id)
     except:
