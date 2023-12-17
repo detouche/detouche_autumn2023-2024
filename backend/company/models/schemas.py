@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from uuid import UUID
 
@@ -52,13 +53,15 @@ class DocumentStatus(BaseModel):
 
 
 class SearchDocumentResponse(BaseModel):
-    id: int
+    id: UUID
     page_type: str
     title: str
     status: DocumentStatus
     course_type: str
     course_category: str
     education_center: str
+    creation_date: datetime
+    author: str
 
 
 class OrgUnitEmployee(BaseModel):

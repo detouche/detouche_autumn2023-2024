@@ -24,6 +24,7 @@ class Document(Base):
     is_completed = Column(Boolean, nullable=False, default=False)
     course_id = mapped_column(ForeignKey("course.id", ondelete='CASCADE', onupdate='CASCADE'), index=True)
     state = Column(String, nullable=False, default="test")
+    creation_date = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
 
 class Course(Base):

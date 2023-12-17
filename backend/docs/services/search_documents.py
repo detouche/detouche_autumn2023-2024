@@ -6,11 +6,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from auth.models.db import User
 from auth.utils.user_auth import current_user
 from company.models.schemas import SearchDocumentResponse, DocumentStatus
+from company.repository.company import EmployeeRepository
 from docs.repository.docs import DocumentRepository, CourseRepository
 
 search_document_router = APIRouter(prefix='/docs', tags=['search-document'])
 document_repository = DocumentRepository()
 course_repository = CourseRepository()
+employee_repository = EmployeeRepository()
 
 
 class DocumentState(Enum):
@@ -21,10 +23,28 @@ class DocumentState(Enum):
     ON_MANAGER_APPROVE = 'На согласовании'
     ON_DIRECTOR_APPROVE = 'На согласовании'
     ON_ADMIN_APPROVE = 'На согласовании'
-    ON_ADMIN_IMPLEMENTING = 'В работе'
-    COMPLETED = 'Выполнено'
+    ON_ADMIN_IMPLEMENTING = 'Ожидает записи на обучение'
+    COMPLETED = 'Записан на обучение'
     REJECTED = 'Отклонено'
 
+
+def format_user_name(name: str, surname: str, patronymic: str):
+    """
+    Форматирует имя пользователя в следующий вид: Иванов И. И.
+
+    Args:
+    name: Имя.
+    surname: Фамилия.
+    patronymic: Отчество.
+
+    Returns:
+    Строка с отформатированным именем пользователя.
+    """
+
+    if not name or not surname or not patronymic:
+        return None
+
+    return f"{surname} {name[0]}. {patronymic[0]}."
 
 async def get_document_list(applications: list, page_type: str) -> List[SearchDocumentResponse]:
     """
@@ -42,17 +62,21 @@ async def get_document_list(applications: list, page_type: str) -> List[SearchDo
         course = await course_repository.get_one(application.course_id)
         if not course:
             raise HTTPException(status_code=409, detail="Существующая заявка не связана с курсом")
+
+        author = await employee_repository.find_one(application.autor_id)
         application_schema = SearchDocumentResponse(
             id=application.id,
             page_type=page_type,
             title=course.title,
             status=DocumentStatus(
                 text=DocumentState[application.state].value,
-                type=DocumentState[application.state].name
+                type=application.state
             ),
             course_type=course.type,
             course_category=course.category,
-            education_center=course.education_center
+            education_center=course.education_center,
+            creation_date=application.creation_date,
+            author=format_user_name(author.name, author.surname, author.patronymic),
         )
 
         result.append(application_schema)
