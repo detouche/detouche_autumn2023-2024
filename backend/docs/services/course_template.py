@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Depends
 
@@ -43,7 +44,7 @@ async def get_all_course_template(user: User = Depends(current_user)) -> List[Co
 
 
 @docs_router.get("/course-template/{template_id}", response_model=CourseTemplateIDSchema)
-async def get_course_template(template_id: int, user: User = Depends(current_user)) -> CourseTemplateIDSchema:
+async def get_course_template(template_id: UUID, user: User = Depends(current_user)) -> CourseTemplateIDSchema:
     """Информация о шаблоне"""
     template = await CourseTemplateRepository().get_one(record_id=template_id)
     if not template:
@@ -52,7 +53,7 @@ async def get_course_template(template_id: int, user: User = Depends(current_use
 
 
 @docs_router.delete("/course-template/delete", response_model=CourseTemplateIDSchema)
-async def delete_course_template(template_id: int, user: User = Depends(current_user)) -> CourseTemplateIDSchema:
+async def delete_course_template(template_id: UUID, user: User = Depends(current_user)) -> CourseTemplateIDSchema:
     """Удаление шаблона"""
     template = await CourseTemplateRepository().get_one(record_id=template_id)
     if not template:

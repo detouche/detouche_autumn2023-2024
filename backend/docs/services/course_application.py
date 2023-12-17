@@ -98,12 +98,12 @@ async def get_all_application(user: User = Depends(current_user)):
             commands = [{f'{command.command}': CommandTypeText[command.command]} for command in commands]
         application_schema = ({"id": application.id} |
                               DocumentSchema.to_read_model(application, course,
-                                                           commands).model_dump()) if course else None
+                                                           commands).model_dump() | {'creation_date': application.creation_date}) if course else None
         result.append(application_schema)
     return result
 
 
-@application_router.get("/course-application/{application_id}", response_model=DocumentSchema)
+@application_router.get("/course-application/{application_id}")
 async def get_application(application_id: UUID, user: User = Depends(current_user)):
     """Получить информацию об одной заявке"""
     application = await DocumentRepository().get_one(application_id)
@@ -114,11 +114,13 @@ async def get_application(application_id: UUID, user: User = Depends(current_use
         'document_id': application_id,
         'employee_id': user.employee_id,
     })
-
+    print(application.creation_date)
     if commands:
         commands = [{f'{command.command}': CommandTypeText[command.command]} for command in commands]
     application_schema = ({"id": application.id} |
-                          DocumentSchema.to_read_model(application, course, commands).model_dump()) if course else None
+                          DocumentSchema.to_read_model(application, course,
+                                                       commands).model_dump() | {
+                              'creation_date': application.creation_date}) if course else None
     return application_schema
 
 
