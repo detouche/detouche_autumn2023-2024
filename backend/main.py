@@ -4,6 +4,7 @@ from fastapi import FastAPI, Depends
 from starlette.middleware.cors import CORSMiddleware
 
 from auth.services.users_api import get_users_router
+from company.repository.company import DivisionRepository
 from company.services.org_structure import org_router
 from config import settings
 
@@ -22,7 +23,7 @@ from auth.utils.user_auth import fastapi_users, current_user
 from docs.services.document_reports import document_report_router
 from docs.services.search_documents import search_document_router, DocumentState
 
-app = FastAPI(title="Etude API docs", version='0.2.2')
+app = FastAPI(title="Etude API docs", version='0.2.3')
 
 app.add_middleware(
     CORSMiddleware,
@@ -81,5 +82,6 @@ def protected_route(user: User = Depends(current_user)):
 
 @app.post("/unprotected-route")
 async def unprotected_route():
-    test = DocumentState['ON_ADMIN_APPROVE']
-    return test
+    await DivisionRepository().update_one(record_id=UUID('0555c82e-064d-4fb4-acba-b38b7fea5e07'), data={
+        'name': 'test',
+    })

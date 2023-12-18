@@ -1,6 +1,9 @@
+from datetime import datetime
+from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel
 from sqlalchemy import select
 
 from auth.models.db import User
@@ -19,9 +22,12 @@ from docs.services.search_documents import DocumentState
 application_router = APIRouter(prefix='/docs', tags=['course-application'])
 document_command_repository = DocumentCommandRepository()
 employee_repository = EmployeeRepository()
+
+
 async def get_admins():
     async with async_session_maker() as session:
         return (await session.execute(select(Employee.id).filter(Employee.role_id == 2))).scalars().all()
+
 
 @application_router.post("/course-application/create", response_model=DocumentSchema)
 async def create_application(document: DocumentSchema, user: User = Depends(current_user)):
@@ -98,7 +104,8 @@ async def get_all_application(user: User = Depends(current_user)):
             commands = [{f'{command.command}': CommandTypeText[command.command]} for command in commands]
         application_schema = ({"id": application.id} |
                               DocumentSchema.to_read_model(application, course,
-                                                           commands).model_dump() | {'creation_date': application.creation_date}) if course else None
+                                                           commands).model_dump() | {
+                                  'creation_date': application.creation_date}) if course else None
         result.append(application_schema)
     return result
 
@@ -138,60 +145,90 @@ async def delete_application(application_id: UUID, user: User = Depends(current_
     return DocumentSchema.to_read_model(application, course, None)
 
 
+class UpdateDocumentSchema(BaseModel):
+    manager_id: UUID
+    director_id: UUID
+    administrator_id: UUID
+    members_id: List[UUID]
+    title: str
+    description: str
+    cost: int
+    start_date: datetime
+    end_date: datetime
+    goal: str
+    type: str
+    category: str
+    education_center: str
 
-@application_router.post("/course-application/update", response_model=DocumentSchema)
-async def update_application(application: DocumentSchema, application_id: UUID,
-                             user: User = Depends(current_user)) -> DocumentSchema:
+
+document_repository = DocumentRepository()
+course_repository = CourseRepository()
+
+
+@application_router.post("/course-application/update")
+async def update_application(request: UpdateDocumentSchema, application_id: UUID,
+                             user: User = Depends(current_user)):
     """Обновить данные в заявке"""
-    application_dict = application.model_dump(exclude_unset=True)
-    course_dict = application_dict["course"]
-    del application_dict["course"]
-    members_list = application_dict["members_id"]
+
+    try:
+        document = await document_repository.find_one(application_id)
+        course = await course_repository.find_one(document.course_id)
+    except:
+        raise HTTPException(status_code=404, detail={
+            'code': 'DOCUMENT_NOT_FOUND',
+            'reason': 'Document with that id is not found'
+        })
+
+    if not document.course_id == course.id:
+        raise HTTPException(status_code=409, detail="Нарушена связь ID документа и курса")
+
+    members_list = request.members_id
+    if len(members_list) == 0:
+        raise HTTPException(status_code=409, detail="Передан пустой список members_id")
+
+    for member in members_list:
+        try:
+            await employee_repository.find_one(member)
+        except:
+            raise HTTPException(status_code=409, detail="Переданного MemberID не существует")
 
     head_employee_ids = await get_head_employee_ids(members_list[0])
     admins = await get_admins()
-    if application_dict['manager_id'] not in head_employee_ids:
+    if request.manager_id not in head_employee_ids:
         raise HTTPException(status_code=400, detail={
             'code': 'MANAGER_VALIDATION_ERROR',
             'reason': '...'
         })
-    if application_dict['director_id'] not in head_employee_ids:
+    if request.director_id not in head_employee_ids:
         raise HTTPException(status_code=400, detail={
             'code': 'DIRECTOR_VALIDATION_ERROR',
             'reason': '...'
         })
-    if application_dict['administrator_id'] not in admins:
+    if request.administrator_id not in admins:
         raise HTTPException(status_code=400, detail={
             'code': 'ADMIN_VALIDATION_ERROR',
             'reason': '...'
         })
 
-
-    if len(members_list) == 0:
-        raise HTTPException(status_code=409, detail="Передан пустой список members_id")
-    try:
-        application = await DocumentRepository().find_one(application_id)
-        course = await CourseRepository().find_one(application_dict["course_id"])
-    except:
-        raise HTTPException(status_code=409, detail="ID заявки/курса не передан, либо его не существует")
-    if not application.course_id == course.id:
-        raise HTTPException(status_code=409, detail="Нарушена связь ID документа и курса")
-
-    del application_dict['commands']
-    await DocumentRepository().update_one(application_id, application_dict)
-    await CourseRepository().update_one(application_dict["course_id"], course_dict)
-    for member in members_list:
-        if member not in application.members_id:
-            raise HTTPException(status_code=409, detail="Переданного MemberID не существует")
-
-    commands = await document_command_repository.find_all({
-        'document_id': application_id,
-        'employee_id': user.employee_id,
+    await document_repository.update_one(document.id, {
+        'manager_id': request.manager_id,
+        'director_id': request.director_id,
+        'administrator_id': request.administrator_id,
+        'members_id': request.members_id,
+    })
+    await course_repository.update_one(course.id, {
+        'title': request.title,
+        'description': request.description,
+        'cost': request.cost,
+        'start_date': request.start_date.strftime('%d.%m.%Y'),
+        'end_date': request.end_date.strftime('%d.%m.%Y'),
+        'goal': request.goal,
+        'type': request.type,
+        'category': request.category,
+        'education_center': request.education_center,
     })
 
-    if commands:
-        commands = [{f'{command.command}': CommandTypeText[command.command]} for command in commands]
-    application_schema = ({"id": application.id} |
-                          DocumentSchema.to_read_model(application, course, commands).model_dump()) if course else None
-
-    return application_schema
+    return {
+        'document': await document_repository.find_one(document.id),
+        'course': await course_repository.find_one(course.id),
+    }
