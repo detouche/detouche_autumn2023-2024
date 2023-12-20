@@ -11,11 +11,13 @@ import { VerifyEmail } from './pages/VerifyEmail';
 import { LinkError } from './pages/LinkError';
 import { VerifyError } from './pages/VerifyError';
 import { NotFound404 } from './pages/NotFound404';
-import { OrganizationStructureFile } from './pages/OrganizationStructureFile';
 import { ConsiderationApplication } from './pages/ConsiderationApplication';
 import { ProgressApplication } from './pages/ProgressApplication';
 import { AllApplication } from './pages/AllApplication';
 import { OrganizationStructure } from './pages/OrganizationStructure';
+import { OrganizationStructureCreateUser } from './pages/OrganizationStructureCreateUser';
+import { OrganizationStructureCreateChildren } from './pages/OrganizationStructureCreateChildren';
+import { OrganizationStructureStaffUnit } from './pages/OrganizationStructureStaffUnit';
 
 import './App.module.scss';
 
@@ -43,12 +45,20 @@ function App() {
 				<Route path='/progress-application' element={<ProgressApplication />} />
 				<Route path='/all-application' element={<AllApplication />} />
 				<Route
-					path='/organization-structure-file'
-					element={<OrganizationStructureFile />}
-				/>
-				<Route
 					path='/organization-structure'
 					element={<OrganizationStructure />}
+				/>
+				<Route
+					path='/organization-structure-create-user'
+					element={<OrganizationStructureCreateUser />}
+				/>
+				<Route
+					path='/organization-structure-create-children'
+					element={<OrganizationStructureCreateChildren />}
+				/>
+				<Route
+					path='/organization-structure-staff-unit'
+					element={<OrganizationStructureStaffUnit />}
 				/>
 				<Route path='*' element={<NotFound404 />} />
 			</Routes>

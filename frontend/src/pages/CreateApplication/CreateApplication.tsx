@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
 
 import style from './CreateApplication.module.scss';
+import './react-select.scss';
 
 import { Drawer } from '../../components/Drawer';
 import { Header } from '../../components/Header';
@@ -186,7 +187,8 @@ export function CreateApplication() {
 		getHeadsData();
 	}, [memberID]);
 
-	const create_application = async () => {
+	const create_application = async e => {
+		e.preventDefault();
 		try {
 			const response = await axios.post(
 				`http://localhost:8000/docs/course-application/create`,
@@ -221,6 +223,17 @@ export function CreateApplication() {
 		}
 	};
 
+	const isFormValid = () => {
+		return (
+			courseGoal.trim() !== '' &&
+			startDate.trim() !== '' &&
+			endDate.trim() !== '' &&
+			courseCost.trim() !== '' &&
+			courseID !== 0 &&
+			memberID !== 0
+		);
+	};
+
 	return (
 		<div>
 			<Drawer PageID={2} />
@@ -230,16 +243,27 @@ export function CreateApplication() {
 					Создание новой заявки
 				</h1>
 				<div className={style.create_application_section}>
-					<div className={style.create_application_first_section}>
+					<form
+						className={style.create_application_first_section}
+						onSubmit={e => create_application(e)}
+					>
 						<div>
 							<div className={style.create_application_course_select_group}>
 								<label className={style.create_application_course_select_label}>
-									Курс <div className={style.attention_figure}></div>
+									Курс
+									<div
+										className={
+											courseID === 0
+												? style.attention_figure
+												: style.attention_figure_none
+										}
+									></div>
 								</label>
 								<div
 									className={style.create_application_course_select_container}
 								>
 									<Select
+										classNamePrefix='custom-select'
 										options={coursesOptionsSelect}
 										placeholder='Выберите курс'
 										className={style.create_application_course_select}
@@ -252,7 +276,13 @@ export function CreateApplication() {
 							<div className={style.create_application_date_container}>
 								<label className={style.create_application_date_label}>
 									Желаемые сроки обучения
-									<div className={style.attention_figure}></div>
+									<div
+										className={
+											startDate === '' || endDate === ''
+												? style.attention_figure
+												: style.attention_figure_none
+										}
+									></div>
 								</label>
 								<div className={style.create_application_date_group}>
 									<div className={style.create_application_date_start_group}>
@@ -298,12 +328,20 @@ export function CreateApplication() {
 							</div>
 							<div className={style.create_application_member_group}>
 								<label className={style.create_application_member_label}>
-									Сотрудники<div className={style.attention_figure}></div>
+									Сотрудники
+									<div
+										className={
+											memberID === 0
+												? style.attention_figure
+												: style.attention_figure_none
+										}
+									></div>
 								</label>
 								<div
 									className={style.create_application_member_select_container}
 								>
 									<Select
+										classNamePrefix='custom-select'
 										options={membersOptionsSelect}
 										className={style.create_application_course_select}
 										isMulti
@@ -315,7 +353,14 @@ export function CreateApplication() {
 							</div>
 							<div className={style.create_application_price_container}>
 								<label className={style.create_application_price_label}>
-									Стоимость курса<div className={style.attention_figure}></div>
+									Стоимость курса
+									<div
+										className={
+											courseCost === ''
+												? style.attention_figure
+												: style.attention_figure_none
+										}
+									></div>
 								</label>
 								<input
 									type='text'
@@ -331,7 +376,14 @@ export function CreateApplication() {
 								<label
 									className={style.create_application_object_teaching_label}
 								>
-									Цель обучения<div className={style.attention_figure}></div>
+									Цель обучения
+									<div
+										className={
+											courseGoal === ''
+												? style.attention_figure
+												: style.attention_figure_none
+										}
+									></div>
 								</label>
 								<input
 									type='text'
@@ -343,11 +395,9 @@ export function CreateApplication() {
 							</div>
 						</div>
 						<div className={style.create_application_button_container}>
-							<Button onClick={() => create_application()}>
-								Создать заявку
-							</Button>
+							<Button disabled={!isFormValid()}>Создать заявку</Button>
 						</div>
-					</div>
+					</form>
 					<div className={style.create_application_second_section}>
 						<div>
 							<h2 className={style.create_application_title_h2}>
@@ -393,19 +443,6 @@ export function CreateApplication() {
 												}
 											>
 												<p>{courseData.description}</p>
-												{/* <p>
-													https://vk.com/yolopek Мир технологий стремительно
-													меняется, и IT-специалистам необходимо постоянно
-													развиваться, чтобы оставаться востребованными на рынке
-													труда. Курс "IT-специалист будущего" поможет вам
-													подготовиться к работе в условиях меняющегося мира
-													технологий. Курс охватывает широкий спектр тем, от
-													основ программирования до передовых технологий. Вы
-													узнаете о том, как работают компьютеры, как писать
-													программы, как использовать современные технологии, а
-													также как развить soft skills, необходимые для
-													успешной карьеры в IT.
-												</p> */}
 											</div>
 										</div>
 										<ul className={style.create_application_course_info}>
@@ -500,9 +537,9 @@ export function CreateApplication() {
 													{managerData.length === 0
 														? 'Нет данных'
 														: `${
-																managerData.name +
-																' ' +
 																managerData.surname +
+																' ' +
+																managerData.name +
 																' ' +
 																managerData.patronymic
 														  }`}
@@ -533,9 +570,9 @@ export function CreateApplication() {
 													{directorData.length === 0
 														? 'Нет данных'
 														: `${
-																directorData.name +
-																' ' +
 																directorData.surname +
+																' ' +
+																directorData.name +
 																' ' +
 																directorData.patronymic
 														  }`}
@@ -568,9 +605,9 @@ export function CreateApplication() {
 													{adminData.length === 0
 														? 'Нет данных'
 														: `${
-																adminData.name +
-																' ' +
 																adminData.surname +
+																' ' +
+																adminData.name +
 																' ' +
 																adminData.patronymic
 														  }`}

@@ -1,0 +1,149 @@
+.organization_structure_create_user_container {
+	margin-left: 104px;
+	margin-top: 40px;
+
+	ul {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.organization_structure_create_user_title {
+		color: var(--page-primary-color);
+		font-size: 32px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.organization_structure_create_user_content {
+		max-height: 820px;
+		overflow-x: auto;
+		padding-left: 3px;
+	}
+
+	.organization_structure_create_user_button_group {
+		margin: 0px;
+		padding: 0px;
+		list-style: none;
+		margin-top: 24px;
+		display: flex;
+		max-width: 676px;
+	}
+
+	.organization_structure_create_user_button_affirmative {
+		padding: 6px 10px;
+		border-radius: 12px;
+		border: 1px solid #6a9668;
+		background-color: transparent;
+		color: #6a9668;
+		text-align: center;
+		font-size: 20px;
+		font-weight: 600;
+		cursor: pointer;
+		height: 44px;
+		opacity: 0.7;
+	}
+
+	.organization_structure_create_user_title_h2 {
+		color: #323232;
+		font-size: 16px;
+		font-weight: 700;
+		padding: 0px;
+		margin: 0px;
+		max-width: 676px;
+	}
+
+	.organization_structure_create_user_description_group {
+		padding: 0px;
+		margin: 0px;
+		margin-top: 24px;
+		max-width: 676px;
+	}
+
+	.organization_structure_create_user_description_group input {
+		width: 613px;
+	}
+
+	.organization_structure_create_user_description {
+		margin: 0px;
+		padding: 0px;
+		margin-top: 16px;
+		max-width: 676px;
+		color: #323232;
+		font-weight: 400;
+	}
+
+	.organization_structure_create_user_date_group {
+		display: flex;
+	}
+
+	.organization_structure_create_user_date_start_group {
+		margin-top: 12px;
+	}
+
+	.organization_structure_create_user_date_end_group {
+		margin-top: 12px;
+	}
+
+	.organization_structure_create_user_date_start_input {
+		cursor: pointer;
+		border-radius: 8px;
+		border: 1px solid #e3e3e3;
+		background: #fff;
+		padding: 14px;
+		color: #323232;
+		font-size: 20px;
+		font-weight: 400;
+		width: 180px;
+	}
+
+	.organization_structure_create_user_date_start_input_container {
+		margin-top: 8px;
+	}
+
+	.organization_structure_create_user_date_start_input_container input {
+		width: 267px;
+	}
+	.organization_structure_create_user_date_end_input_container input {
+		width: 267px;
+	}
+
+	.organization_structure_create_user_date_end_input {
+		cursor: pointer;
+		padding: 14px;
+		border-radius: 8px;
+		border: 1px solid #e3e3e3;
+		background: #fff;
+		color: #323232;
+		font-size: 20px;
+		font-weight: 400;
+		width: 180px;
+	}
+
+	input::-webkit-calendar-picker-indicator {
+		cursor: pointer;
+	}
+
+	.organization_structure_create_user_date_end_input_container {
+		margin-top: 8px;
+	}
+
+	.organization_structure_create_user_date_line {
+		margin: 0px 20px;
+		margin-top: 40px;
+	}
+}
+
+.organization_structure_create_user_date_end_input:focus {
+	outline: none;
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
+}
+
+.organization_structure_create_user_date_start_input:focus {
+	outline: none;
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
+}
+
+.organization_structure_create_user_button_affirmative:disabled {
+	cursor: not-allowed;
+	opacity: 0.4;
+}

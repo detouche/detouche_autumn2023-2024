@@ -19,15 +19,6 @@ export function Drawer({ ...props }) {
 				</div>
 				<ul className={style.drawer_icon_list}>
 					<li
-						onClick={() => setActivePageDrawer(1)}
-						className={`${style.drawer_icon_list__element} ${
-							1 === activePageDrawer ? style.drawer_active_page : ''
-						}`}
-					>
-						<img src='/img/calendar_today.svg' alt='calendar_today' />
-						<p className={style.drawer_icon_list__element_text}>Календарь</p>
-					</li>
-					<li
 						id='2'
 						onClick={() => handleClickPrimaryButton(2, '/create-application')}
 						className={`${style.drawer_icon_list__element} ${
@@ -95,20 +86,6 @@ export function Drawer({ ...props }) {
 						<p className={style.drawer_icon_list__element_text}> Все заявки </p>
 					</li>
 					<li
-						id='8'
-						onClick={() =>
-							handleClickPrimaryButton(8, '/organization-structure')
-						}
-						className={`${style.drawer_icon_list__element} ${
-							8 === activePageDrawer ? style.drawer_active_page : ''
-						}`}
-					>
-						<img src='/img/workspaces_filled.svg' alt='workspaces_filled' />
-						<p className={style.drawer_icon_list__element_text}>
-							Структура организации
-						</p>
-					</li>
-					<li
 						onClick={() => setActivePageDrawer(9)}
 						className={`${style.drawer_icon_list__element} ${
 							9 === activePageDrawer ? style.drawer_active_page : ''
@@ -116,20 +93,6 @@ export function Drawer({ ...props }) {
 					>
 						<img src='/img/badge.svg' alt='badge' />
 						<p className={style.drawer_icon_list__element_text}> ВрИО</p>
-					</li>
-					<li
-						id='10'
-						onClick={() =>
-							handleClickPrimaryButton(10, '/organization-structure-file')
-						}
-						className={`${style.drawer_icon_list__element} ${
-							10 === activePageDrawer ? style.drawer_active_page : ''
-						}`}
-					>
-						<img src='/img/file_copy.svg' alt='add' />
-						<p className={style.drawer_icon_list__element_text}>
-							Экспорт/Импорт структуры
-						</p>
 					</li>
 				</ul>
 			</div>
