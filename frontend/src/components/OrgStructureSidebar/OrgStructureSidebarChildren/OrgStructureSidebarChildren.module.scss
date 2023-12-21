@@ -14,7 +14,7 @@
 
 	.sidebar_content {
 		padding: 48px 46px;
-		height: 809px;
+		height: 829px;
 		overflow-x: auto;
 	}
 
@@ -39,60 +39,60 @@
 		max-width: 600px;
 	}
 
-	// .sidebar_button_group {
-	// 	margin: 0px;
-	// 	padding: 0px;
-	// 	list-style: none;
-	// 	margin-top: 24px;
-	// 	display: flex;
-	// 	max-width: 676px;
-	// }
+	.sidebar_button_group {
+		margin: 0px;
+		padding: 0px;
+		list-style: none;
+		margin-top: 24px;
+		display: flex;
+		max-width: 676px;
+	}
 
-	// .sidebar_button_group li:not(:first-child) {
-	// 	margin-left: 16px;
-	// }
+	.sidebar_button_group li:not(:first-child) {
+		margin-left: 16px;
+	}
 
-	// .sidebar_button_affirmative {
-	// 	padding: 6px 10px;
-	// 	border-radius: 12px;
-	// 	border: 1px solid #6a9668;
-	// 	background-color: transparent;
-	// 	color: #6a9668;
-	// 	text-align: center;
-	// 	font-size: 20px;
-	// 	font-weight: 600;
-	// 	cursor: pointer;
-	// 	height: 44px;
-	// 	opacity: 0.7;
-	// }
+	.sidebar_button_affirmative {
+		padding: 6px 10px;
+		border-radius: 12px;
+		border: 1px solid #6a9668;
+		background-color: transparent;
+		color: #6a9668;
+		text-align: center;
+		font-size: 20px;
+		font-weight: 600;
+		cursor: pointer;
+		height: 44px;
+		opacity: 0.7;
+	}
 
-	// .sidebar_button_reject {
-	// 	padding: 6px 10px;
-	// 	border-radius: 12px;
-	// 	border: 1px solid #be5656;
-	// 	background-color: transparent;
-	// 	color: #be5656;
-	// 	text-align: center;
-	// 	font-size: 20px;
-	// 	font-weight: 600;
-	// 	cursor: pointer;
-	// 	height: 44px;
-	// 	opacity: 0.7;
-	// }
+	.sidebar_button_reject {
+		padding: 6px 10px;
+		border-radius: 12px;
+		border: 1px solid #be5656;
+		background-color: transparent;
+		color: #be5656;
+		text-align: center;
+		font-size: 20px;
+		font-weight: 600;
+		cursor: pointer;
+		height: 44px;
+		opacity: 0.7;
+	}
 
-	// .sidebar_button_more {
-	// 	padding: 10px;
-	// 	border-radius: 12px;
-	// 	border: 1px solid #979ba0;
-	// 	background-color: transparent;
-	// 	color: #979ba0;
-	// 	text-align: center;
-	// 	font-size: 20px;
-	// 	font-weight: 600;
-	// 	cursor: pointer;
-	// 	width: 44px;
-	// 	height: 44px;
-	// }
+	.sidebar_button_more {
+		padding: 10px;
+		border-radius: 12px;
+		border: 1px solid #979ba0;
+		background-color: transparent;
+		color: #979ba0;
+		text-align: center;
+		font-size: 20px;
+		font-weight: 600;
+		cursor: pointer;
+		width: 44px;
+		height: 44px;
+	}
 
 	// .sidebar_tags_group {
 	// 	display: flex;
@@ -116,30 +116,34 @@
 	// 	margin-left: 10px;
 	// }
 
-	// .sidebar_title_h2 {
-	// 	color: #323232;
-	// 	font-size: 16px;
-	// 	font-weight: 700;
-	// 	padding: 0px;
-	// 	margin: 0px;
-	// 	max-width: 676px;
-	// }
+	.sidebar_title_h2 {
+		color: #323232;
+		font-size: 16px;
+		font-weight: 700;
+		padding: 0px;
+		margin: 0px;
+		max-width: 676px;
+	}
 
-	// .sidebar_description_group {
-	// 	padding: 0px;
-	// 	margin: 0px;
-	// 	margin-top: 24px;
-	// 	max-width: 676px;
-	// }
+	.sidebar_description_group {
+		padding: 0px;
+		margin: 0px;
+		margin-top: 24px;
+		max-width: 676px;
+	}
 
-	// .sidebar_description {
-	// 	margin: 0px;
-	// 	padding: 0px;
-	// 	margin-top: 16px;
-	// 	max-width: 676px;
-	// 	color: #323232;
-	// 	font-weight: 400;
-	// }
+	.sidebar_description_group input {
+		width: 613px;
+	}
+
+	.sidebar_description {
+		margin: 0px;
+		padding: 0px;
+		margin-top: 16px;
+		max-width: 676px;
+		color: #323232;
+		font-weight: 400;
+	}
 
 	// .sidebar_cost_group {
 	// 	padding: 0px;
@@ -204,6 +208,65 @@
 	// 	color: #323232;
 	// 	font-weight: 400;
 	// }
+	.sidebar_date_group {
+		display: flex;
+	}
+
+	.sidebar_date_start_group {
+		margin-top: 12px;
+	}
+
+	.sidebar_date_end_group {
+		margin-top: 12px;
+	}
+
+	.sidebar_date_start_input {
+		cursor: pointer;
+		border-radius: 8px;
+		border: 1px solid #e3e3e3;
+		background: #fff;
+		padding: 14px;
+		color: #323232;
+		font-size: 20px;
+		font-weight: 400;
+		width: 180px;
+	}
+
+	.sidebar_date_start_input_container {
+		margin-top: 8px;
+	}
+
+	.sidebar_date_start_input_container input {
+		width: 267px;
+	}
+	.sidebar_date_end_input_container input {
+		width: 267px;
+	}
+
+	.sidebar_date_end_input {
+		cursor: pointer;
+		padding: 14px;
+		border-radius: 8px;
+		border: 1px solid #e3e3e3;
+		background: #fff;
+		color: #323232;
+		font-size: 20px;
+		font-weight: 400;
+		width: 180px;
+	}
+
+	input::-webkit-calendar-picker-indicator {
+		cursor: pointer;
+	}
+
+	.sidebar_date_end_input_container {
+		margin-top: 8px;
+	}
+
+	.sidebar_date_line {
+		margin: 0px 20px;
+		margin-top: 40px;
+	}
 }
 
 // .sidebar_container {
@@ -220,3 +283,18 @@
 // 		right 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0s;
 // 	right: calc(30px - 40%);
 // }
+
+.sidebar_date_end_input:focus {
+	outline: none;
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
+}
+
+.sidebar_date_start_input:focus {
+	outline: none;
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
+}
+
+.sidebar_button_affirmative:disabled {
+	cursor: not-allowed;
+	opacity: 0.4;
+}

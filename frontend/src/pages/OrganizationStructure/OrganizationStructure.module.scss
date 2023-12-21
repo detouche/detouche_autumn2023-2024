@@ -70,6 +70,81 @@
 		display: flex;
 		justify-content: center;
 	}
+
+	.organization_structure_title_container {
+		display: flex;
+		align-items: center;
+	}
+
+	.organization_structure_file_button_container {
+		display: flex;
+		margin-left: 16px;
+	}
+
+	.organization_structure_file_upload_button_container {
+		margin-left: 8px;
+	}
+
+	.organization_structure_file_download_button {
+		align-items: center;
+		display: flex;
+		color: #5c5f62;
+		font-size: 16px;
+		font-weight: 600;
+		cursor: pointer;
+		border: none;
+		background-color: transparent;
+	}
+
+	.organization_structure_file_upload_button {
+		align-items: center;
+		display: flex;
+		color: #5c5f62;
+		font-size: 16px;
+		font-weight: 600;
+		cursor: pointer;
+		border: none;
+		background-color: transparent;
+	}
+
+	.organization_structure_file_upload_button img {
+		margin-right: 10px;
+	}
+
+	.organization_structure_file_download_button img {
+		margin-right: 10px;
+	}
+
+	.organization_structure_action_button_group {
+		display: flex;
+		list-style: none;
+		margin: 0px;
+		padding: 0px;
+		margin-top: 20px;
+	}
+
+	.organization_structure_action_button_group li:not(:first-child) {
+		margin-left: 10px;
+	}
+	 
+	.organization_structure_action_button {
+		display: flex;
+		align-items: center;
+		color: #5c5f62;
+		font-size: 20px;
+		font-weight: 600;
+		margin: 0px;
+		cursor: pointer;
+		background-color: transparent;
+		outline: none;
+		border: #5c5f62 1px solid;
+		border-radius: 12px;
+		padding: 8px;
+	}
+
+	.organization_structure_action_button img{
+		margin-right: 8px;
+	}
 }
 
 .organization_structure_tree_element_text_container:hover {

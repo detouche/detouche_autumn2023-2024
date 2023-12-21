@@ -1,0 +1,1 @@
+export { ConfirmationWindow } from './ConfirmationWindow';
