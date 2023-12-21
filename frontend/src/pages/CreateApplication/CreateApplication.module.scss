@@ -22,10 +22,11 @@
 	}
 
 	.create_application_first_section {
-		width: 670px;
+		width: 673px;
 		margin-right: 50px;
 		max-height: 606px;
 		overflow-x: auto;
+		padding-left: 3px;
 	}
 
 	.attention_figure {
@@ -358,6 +359,7 @@
 	}
 
 	.create_application_date_start_input {
+		cursor: pointer;
 		border-radius: 8px;
 		border: 1px solid #e3e3e3;
 		background: #fff;
@@ -368,11 +370,16 @@
 		width: 268px;
 	}
 
+	input::-webkit-calendar-picker-indicator {
+		cursor: pointer;
+	}
+
 	.create_application_date_start_input_container {
 		margin-top: 8px;
 	}
 
 	.create_application_date_end_input {
+		cursor: pointer;
 		padding: 14px;
 		border-radius: 8px;
 		border: 1px solid #e3e3e3;
@@ -404,6 +411,7 @@
 	}
 
 	.create_application_price_input {
+		cursor: pointer;
 		border-radius: 8px;
 		border: 1px solid #e3e3e3;
 		background: #fff;
@@ -449,6 +457,7 @@
 	}
 
 	.create_application_object_teaching_input {
+		cursor: pointer;
 		border-radius: 8px;
 		border: 1px solid #e3e3e3;
 		background: #fff;
@@ -470,26 +479,34 @@
 	.create_application_object_teaching_container {
 		margin-top: 20px;
 	}
+
+	// .create_application_course_select_container {
+	// 	padding-left: 3px;
+	// }
+
+	.attention_figure_none {
+		display: none;
+	}
 }
 
 .create_application_date_end_input:focus {
 	outline: none;
-	border: 1px solid #323232;
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
 }
 
 .create_application_date_start_input:focus {
 	outline: none;
-	border: 1px solid #323232;
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
 }
 
 .create_application_price_input:focus {
 	outline: none;
-	border: 1px solid #323232;
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
 }
 
 .create_application_object_teaching_input:focus {
 	outline: none;
-	border: 1px solid #323232;
+	box-shadow: 0px 0px 0px 3px var(--input-hover-box-shadow-color);
 }
 
 *::-webkit-scrollbar,

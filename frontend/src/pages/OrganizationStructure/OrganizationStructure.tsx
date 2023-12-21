@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import style from './OrganizationStructure.module.scss';
 
@@ -8,13 +9,39 @@ import { Header } from '../../components/Header';
 import { OrgStructureSidebarChildren } from '../../components/OrgStructureSidebar/OrgStructureSidebarChildren';
 import { OrgStructureSidebarUser } from '../../components/OrgStructureSidebar/OrgStructureSidebarUser';
 
-
 export function OrganizationStructure() {
 	const [treeData, setTreeData] = useState([{}]);
-	const [userData, setUserData] = useState([{}]);
 	const [showChildrenSidebar, setShowChildrenSidebar] = useState(false);
 	const [showUserSidebar, setShowUserSidebar] = useState(false);
 	const [nodeElementID, setNodeElementID] = useState(0);
+
+	const [selectedFile, setSelectedFile] = useState(null);
+
+	const navigate = useNavigate();
+
+	const handleFileChange = file => {
+		setSelectedFile(file);
+	};
+
+	const handleExport = event => {
+		axios
+			.get('http://localhost:8000/org/structure-export', {
+				withCredentials: true,
+				responseType: 'blob',
+			})
+			.then(response => {
+				let fileName = `OrgStructure ${new Date(
+					Date.now()
+				).toLocaleString()}.xlsx`;
+				const url = window.URL.createObjectURL(response.data);
+				const link = document.createElement('a');
+				link.href = url;
+				link.setAttribute('download', fileName);
+				document.body.appendChild(link);
+				link.click();
+				link.remove();
+			});
+	};
 
 	const openChildrenSidebar = children_ID => {
 		setNodeElementID(children_ID);
@@ -22,13 +49,12 @@ export function OrganizationStructure() {
 		setShowChildrenSidebar(true);
 	};
 
-	const openUserSidebar = (user_ID, user_data) => {
+	const openUserSidebar = user_ID => {
 		setNodeElementID(user_ID);
-		setUserData(user_data);
 		setShowChildrenSidebar(false);
 		setShowUserSidebar(true);
 	};
-	
+
 	useEffect(() => {
 		const getTree = async () => {
 			try {
@@ -54,7 +80,7 @@ export function OrganizationStructure() {
 	}, []);
 	return (
 		<div>
-			<Drawer PageID={8} />
+			<Drawer />
 			{showChildrenSidebar && (
 				<OrgStructureSidebarChildren
 					children_ID={nodeElementID}
@@ -65,14 +91,68 @@ export function OrganizationStructure() {
 				<OrgStructureSidebarUser
 					user_ID={nodeElementID}
 					onClose={() => setShowUserSidebar(false)}
-					user_data={userData}
 				/>
 			)}
 			<Header />
 			<div className={style.organization_structure_container}>
-				<h1 className={style.organization_structure_title}>
-					Структура организации
-				</h1>
+				<div className={style.organization_structure_title_container}>
+					<h1 className={style.organization_structure_title}>
+						Структура организации
+					</h1>
+					<div className={style.organization_structure_file_button_container}>
+						<div
+							className={
+								style.organization_structure_file_download_button_container
+							}
+						>
+							<CustomFileInput onChange={handleFileChange} />
+						</div>
+						<div
+							className={
+								style.organization_structure_file_upload_button_container
+							}
+						>
+							<button
+								className={style.organization_structure_file_upload_button}
+								onClick={handleExport}
+							>
+								<img src='/img/file_upload.svg' alt='file_upload' />
+								Экспорт
+							</button>
+						</div>
+					</div>
+				</div>
+				<ul className={style.organization_structure_action_button_group}>
+					<li className={style.organization_structure_action_button_container}>
+						<button
+							className={style.organization_structure_action_button}
+							onClick={() => navigate('/organization-structure-create-user')}
+						>
+							<img src='/img/add_black.svg' alt='add' />
+							Добавить сотрудника
+						</button>
+					</li>
+					<li className={style.organization_structure_action_button_container}>
+						<button
+							className={style.organization_structure_action_button}
+							onClick={() =>
+								navigate('/organization-structure-create-children')
+							}
+						>
+							<img src='/img/add_black.svg' alt='add' />
+							Добавить подразделение
+						</button>
+					</li>
+					<li className={style.organization_structure_action_button_container}>
+						<button
+							className={style.organization_structure_action_button}
+							onClick={() => navigate('/organization-structure-staff-unit')}
+						>
+							<img src='/img/assignment_ind.svg' alt='assignment_ind' />
+							Должности
+						</button>
+					</li>
+				</ul>
 				<div className={style.organization_structure_tree_container}>
 					{treeData !== null ? (
 						<Tree
@@ -99,15 +179,15 @@ function Tree({
 }) {
 	return (
 		<ul>
-			{treeData !== null ? (
+			{treeData !== null &&
 				treeData.map(treeData => (
 					<TreeNodeChildren
 						node={treeData}
 						openChildrenSidebar={openChildrenSidebar}
 						openUserSidebar={openUserSidebar}
 					/>
-				))
-			) : (
+				))}
+			{treeData === null && (employees === null || employees.length === 0) && (
 				<h2 className={style.organization_structure_title_h2_error}>
 					Нет данных
 				</h2>
@@ -139,7 +219,7 @@ function TreeNodeChildren({ node, openChildrenSidebar, openUserSidebar }) {
 	const getChildren = async id => {
 		try {
 			const responseData = await axios.post(
-				`http://localhost:8000/org/get_child?division_id=${id}`,
+				`http://localhost:8000/org/get-child?division_id=${id}`,
 				{},
 				{
 					withCredentials: true,
@@ -204,7 +284,6 @@ function TreeNodeChildren({ node, openChildrenSidebar, openUserSidebar }) {
 
 function TreeNodeEmployees({ node, openUserSidebar }) {
 	const { name, surname, patronymic, id } = node;
-	const userData = node
 	return (
 		<>
 			<div className={style.organization_structure_tree_element_container}>
@@ -213,11 +292,11 @@ function TreeNodeEmployees({ node, openUserSidebar }) {
 				</div>
 				<div
 					className={style.organization_structure_tree_element_text_container}
-					onClick={() => openUserSidebar(id, userData)}
+					onClick={() => openUserSidebar(id)}
 				>
 					<div>
 						<p className={style.organization_structure_tree_element_title}>
-							{name} {surname} {patronymic}
+							{surname} {name} {patronymic}
 						</p>
 					</div>
 					<div>
@@ -233,3 +312,53 @@ function TreeNodeEmployees({ node, openUserSidebar }) {
 		</>
 	);
 }
+
+const CustomFileInput = ({ onChange }) => {
+	const fileInputRef = useRef(null);
+
+	const handleChange = e => {
+		const file = e.target.files[0];
+		if (onChange) {
+			onChange(file);
+			handleUpload(file);
+		}
+	};
+
+	const handleUpload = file => {
+		if (file.length === 0) {
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append('file', file);
+		axios.post('http://localhost:8000/org/structure-upload', formData, {
+			withCredentials: true,
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+		window.location.reload();
+	};
+
+	const handleClick = () => {
+		fileInputRef.current.click();
+	};
+
+	return (
+		<div>
+			<input
+				type='file'
+				ref={fileInputRef}
+				style={{ display: 'none' }}
+				onChange={handleChange}
+			/>
+			<button
+				className={style.organization_structure_file_download_button}
+				onClick={handleClick}
+			>
+				<img src='/img/file_download.svg' alt='file_download' />
+				Импорт
+			</button>
+		</div>
+	);
+};

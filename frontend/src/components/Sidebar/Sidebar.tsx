@@ -34,7 +34,6 @@ export function Sidebar({ course_id, onClose }) {
 	};
 
 	const buttonCommandClick = async command => {
-		console.log(`Нажата кнопка "${command}"`);
 		try {
 			const response = await axios.post(
 				`http://localhost:8000/docs/execute?document_id=${course_id}&command=${command}`,

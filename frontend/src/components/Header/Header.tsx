@@ -25,10 +25,40 @@ export function Header() {
 			navigate('/login');
 		}
 	};
+
+	const handleClickPrimaryButton = path => {
+		navigate(path);
+	};
+	
 	return (
 		<div className={style.main}>
 			<div className={style.header_container}>
 				<ul className={style.header_container__content}>
+					<li
+						className={style.header_container__content_group}
+						onClick={() => handleClickPrimaryButton('/organization-structure')}
+					>
+						<button className={style.header_container__content_button}>
+							<img
+								className={style.header_container__content_icon}
+								alt='person'
+								src='/img/workspaces_filled.svg'
+							/>
+							<p className={style.header_container__content_text}>
+								Структура организации
+							</p>
+						</button>
+					</li>
+					<li className={style.header_container__content_group}>
+						<button className={style.header_container__content_button}>
+							<img
+								className={style.header_container__content_icon}
+								src='/img/calendar_today.svg'
+								alt='calendar'
+							/>
+							<p className={style.header_container__content_text}>Календарь</p>
+						</button>
+					</li>
 					<li className={style.header_container__content_group}>
 						<button className={style.header_container__content_button}>
 							<img
