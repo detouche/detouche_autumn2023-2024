@@ -18,12 +18,14 @@ import { AllApplication } from './pages/AllApplication';
 import { OrganizationStructure } from './pages/OrganizationStructure';
 
 import './App.module.scss';
+import {CalendarPage} from "./pages/CalendarPage";
 
 function App() {
 	return (
 		<>
 			<Routes>
 				<Route path='/login' element={<Login />} />
+				<Route path='/calendar' element={<CalendarPage />} />
 				<Route path='/check-email' element={<CheckEmail />} />
 				<Route path='/registration' element={<Registration />} />
 				<Route path='/password-reset' element={<PasswordReset />} />
