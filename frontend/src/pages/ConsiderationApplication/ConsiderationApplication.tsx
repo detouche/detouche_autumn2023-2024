@@ -19,6 +19,18 @@ export function ConsiderationApplication() {
 	const [courseID, setCourseID] = useState(0);
 	const [showSidebar, setShowSidebar] = useState(false);
 
+	enum DocumentStatus {
+		ON_CONFIRMATION = style.approve_confirmation_status,
+		ON_MANAGER_APPROVE = style.approve_confirmation_status,
+		ON_DIRECTOR_APPROVE = style.approve_confirmation_status,
+		ON_ADMIN_APPROVE = style.approve_confirmation_status,
+		ON_ADMIN_IMPLEMENTING = style.approve_confirmation_status,
+		COMPLETED = style.completed_status,
+		REJECTED = style.rejected_status,
+	}
+
+
+
 	useEffect(() => {
 		const getCourseData = async () => {
 			try {
@@ -97,6 +109,19 @@ export function ConsiderationApplication() {
 								>
 									<p>Учебный центр</p>
 								</td>
+								<td
+									className={
+										style.consideration_application_table_column_course_creation_date
+									}>
+									<p>Дата создания</p>
+								</td>
+								<td
+									className={
+										style.consideration_application_table_column_course_author
+									}>
+									<p>Автор документа</p>
+								</td>
+
 							</tr>
 						</thead>
 						{coursesData !== null &&
@@ -117,10 +142,15 @@ export function ConsiderationApplication() {
 											style.consideration_application_table_content_state
 										}
 									>
-										<p>
-											<div className={style.status_figure}></div>
-											{data.status.text}
-										</p>
+										<div style={{
+											display: "flex"
+										}}
+										>
+											<p className={DocumentStatus[data.status.type]}>
+												{data.status.text}
+											</p>
+										</div>
+
 									</td>
 									<td
 										className={
@@ -142,6 +172,21 @@ export function ConsiderationApplication() {
 										}
 									>
 										<p>{data.education_center}</p>
+									</td>
+
+									<td
+										className={
+											style.consideration_application_table_content_course_creation_date
+										}>
+										<p>{
+											`${new Date(data.creation_date).getUTCDate()}.${new Date(data.creation_date).getUTCMonth()}.${new Date(data.creation_date).getUTCFullYear()}`
+										}</p>
+									</td>
+									<td
+										className={
+											style.consideration_application_table_content_course_author
+										}>
+										<p>{data.author}</p>
 									</td>
 								</tr>
 							))}

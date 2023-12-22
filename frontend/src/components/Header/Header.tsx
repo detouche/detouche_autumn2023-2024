@@ -49,7 +49,10 @@ export function Header() {
 							</p>
 						</button>
 					</li>
-					<li className={style.header_container__content_group}>
+					<li
+						className={style.header_container__content_group}
+						onClick={() => handleClickPrimaryButton('/calendar')}
+					>
 						<button className={style.header_container__content_button}>
 							<img
 								className={style.header_container__content_icon}

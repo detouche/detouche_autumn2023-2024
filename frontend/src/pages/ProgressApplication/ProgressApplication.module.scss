@@ -1,5 +1,6 @@
 .progress_application_container {
 	margin-left: 104px;
+	margin-right: 40px;
 	margin-top: 40px;
 	height: 100%;
 
@@ -33,7 +34,7 @@
 	}
 
 	.progress_application_table_column p {
-		margin: 0px;
+		margin: 0;
 		-webkit-line-clamp: 1;
 		-webkit-box-orient: vertical;
 		display: -webkit-box;
@@ -43,13 +44,14 @@
 
 	.progress_application_table_container {
 		margin-top: 30px;
-		width: 1725px;
+		//width: 1725px;
+		width: 100%;
 		height: 700px;
 		overflow-x: auto;
 	}
 
 	.progress_application_table {
-		width: 1714px;
+		//width: 1714px;
 	}
 
 	.progress_application_table thead {
@@ -58,28 +60,38 @@
 	}
 
 	.progress_application_table_column_course_title {
-		width: 500px;
-		max-width: 500px;
+		width: 23%;
+		max-width: 23%;
 	}
 
 	.progress_application_table_column_state {
-		width: 388px;
-		max-width: 388px;
+		width: 16%;
+		max-width: 16%;
 	}
 
 	.progress_application_table_column_course_type {
-		width: 200px;
-		max-width: 200px;
+		width: 9%;
+		max-width: 9%;
 	}
 
 	.progress_application_table_column_course_category {
-		width: 300px;
-		max-width: 300px;
+		width: 13%;
+		max-width: 13%;
 	}
 
 	.progress_application_table_column_course_education_center {
-		width: 348px;
-		max-width: 348px;
+		width: 13%;
+		max-width: 13%;
+	}
+
+	.progress_application_table_column_course_author {
+		width: 13%;
+		max-width: 13%;
+	}
+
+	.progress_application_table_column_course_creation_date {
+		width: 13%;
+		max-width: 13%;
 	}
 
 	.progress_application_table_content {
@@ -114,38 +126,48 @@
 	}
 
 	.progress_application_table_content_course_title {
-		width: 500px;
-		max-width: 500px;
+		width: 23%;
+		max-width: 23%;
 	}
 
 	.progress_application_table_content_state {
-		width: 388px;
-		max-width: 388px;
+		width: 16%;
+		max-width: 16%;
 	}
 
 	.progress_application_table_content_state p {
-		display: flex;
-		align-items: center;
+		//display: flex;
+		//align-items: center;
 	}
 
 	.progress_application_table_content_state {
-		width: 200px;
-		max-width: 200px;
+		width: 9%;
+		max-width: 9%;
 	}
 
 	.progress_application_table_content_course_type {
-		width: 200px;
-		max-width: 200px;
+		width: 9%;
+		max-width: 9%;
 	}
 
 	.progress_application_table_content_course_category {
-		width: 300px;
-		max-width: 300px;
+		width: 13%;
+		max-width: 13%;
 	}
 
 	.progress_application_table_content_course_education_center {
-		width: 348px;
-		max-width: 348px;
+		width: 13%;
+		max-width: 13%;
+	}
+
+	.progress_application_table_content_course_author {
+		width: 13%;
+		max-width: 13%;
+	}
+
+	.progress_application_table_content_course_creation_date {
+		width: 13%;
+		max-width: 13%;
 	}
 
 	.progress_application_title_h2_error {
@@ -216,4 +238,52 @@ $duration: 1.4s;
    stroke-dashoffset: $offset;
    transform:rotate(450deg);
  }
+}
+
+%status {
+	border-radius: 10000px;
+	color: var(--Color, #FFF);
+
+	font-family: Nunito Sans, serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	//line-height: 100%;
+
+	-webkit-line-clamp: initial !important;
+
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+	padding: 4px 10px;
+}
+
+.approve_confirmation_status {
+	background: #F59D0E;
+	@extend %status
+}
+.approve_confirmation_status::before {
+	margin-right: 4px;
+	content: url("/img/statuses/av_timer.svg");
+	vertical-align: middle;
+}
+
+.rejected_status {
+	background: #E85252;
+	@extend %status
+}
+.rejected_status::before {
+	margin-right: 4px;
+	content: url("/img/statuses/cancel.svg");
+	vertical-align: middle;
+}
+
+.completed_status {
+	background: #2E954B;
+	@extend %status
+}
+.completed_status::before {
+	margin-right: 4px;
+	content: url("/img/statuses/check_circle.svg");
+	vertical-align: middle;
 }
