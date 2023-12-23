@@ -203,7 +203,6 @@ export function OrganizationStructureCreateUser() {
 							value={userSurname}
 							onChange={e => setUserSurname(e.target.value)}
 							placeholder='Введите фамилию'
-							maxLength='41'
 						/>
 					</div>
 					<div
@@ -219,7 +218,6 @@ export function OrganizationStructureCreateUser() {
 							value={userName}
 							onChange={e => setUserName(e.target.value)}
 							placeholder='Введите имя'
-							maxLength='41'
 						/>
 					</div>
 					<div
@@ -235,7 +233,6 @@ export function OrganizationStructureCreateUser() {
 							value={userPatronymic}
 							onChange={e => setUserPatronymic(e.target.value)}
 							placeholder='Введите отчество'
-							maxLength='41'
 						/>
 					</div>
 					<div
@@ -251,7 +248,6 @@ export function OrganizationStructureCreateUser() {
 							value={userEmail}
 							onChange={e => setUserEmail(e.target.value)}
 							placeholder='Введите email'
-							maxLength='41'
 						/>
 					</div>
 					<div

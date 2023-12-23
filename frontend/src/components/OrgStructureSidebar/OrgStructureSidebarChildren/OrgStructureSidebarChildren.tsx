@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
 
+import style from './OrgStructureSidebarChildren.module.scss';
+
 import { useDebounce } from '../../../hooks/UseDebounce';
 import { Input } from '../../UI/Input';
 import { ConfirmationWindow } from '../../ConfirmationWindow';
 import { InputCheckbox } from '../../UI/InputCheckbox';
 
-import style from './OrgStructureSidebarChildren.module.scss';
+
 
 export function OrgStructureSidebarChildren({ children_ID, onClose }) {
 	const [childrenData, setChildrenData] = useState([{}]);
@@ -46,6 +48,7 @@ export function OrgStructureSidebarChildren({ children_ID, onClose }) {
 		childrenHeadEmployeeSelectedValue,
 		setChildrenHeadEmployeeSelectedValue,
 	] = useState(null);
+
 	useEffect(() => {
 		const getChildrenData = async () => {
 			try {
@@ -314,7 +317,6 @@ export function OrgStructureSidebarChildren({ children_ID, onClose }) {
 								value={editingChildrenName}
 								onChange={e => setEditingChildrenName(e.target.value)}
 								placeholder='Введите название подразделения'
-								maxLength='41'
 							/>
 						</div>
 						<div className={style.sidebar_description_group}>

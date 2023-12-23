@@ -347,7 +347,6 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 								value={editingUserSurname}
 								onChange={e => setEditingUserSurname(e.target.value)}
 								placeholder='Введите фамилию'
-								maxLength='41'
 							/>
 						</div>
 						<div className={style.sidebar_description_group}>
@@ -357,7 +356,6 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 								value={editingUserName}
 								onChange={e => setEditingUserName(e.target.value)}
 								placeholder='Введите имя'
-								maxLength='41'
 							/>
 						</div>
 						<div className={style.sidebar_description_group}>
@@ -367,7 +365,6 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 								value={editingUserPatronymic}
 								onChange={e => setEditingUserPatronymic(e.target.value)}
 								placeholder='Введите отчество'
-								maxLength='41'
 							/>
 						</div>
 						<div className={style.sidebar_description_group}>
@@ -377,7 +374,6 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 								value={editingUserEmail}
 								onChange={e => setEditingUserEmail(e.target.value)}
 								placeholder='Введите email'
-								maxLength='41'
 							/>
 						</div>
 						<div className={style.sidebar_description_group}>

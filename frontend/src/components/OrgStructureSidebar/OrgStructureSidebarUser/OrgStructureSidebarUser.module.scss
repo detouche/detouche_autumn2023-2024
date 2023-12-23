@@ -133,7 +133,7 @@
 	}
 
 	.sidebar_description_group input {
-		width: 613px;
+		width: 616px;
 	}
 
 	.sidebar_description {
@@ -210,6 +210,7 @@
 	// }
 	.sidebar_date_group {
 		display: flex;
+		justify-content: space-evenly;
 	}
 
 	.sidebar_date_start_group {
