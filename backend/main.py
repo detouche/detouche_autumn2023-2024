@@ -4,6 +4,7 @@ from fastapi import FastAPI, Depends
 from starlette.middleware.cors import CORSMiddleware
 
 from auth.services.users_api import get_users_router
+from cal.services.cal import calendar_router
 from company.repository.company import DivisionRepository
 from company.services.org_structure import org_router
 from config import settings
@@ -73,6 +74,7 @@ app.include_router(org_router, tags=['org-structure'])
 app.include_router(search_document_router, tags=['search-document'])
 app.include_router(execute_router, tags=['course-application'])
 app.include_router(document_report_router, tags=['document-report'])
+app.include_router(calendar_router, tags=['calendar'])
 
 
 @app.get("/protected-route")
