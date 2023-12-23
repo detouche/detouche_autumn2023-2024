@@ -230,7 +230,6 @@ export function OrganizationStructureStaffUnit() {
 								value={staffUnitName}
 								onChange={e => setStaffUnitName(e.target.value)}
 								placeholder='Введите название должности'
-								maxLength='41'
 							/>
 							<div
 								className={style.organization_structure_staff_unit_button_group}

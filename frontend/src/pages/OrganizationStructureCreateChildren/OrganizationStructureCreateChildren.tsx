@@ -134,7 +134,6 @@ export function OrganizationStructureCreateChildren() {
 								value={childrenName}
 								onChange={e => setChildrenName(e.target.value)}
 								placeholder='Введите название подразделения'
-								maxLength='41'
 							/>
 						</div>
 						<div className={style.organization_structure_create_children_description_group}>

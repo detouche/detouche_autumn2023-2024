@@ -27,6 +27,7 @@
 		margin-top: 24px;
 		display: flex;
 		max-width: 676px;
+		margin-bottom: 30px;
 	}
 
 	.organization_structure_create_user_button_affirmative {
@@ -60,7 +61,7 @@
 	}
 
 	.organization_structure_create_user_description_group input {
-		width: 613px;
+		width: 624px;
 	}
 
 	.organization_structure_create_user_description {
@@ -74,6 +75,7 @@
 
 	.organization_structure_create_user_date_group {
 		display: flex;
+		justify-content: space-between;
 	}
 
 	.organization_structure_create_user_date_start_group {
