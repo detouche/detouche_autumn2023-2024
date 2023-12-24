@@ -20,7 +20,9 @@ export function CreateApplication() {
 	const [memberID, setMemberID] = useState(0);
 	const [courseData, setCourseData] = useState([]);
 	const [membersOptionsSelect, setMembersOptionsSelect] = useState([]);
-	const [coursesOptionsSelect, setCoursesOptionsSelect] = useState([]);
+	const [coursesOptionsSelect, setCoursesOptionsSelect] = useState([
+		{ value: -1, label: 'Свой курс' },
+	]);
 	const [userName, setUserName] = useState({
 		id: '',
 		title: '',
@@ -247,7 +249,7 @@ export function CreateApplication() {
 					}))
 				);
 			} catch (error) {
-				setCoursesOptionsSelect({ value: -1, label: 'Свой курс' });
+				setCoursesOptionsSelect([{ value: -1, label: 'Свой курс' }]);
 			}
 		};
 		getCoursesOptionsSelect();

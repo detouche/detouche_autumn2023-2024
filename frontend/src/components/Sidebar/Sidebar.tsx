@@ -12,6 +12,7 @@ export function Sidebar({ course_id, onClose }) {
 	const [directorName, setDirectorName] = useState('');
 	const [administratorName, setAdministratorName] = useState('');
 	const [memberData, setMemberData] = useState({});
+	const [editingCourseDate, setEditingCourseDate] = useState(false);
 
 	enum DocumentStatus {
 		ON_CONFIRMATION = style.approve_confirmation_status,
@@ -143,7 +144,7 @@ export function Sidebar({ course_id, onClose }) {
 	console.log(courseDataText, 'courseDataText');
 	console.log(courseDataCommand, 'courseDataCommand');
 	console.log(courseData, 'courseData');
-	console.log(memberData)
+	console.log(memberData);
 	return (
 		<div className={style.main}>
 			<div className={style.sidebar_container}>
@@ -165,7 +166,7 @@ export function Sidebar({ course_id, onClose }) {
 							</p>
 						</div>
 					</div>
-					{courseDataCommand !== null && (
+					{courseDataCommand !== null && editingCourseDate === false && (
 						<div>
 							<ul className={style.sidebar_button_group}>
 								{courseDataCommand.map((item, index) => {
@@ -187,13 +188,17 @@ export function Sidebar({ course_id, onClose }) {
 										</li>
 									);
 								})}
-								{courseData.state === "ON_CONFIRMATION" && (
-									<li>
-										<button className={style.sidebar_button_more}>
-											<img src='/img/edit.svg' alt='edit' />
-										</button>
-									</li>
-								)}
+								{courseData.state === 'ON_CONFIRMATION' &&
+									editingCourseDate === false && (
+										<li>
+											<button
+												className={style.sidebar_button_more}
+												onClick={() => setEditingCourseDate(true)}
+											>
+												<img src='/img/edit.svg' alt='edit' />
+											</button>
+										</li>
+									)}
 							</ul>
 						</div>
 					)}
