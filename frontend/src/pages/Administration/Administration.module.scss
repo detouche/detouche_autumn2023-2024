@@ -1,0 +1,43 @@
+.administration_container {
+	margin-left: 104px;
+	margin-top: 40px;
+
+	.administration_title {
+		color: var(--page-primary-color);
+		font-size: 32px;
+		font-weight: 600;
+		margin: 0px;
+	}
+
+	.administration_title_container {
+		align-items: center;
+	}
+
+	.administration_upload_button_container {
+		margin-top: 30px;
+		display: flex;
+		align-items: center;
+	}
+
+	.administration_upload_button {
+		align-items: center;
+		display: flex;
+		color: #5c5f62;
+		font-size: 16px;
+		font-weight: 600;
+		cursor: pointer;
+		border: none;
+		background-color: transparent;
+		margin-left: 18px;
+	}
+
+	.administration_upload_title {
+		color: #000;
+		font-size: 20px;
+		font-weight: 600;
+	}
+
+	.administration_upload_button_img {
+		margin-right: 8px;
+	}
+}

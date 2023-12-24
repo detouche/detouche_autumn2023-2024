@@ -18,6 +18,7 @@ import { OrganizationStructure } from './pages/OrganizationStructure';
 import { OrganizationStructureCreateUser } from './pages/OrganizationStructureCreateUser';
 import { OrganizationStructureCreateChildren } from './pages/OrganizationStructureCreateChildren';
 import { OrganizationStructureStaffUnit } from './pages/OrganizationStructureStaffUnit';
+import { Administration } from './pages/Administration';
 
 import './App.module.scss';
 import {CalendarPage} from "./pages/CalendarPage";
@@ -62,6 +63,7 @@ function App() {
 					path='/organization-structure-staff-unit'
 					element={<OrganizationStructureStaffUnit />}
 				/>
+				<Route path='/administration' element={<Administration />} />
 				<Route path='*' element={<NotFound404 />} />
 			</Routes>
 		</>

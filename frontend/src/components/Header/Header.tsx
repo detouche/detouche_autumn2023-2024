@@ -62,6 +62,21 @@ export function Header() {
 							<p className={style.header_container__content_text}>Календарь</p>
 						</button>
 					</li>
+					<li
+						className={style.header_container__content_group}
+						onClick={() => handleClickPrimaryButton('/administration')}
+					>
+						<button className={style.header_container__content_button}>
+							<img
+								className={style.header_container__content_icon}
+								src='/img/administration.svg'
+								alt='administration'
+							/>
+							<p className={style.header_container__content_text}>
+								Администрирование
+							</p>
+						</button>
+					</li>
 					<li className={style.header_container__content_group}>
 						<button className={style.header_container__content_button}>
 							<img
