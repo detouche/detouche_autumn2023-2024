@@ -33,7 +33,7 @@ async def get_events(filters: EventFiltersSchema, date: datetime, member: UUID, 
     for document in documents:
         course = await CourseRepository().get_filtered(document.course_id, filters.model_dump())
         print(course)
-        if course and course.start_date <= date <= course.end_date:
+        if course and course.start_date.month <= date.month <= course.end_date.month:
             result.append(EventSchema.to_read_model(document, course))
         else:
             raise HTTPException(status_code=404, detail="Документы удовлетворяющие фильтрам не найдены")
