@@ -64,7 +64,7 @@ export function Drawer({ ...props }) {
 						<img src='/img/work.svg' alt='work' />
 						<p className={style.drawer_icon_list__element_text}> В работе </p>
 					</li>
-					<li
+					{/* <li
 						onClick={() => setActivePageDrawer(6)}
 						className={`${style.drawer_icon_list__element} ${
 							6 === activePageDrawer ? style.drawer_active_page : ''
@@ -74,7 +74,7 @@ export function Drawer({ ...props }) {
 						<p className={style.drawer_icon_list__element_text}>
 							История заявок
 						</p>
-					</li>
+					</li> */}
 					<li
 						id='7'
 						onClick={() => handleClickPrimaryButton(7, '/all-application')}
@@ -85,7 +85,7 @@ export function Drawer({ ...props }) {
 						<img src='/img/layers.svg' alt='layers' />
 						<p className={style.drawer_icon_list__element_text}> Все заявки </p>
 					</li>
-					<li
+					{/* <li
 						onClick={() => setActivePageDrawer(9)}
 						className={`${style.drawer_icon_list__element} ${
 							9 === activePageDrawer ? style.drawer_active_page : ''
@@ -93,7 +93,7 @@ export function Drawer({ ...props }) {
 					>
 						<img src='/img/badge.svg' alt='badge' />
 						<p className={style.drawer_icon_list__element_text}> ВрИО</p>
-					</li>
+					</li> */}
 				</ul>
 			</div>
 		</div>

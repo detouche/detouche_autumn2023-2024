@@ -140,9 +140,9 @@ export function Login() {
 					<NavigateButton path='/password-reset'>Забыли пароль?</NavigateButton>
 					<NavigateButton path='/registration'>Регистрация</NavigateButton>
 				</div>
-				<Button type={'submit'} onClick={message}>
+				{/* <Button type={'submit'} onClick={message}>
 					Кнопка защищенного роута
-				</Button>
+				</Button> */}
 			</div>
 		</div>
 	);

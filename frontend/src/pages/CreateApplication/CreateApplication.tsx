@@ -990,7 +990,7 @@ export function CreateApplication() {
 															<Select
 																classNamePrefix='custom-select'
 																options={categoryOptionsSelect}
-																placeholder='Выберите тип курса'
+																placeholder='Выберите категорию курса'
 																onChange={onChangeCategorySelect}
 																value={getCategory()}
 															/>

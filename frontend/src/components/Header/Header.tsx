@@ -90,15 +90,6 @@ export function Header() {
 						</button>
 					</li>
 					<li className={style.header_container__content_group}>
-						<button className={style.header_container__content_button}>
-							<img
-								className={style.header_container__content_icon}
-								src='/img/setting.svg'
-								alt='setting'
-							/>
-						</button>
-					</li>
-					<li className={style.header_container__content_group}>
 						<button
 							className={style.header_container__content_button}
 							onClick={() => logoutSystem()}

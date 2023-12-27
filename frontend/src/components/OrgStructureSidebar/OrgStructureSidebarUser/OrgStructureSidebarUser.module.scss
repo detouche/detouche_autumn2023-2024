@@ -1,20 +1,22 @@
 .main {
-	height: 100vh;
+	height: calc(100vh - 70px);
 	position: absolute;
 	z-index: 998;
 	width: 768px;
 	right: 0;
+	margin-top: 70px;
+	box-shadow: -5px 0px 35.5px 0px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar_container {
 	background-color: #f9f9f9;
-	height: 986px;
+	height: 916px;
 	height: 100%;
 	width: 100%;
 
 	.sidebar_content {
 		padding: 48px 46px;
-		height: 829px;
+		height: 739px;
 		overflow-x: auto;
 	}
 
