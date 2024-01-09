@@ -32,7 +32,7 @@ async def structure_upload(file: UploadFile):  # , user: User = Depends(current_
 
 
 @org_router.get("/structure-export")
-async def structure_export(user: User = Depends(current_user)):
+async def structure_export():
     buffer = await export_org_structure()
     return Response(buffer.getvalue(),
                     media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -297,11 +297,9 @@ async def get_head_employee_ids(employee_id: UUID):
         return result.scalars().all()
 
 
-
 class SearchOptionEnum(Enum):
     ADMIN = 'ADMIN'
     HEAD_EMPLOYEE = 'HEAD_EMPLOYEE'
-
 
 
 @org_router.get('/employee-search')
@@ -312,7 +310,8 @@ async def search_employees(term: str = '', limit: int = 5, option: SearchOptionE
         search_terms = term.split()
 
         for term in search_terms:
-            filters.append(or_(*[getattr(Employee, field).ilike(f"%{term.strip()}%") for field in ["name", "surname", "patronymic"]]))
+            filters.append(or_(*[getattr(Employee, field).ilike(f"%{term.strip()}%") for field in
+                                 ["name", "surname", "patronymic"]]))
 
         if option == SearchOptionEnum.ADMIN:
             filters.append(Employee.role_id == 2)
@@ -416,14 +415,16 @@ async def update_staff_unit(request: UpdateStaffUnitSchema):
 class DivisionSchema(BaseModel):
     id: UUID
     name: str
-    parent_division_id: UUID
+    parent_division_id: UUID | None
     head_employee_id: UUID
     status: bool
+
 
 class StaffUnitInfoSchema(BaseModel):
     id: UUID
     name: str
     division: DivisionSchema
+
 
 @org_router.get('/staff-unit/{id}')
 async def get_staff_unit(id: UUID) -> StaffUnitInfoSchema:
@@ -495,6 +496,7 @@ class CreateDivisionSchema(BaseModel):
     head_employee_id: UUID = None
     status: bool
 
+
 @org_router.post('/division')
 async def create_division(request: CreateDivisionSchema):
     try:
@@ -551,6 +553,7 @@ class UpdateDivisionSchema(BaseModel):
     head_employee_id: UUID
     status: bool
 
+
 @org_router.patch('/division')
 async def update_division(request: UpdateDivisionSchema):
     try:
@@ -599,7 +602,6 @@ async def update_division(request: UpdateDivisionSchema):
         'head_employee_id': request.head_employee_id,
         'status': request.status,
     })
-
 
 
 # class DivisionInfoSchema(BaseModel):
