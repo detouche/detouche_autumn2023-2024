@@ -20,7 +20,9 @@ export function CreateApplication() {
 	const [memberID, setMemberID] = useState(0);
 	const [courseData, setCourseData] = useState([]);
 	const [membersOptionsSelect, setMembersOptionsSelect] = useState([]);
-	const [coursesOptionsSelect, setCoursesOptionsSelect] = useState([]);
+	const [coursesOptionsSelect, setCoursesOptionsSelect] = useState([
+		{ value: -1, label: 'Свой курс' },
+	]);
 	const [userName, setUserName] = useState({
 		id: '',
 		title: '',
@@ -42,7 +44,6 @@ export function CreateApplication() {
 	const [courseName, setCourseName] = useState('');
 	const [courseDescription, setCourseDescription] = useState('');
 	const [educationCenter, setEducationCenter] = useState('');
-
 	const [typeDate, setTypeDate] = useState({});
 	const [categoryDate, setCategoryDate] = useState({});
 
@@ -247,7 +248,7 @@ export function CreateApplication() {
 					}))
 				);
 			} catch (error) {
-				setCoursesOptionsSelect({ value: -1, label: 'Свой курс' });
+				setCoursesOptionsSelect([{ value: -1, label: 'Свой курс' }]);
 			}
 		};
 		getCoursesOptionsSelect();
@@ -334,8 +335,8 @@ export function CreateApplication() {
 							title: courseData.title,
 							description: courseData.description,
 							cost: courseCost,
-							start_date: startDate,
-							end_date: endDate,
+							start_date: new Date(startDate),
+							end_date: new Date(endDate),
 							goal: courseGoal,
 							type: courseData.type,
 							category: courseData.category,
@@ -362,8 +363,8 @@ export function CreateApplication() {
 							title: courseName,
 							description: courseDescription,
 							cost: courseCost,
-							start_date: startDate,
-							end_date: endDate,
+							start_date: new Date(startDate),
+							end_date: new Date(endDate),
 							goal: courseGoal,
 							type: typeDate.id,
 							category: categoryDate.id,
@@ -563,7 +564,7 @@ export function CreateApplication() {
 									Цель обучения
 									<div
 										className={
-											courseGoal === ''
+											courseGoal.trim() === ''
 												? style.attention_figure
 												: style.attention_figure_none
 										}
@@ -607,7 +608,7 @@ export function CreateApplication() {
 									Стоимость обучения
 									<div
 										className={
-											courseCost === ''
+											courseCost.trim() === ''
 												? style.attention_figure
 												: style.attention_figure_none
 										}
@@ -618,7 +619,14 @@ export function CreateApplication() {
 									placeholder='Введите стоимость обучения'
 									className={style.create_application_price_input}
 									value={courseCost}
-									onChange={e => setCourseCost(e.target.value)}
+									onChange={e => {
+										const inputValue = e.target.value;
+										const regex = /^[0-9\b]+$/; // Регулярное выражение, позволяющее вводить только цифры
+
+										if (inputValue === '' || regex.test(inputValue)) {
+											setCourseCost(inputValue);
+										}
+									}}
 								/>
 							</div>
 							<div className={style.create_application_stages_section}>
@@ -988,7 +996,7 @@ export function CreateApplication() {
 															<Select
 																classNamePrefix='custom-select'
 																options={categoryOptionsSelect}
-																placeholder='Выберите тип курса'
+																placeholder='Выберите категорию курса'
 																onChange={onChangeCategorySelect}
 																value={getCategory()}
 															/>

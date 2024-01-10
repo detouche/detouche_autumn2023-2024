@@ -131,6 +131,26 @@
 		margin: 0px 20px;
 		margin-top: 40px;
 	}
+
+	.organization_structure_create_children_title_group {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.organization_structure_create_children_title_group_button {
+		display: flex;
+		margin-right: 10px;
+		color: #8f8d8d;
+		font-size: 24px;
+		font-weight: 400;
+		background-color: transparent;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		align-items: center;
+		margin-bottom: 16px;
+	}
 }
 
 .organization_structure_create_children_date_end_input:focus {

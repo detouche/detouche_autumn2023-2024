@@ -14,8 +14,32 @@ export function OrganizationStructure() {
 	const [showChildrenSidebar, setShowChildrenSidebar] = useState(false);
 	const [showUserSidebar, setShowUserSidebar] = useState(false);
 	const [nodeElementID, setNodeElementID] = useState(0);
-
 	const [selectedFile, setSelectedFile] = useState(null);
+	const [isAdmin, setIsAdmin] = useState(null);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				const response = await axios.get(`http://localhost:8000/users/me`, {
+					withCredentials: true,
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+				if (response.data.role.id === 2) {
+					setIsAdmin(true);
+				} else {
+					setIsAdmin(false);
+				}
+			} catch (error) {
+				setIsAdmin(false);
+			} finally {
+				setLoading(false);
+			}
+		}
+		fetchData();
+	}, []);
 
 	const navigate = useNavigate();
 
@@ -85,88 +109,106 @@ export function OrganizationStructure() {
 				<OrgStructureSidebarChildren
 					children_ID={nodeElementID}
 					onClose={() => setShowChildrenSidebar(false)}
+					isAdmin={isAdmin}
 				/>
 			)}
 			{showUserSidebar && (
 				<OrgStructureSidebarUser
 					user_ID={nodeElementID}
 					onClose={() => setShowUserSidebar(false)}
+					isAdmin={isAdmin}
 				/>
 			)}
-			<Header />
-			<div className={style.organization_structure_container}>
-				<div className={style.organization_structure_title_container}>
-					<h1 className={style.organization_structure_title}>
-						Структура организации
-					</h1>
-					<div className={style.organization_structure_file_button_container}>
-						<div
-							className={
-								style.organization_structure_file_download_button_container
-							}
-						>
-							<CustomFileInput onChange={handleFileChange} />
-						</div>
-						<div
-							className={
-								style.organization_structure_file_upload_button_container
-							}
-						>
-							<button
-								className={style.organization_structure_file_upload_button}
-								onClick={handleExport}
+			<Header PageID={1} />
+			{!loading && (
+				<div className={style.organization_structure_container}>
+					<div className={style.organization_structure_title_container}>
+						<h1 className={style.organization_structure_title}>
+							Структура организации
+						</h1>
+						{isAdmin && (
+							<div
+								className={style.organization_structure_file_button_container}
 							>
-								<img src='/img/file_upload.svg' alt='file_upload' />
-								Экспорт
-							</button>
-						</div>
+								<div
+									className={
+										style.organization_structure_file_download_button_container
+									}
+								>
+									<CustomFileInput onChange={handleFileChange} />
+								</div>
+								<div
+									className={
+										style.organization_structure_file_upload_button_container
+									}
+								>
+									<button
+										className={style.organization_structure_file_upload_button}
+										onClick={handleExport}
+									>
+										<img src='/img/file_upload.svg' alt='file_upload' />
+										Экспорт
+									</button>
+								</div>
+							</div>
+						)}
+					</div>
+					{isAdmin && (
+						<ul className={style.organization_structure_action_button_group}>
+							<li
+								className={style.organization_structure_action_button_container}
+							>
+								<button
+									className={style.organization_structure_action_button}
+									onClick={() =>
+										navigate('/organization-structure-create-user')
+									}
+								>
+									<img src='/img/add_black.svg' alt='add' />
+									Добавить сотрудника
+								</button>
+							</li>
+							<li
+								className={style.organization_structure_action_button_container}
+							>
+								<button
+									className={style.organization_structure_action_button}
+									onClick={() =>
+										navigate('/organization-structure-create-children')
+									}
+								>
+									<img src='/img/add_black.svg' alt='add' />
+									Добавить подразделение
+								</button>
+							</li>
+							<li
+								className={style.organization_structure_action_button_container}
+							>
+								<button
+									className={style.organization_structure_action_button}
+									onClick={() => navigate('/organization-structure-staff-unit')}
+								>
+									<img src='/img/assignment_ind.svg' alt='assignment_ind' />
+									Должности
+								</button>
+							</li>
+						</ul>
+					)}
+					<div className={style.organization_structure_tree_container}>
+						{treeData !== null ? (
+							<Tree
+								treeData={treeData}
+								openChildrenSidebar={openChildrenSidebar}
+								openUserSidebar={openUserSidebar}
+							/>
+						) : (
+							<h2 className={style.organization_structure_title_h2_error}>
+								Нет данных
+							</h2>
+						)}
 					</div>
 				</div>
-				<ul className={style.organization_structure_action_button_group}>
-					<li className={style.organization_structure_action_button_container}>
-						<button
-							className={style.organization_structure_action_button}
-							onClick={() => navigate('/organization-structure-create-user')}
-						>
-							<img src='/img/add_black.svg' alt='add' />
-							Добавить сотрудника
-						</button>
-					</li>
-					<li className={style.organization_structure_action_button_container}>
-						<button
-							className={style.organization_structure_action_button}
-							onClick={() =>
-								navigate('/organization-structure-create-children')
-							}
-						>
-							<img src='/img/add_black.svg' alt='add' />
-							Добавить подразделение
-						</button>
-					</li>
-					<li className={style.organization_structure_action_button_container}>
-						<button
-							className={style.organization_structure_action_button}
-							onClick={() => navigate('/organization-structure-staff-unit')}
-						>
-							<img src='/img/assignment_ind.svg' alt='assignment_ind' />
-							Должности
-						</button>
-					</li>
-				</ul>
-				<div className={style.organization_structure_tree_container}>
-					{treeData !== null ? (
-						<Tree
-							treeData={treeData}
-							openChildrenSidebar={openChildrenSidebar}
-							openUserSidebar={openUserSidebar}
-						/>
-					) : (
-						<h2 className={style.organization_structure_title_h2_error}>
-							Нет данных
-						</h2>
-					)}
-				</div>
-			</div>
+			)}
 		</div>
 	);
 }

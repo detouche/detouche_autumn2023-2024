@@ -33,7 +33,8 @@ export function AllApplication() {
 		const getCourseData = async () => {
 			try {
 				const response = await axios.post(
-					`http://localhost:8000/docs/search-document?request=all`, {},
+					`http://localhost:8000/docs/search-document?request=all`,
+					{},
 					{
 						withCredentials: true,
 						headers: {
@@ -71,27 +72,17 @@ export function AllApplication() {
 					>
 						<thead>
 							<tr className={style.all_application_table_column}>
-								<td
-									className={
-										style.all_application_table_column_course_title
-									}
-								>
+								<td className={style.all_application_table_column_course_title}>
 									<p>Название курса</p>
 								</td>
 								<td className={style.all_application_table_column_state}>
 									<p>Статус</p>
 								</td>
-								<td
-									className={
-										style.all_application_table_column_course_type
-									}
-								>
+								<td className={style.all_application_table_column_course_type}>
 									<p>Тип курса</p>
 								</td>
 								<td
-									className={
-										style.all_application_table_column_course_category
-									}
+									className={style.all_application_table_column_course_category}
 								>
 									<p>Направление обучения</p>
 								</td>
@@ -105,13 +96,13 @@ export function AllApplication() {
 								<td
 									className={
 										style.all_application_table_column_course_creation_date
-									}>
+									}
+								>
 									<p>Дата создания</p>
 								</td>
 								<td
-									className={
-										style.all_application_table_column_course_author
-									}>
+									className={style.all_application_table_column_course_author}
+								>
 									<p>Автор документа</p>
 								</td>
 							</tr>
@@ -123,18 +114,15 @@ export function AllApplication() {
 									onClick={() => openCourse(data.id)}
 								>
 									<td
-										className={
-											style.all_application_table_content_course_title
-										}
+										className={style.all_application_table_content_course_title}
 									>
 										<p>{data.title}</p>
 									</td>
-									<td
-										className={style.all_application_table_content_state}
-									>
-										<div style={{
-											display: "flex"
-										}}
+									<td className={style.all_application_table_content_state}>
+										<div
+											style={{
+												display: 'flex',
+											}}
 										>
 											<p className={DocumentStatus[data.status.type]}>
 												{data.status.text}
@@ -142,9 +130,7 @@ export function AllApplication() {
 										</div>
 									</td>
 									<td
-										className={
-											style.all_application_table_content_course_type
-										}
+										className={style.all_application_table_content_course_type}
 									>
 										<p>{data.course_type}</p>
 									</td>
@@ -165,15 +151,17 @@ export function AllApplication() {
 									<td
 										className={
 											style.all_application_table_content_course_creation_date
-										}>
-										<p>{
-											`${new Date(data.creation_date).getUTCDate()}.${new Date(data.creation_date).getUTCMonth()}.${new Date(data.creation_date).getUTCFullYear()}`
-										}</p>
+										}
+									>
+										<p>{`${new Date(data.creation_date).getUTCDate()}.${
+											new Date(data.creation_date).getUTCMonth() + 1
+										}.${new Date(data.creation_date).getUTCFullYear()}`}</p>
 									</td>
 									<td
 										className={
 											style.all_application_table_content_course_author
-										}>
+										}
+									>
 										<p>{data.author}</p>
 									</td>
 								</tr>

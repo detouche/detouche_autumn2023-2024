@@ -15,7 +15,7 @@
 	}
 
 	.organization_structure_create_user_content {
-		max-height: 820px;
+		max-height: 720px;
 		overflow-x: auto;
 		padding-left: 3px;
 	}
@@ -132,6 +132,33 @@
 	.organization_structure_create_user_date_line {
 		margin: 0px 20px;
 		margin-top: 40px;
+	}
+
+	.organization_structure_create_user_title_group {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.organization_structure_create_user_title_group_button {
+		display: flex;
+		margin-right: 10px;
+		color: #8f8d8d;
+		font-size: 24px;
+		font-weight: 400;
+		background-color: transparent;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		align-items: center;
+		margin-bottom: 16px;
+	}
+
+	.organization_structure_error__validation {
+		margin-top: 8px;
+		color: var(--primary-error-text-color);
+		font-size: 16px;
+		font-weight: 300;
 	}
 }
 

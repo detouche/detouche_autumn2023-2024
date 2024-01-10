@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
 
 import style from './OrganizationStructureCreateUser.module.scss';
 
@@ -8,6 +9,7 @@ import { useDebounce } from '../../hooks/UseDebounce';
 import { Drawer } from '../../components/Drawer';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/UI/Input';
+import { useInput } from '../../hooks/UseInput';
 import { ConfirmationWindow } from '../../components/ConfirmationWindow';
 
 export function OrganizationStructureCreateUser() {
@@ -28,6 +30,10 @@ export function OrganizationStructureCreateUser() {
 	const [userStaffUnitInputValue, setUserStaffUnitInputValue] = useState('');
 	const [selectedUserStaffUnitValue, setUserStaffUnitSelectedValue] =
 		useState(null);
+	const email = useInput('', {
+		correctEmail: true,
+	});
+	const [errorText, setErrorText] = useState('');
 
 	useEffect(() => {
 		if (confirmation) {
@@ -43,7 +49,7 @@ export function OrganizationStructureCreateUser() {
 				`http://localhost:8000/org/employee`,
 				{
 					employee: {
-						email: userEmail,
+						email: email.value,
 						name: userName,
 						surname: userSurname,
 						patronymic: userPatronymic,
@@ -65,8 +71,15 @@ export function OrganizationStructureCreateUser() {
 				}
 			);
 			window.location.reload();
-		} catch (err) {
-			return;
+		} catch (error) {
+			if (error.response.status === 400) {
+				if (
+					error.response.data.detail.code === 'EMPLOYEE_EMAIL_IS_ALREADY_EXISTS'
+				) {
+					setErrorText('Данная почта уже существует');
+				}
+			}
+			setConfirmation(false);
 		}
 	};
 
@@ -174,21 +187,32 @@ export function OrganizationStructureCreateUser() {
 			userPatronymic.trim() !== '' &&
 			endDate.trim() !== '' &&
 			startDate.trim() !== '' &&
-			userEmail.trim() !== '' &&
+			email.inputValid &&
 			statusDate.id !== undefined &&
 			selectedUserDivisionValue !== null &&
 			selectedUserStaffUnitValue !== null
 		);
 	};
-	console.log(statusDate.id);
+	const navigate = useNavigate();
 	return (
 		<div>
 			<Drawer />
-			<Header />
+			<Header PageID={1} />
 			<div className={style.organization_structure_create_user_container}>
-				<h1 className={style.organization_structure_create_user_title}>
-					Создание сотрудника
-				</h1>
+				<div className={style.organization_structure_create_user_title_group}>
+					<button
+						className={
+							style.organization_structure_create_user_title_group_button
+						}
+						onClick={() => navigate('/organization-structure')}
+					>
+						<img src='/img/arrow_back.svg' alt='arrow_back' />
+						Назад
+					</button>
+					<h1 className={style.organization_structure_create_user_title}>
+						Создание сотрудника
+					</h1>
+				</div>
 				<div className={style.organization_structure_create_user_content}>
 					<div
 						className={
@@ -245,10 +269,24 @@ export function OrganizationStructureCreateUser() {
 						</h2>
 						<Input
 							type='text'
-							value={userEmail}
-							onChange={e => setUserEmail(e.target.value)}
+							// value={userEmail}
+							// onChange={e => setUserEmail(e.target.value)}
 							placeholder='Введите email'
+							maxLength='41'
+							onChange={e => {
+								email.onChange(e);
+								setErrorText('');
+							}}
+							onBlur={() => email.onBlur()}
+							value={email.value}
+							name='email'
+							errorValidation={email.isDirty && email.emailError}
 						/>
+						{email.isDirty && email.emailError && (
+							<div className={style.organization_structure_error__validation}>
+								Почта должна содержать корпоративный домен
+							</div>
+						)}
 					</div>
 					<div
 						className={
@@ -380,6 +418,11 @@ export function OrganizationStructureCreateUser() {
 							/>
 						</div>
 					</div>
+					{errorText !== '' && (
+						<div className={style.organization_structure_error__validation}>
+							{<p>{errorText}</p>}
+						</div>
+					)}
 					<ul className={style.organization_structure_create_user_button_group}>
 						<li>
 							<button
@@ -399,6 +442,7 @@ export function OrganizationStructureCreateUser() {
 				<ConfirmationWindow
 					setConfirmation={setConfirmation}
 					setShowConfirmationWindow={setShowConfirmationWindow}
+					confirmationWindowStyle={{ height: `100vh` }}
 				/>
 			)}
 		</div>

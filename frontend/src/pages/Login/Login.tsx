@@ -11,7 +11,7 @@ import { useInput } from '../../hooks/UseInput';
 import { Logo } from '../../components/Logo';
 import { NavigateButton } from '../../components/UI/NavigateButton';
 
-export function Login() {
+export function Login({ setIsAuthorization }) {
 	axios.defaults.withCredentials = true;
 	const email = useInput('', {
 		correctEmail: true,
@@ -20,6 +20,7 @@ export function Login() {
 		correctPassword: true,
 	});
 	const [showPassword, setShowPassword] = useState(false);
+	const [errorText, setErrorText] = useState('');
 	const navigate = useNavigate();
 	const handleClickPrimaryButton = async e => {
 		e.preventDefault();
@@ -50,12 +51,15 @@ export function Login() {
 					const user_patronymic = response.data.patronymic;
 					const initials_user_name = `${user_surname} ${user_name[0]}. ${user_patronymic[0]}.`;
 					localStorage.setItem('initials_user_name', `${initials_user_name}`);
+					setIsAuthorization(true);
 					navigate('/create-application');
-				} catch (error) { return }
+				} catch (error) {
+					return;
+				}
 			}
 		} catch (error) {
 			if (error.response.status === 400) {
-				console.log(error);
+				// console.log(error);
 				if (error.response.data.detail === 'LOGIN_USER_NOT_VERIFIED') {
 					navigate('/verify-error', {
 						state: {
@@ -63,7 +67,7 @@ export function Login() {
 						},
 					});
 				} else if (error.response.data.detail === 'LOGIN_BAD_CREDENTIALS') {
-					console.log('Неверная почта или пароль');
+					setErrorText('Неверная почта или пароль');
 				}
 			}
 		}
@@ -84,7 +88,10 @@ export function Login() {
 					<div className={style.login_input__group}>
 						<label className={style.login_label}>Почта</label>
 						<Input
-							onChange={e => email.onChange(e)}
+							onChange={e => {
+								email.onChange(e);
+								setErrorText("");
+							}}
 							onBlur={() => email.onBlur()}
 							value={email.value}
 							type='text'
@@ -103,7 +110,10 @@ export function Login() {
 						<label className={style.login_label}>Пароль</label>
 						<div className={style.login_password__group_container}>
 							<Input
-								onChange={e => password.onChange(e)}
+								onChange={e => {
+									password.onChange(e);
+									setErrorText('');
+								}}
 								onBlur={() => password.onBlur()}
 								value={password.value}
 								type={showPassword ? 'text' : 'password'}
@@ -127,9 +137,14 @@ export function Login() {
 							</div>
 						)}
 					</div>
+					{errorText !== '' && (
+						<div className={style.login_error__validation}>
+							{<p>{errorText}</p>}
+						</div>
+					)}
 					<div className={style.login_button__container}>
 						<Button
-							// disabled={!email.inputValid || !password.inputValid}
+							disabled={!email.inputValid || !password.inputValid}
 							type='submit'
 						>
 							Войти
@@ -140,9 +155,9 @@ export function Login() {
 					<NavigateButton path='/password-reset'>Забыли пароль?</NavigateButton>
 					<NavigateButton path='/registration'>Регистрация</NavigateButton>
 				</div>
-				<Button type={'submit'} onClick={message}>
+				{/* <Button type={'submit'} onClick={message}>
 					Кнопка защищенного роута
-				</Button>
+				</Button> */}
 			</div>
 		</div>
 	);

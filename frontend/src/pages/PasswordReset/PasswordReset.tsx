@@ -70,7 +70,7 @@ export function PasswordReset() {
 					</div>
 					<div className={style.password_reset_button__container}>
 						<Button
-							// disabled={!email.inputValid}
+							disabled={!email.inputValid}
 							type='submit'
 						>
 							Далее

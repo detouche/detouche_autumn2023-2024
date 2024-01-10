@@ -7,7 +7,7 @@
 	right: 0;
 	bottom: 0;
 	background: linear-gradient(rgba(51, 50, 50, 0.8), rgba(0, 0, 0, 0.5));
-	height: 100vh;
+	height: calc(100vh - 70px);
 }
 
 .confirmation_window_container {
@@ -61,6 +61,6 @@
 	.confirmation_window_button_container {
 		margin-top: 30px;
 		display: flex;
-		justify-content: space-evenly
+		justify-content: space-evenly;
 	}
 }

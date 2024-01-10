@@ -116,21 +116,25 @@
 		width: 1725px;
 		max-height: 440px;
 		overflow-x: auto;
+		min-height: 200px;
 	}
 
 	.staff_unit_table_column_title {
 		width: 50%;
 		max-width: 50%;
+		height: 23px;
 	}
 
 	.staff_unit_table_column_division_title {
-		width: 40%;
-		max-width: 40%;
+		width: 45%;
+		max-width: 45%;
+		height: 23px;
 	}
 
 	.staff_unit_table_column_action {
-		width: 10%;
-		max-width: 10%;
+		width: 5%;
+		max-width: 5%;
+		height: 23px;
 	}
 
 	// .staff_unit_table_content {
@@ -156,6 +160,7 @@
 
 	.staff_unit_table_action_button_container {
 		display: flex;
+		align-items: center;
 	}
 
 	.staff_unit_table_action_button_container li:not(:first-child) {
@@ -182,9 +187,33 @@
 	.staff_unit_table_column_title_input {
 		// padding: 16px;
 	}
+
+	.organization_structure_staff_unit_title_group {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.organization_structure_staff_unit_title_group_button {
+		display: flex;
+		margin-right: 10px;
+		color: #8f8d8d;
+		font-size: 24px;
+		font-weight: 400;
+		background-color: transparent;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		align-items: center;
+		margin-bottom: 16px;
+	}
 }
 
 .organization_structure_staff_unit_button_affirmative:disabled {
 	cursor: not-allowed;
 	opacity: 0.4;
+}
+
+.staff_unit_table_content:hover {
+	background-color: #f9f9f9;
 }

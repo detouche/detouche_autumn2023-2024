@@ -29,8 +29,6 @@ export function ConsiderationApplication() {
 		REJECTED = style.rejected_status,
 	}
 
-
-
 	useEffect(() => {
 		const getCourseData = async () => {
 			try {
@@ -112,16 +110,17 @@ export function ConsiderationApplication() {
 								<td
 									className={
 										style.consideration_application_table_column_course_creation_date
-									}>
+									}
+								>
 									<p>Дата создания</p>
 								</td>
 								<td
 									className={
 										style.consideration_application_table_column_course_author
-									}>
+									}
+								>
 									<p>Автор документа</p>
 								</td>
-
 							</tr>
 						</thead>
 						{coursesData !== null &&
@@ -142,15 +141,15 @@ export function ConsiderationApplication() {
 											style.consideration_application_table_content_state
 										}
 									>
-										<div style={{
-											display: "flex"
-										}}
+										<div
+											style={{
+												display: 'flex',
+											}}
 										>
 											<p className={DocumentStatus[data.status.type]}>
 												{data.status.text}
 											</p>
 										</div>
-
 									</td>
 									<td
 										className={
@@ -177,15 +176,17 @@ export function ConsiderationApplication() {
 									<td
 										className={
 											style.consideration_application_table_content_course_creation_date
-										}>
-										<p>{
-											`${new Date(data.creation_date).getUTCDate()}.${new Date(data.creation_date).getUTCMonth()}.${new Date(data.creation_date).getUTCFullYear()}`
-										}</p>
+										}
+									>
+										<p>{`${new Date(data.creation_date).getUTCDate()}.${
+											new Date(data.creation_date).getUTCMonth() + 1
+										}.${new Date(data.creation_date).getUTCFullYear()}`}</p>
 									</td>
 									<td
 										className={
 											style.consideration_application_table_content_course_author
-										}>
+										}
+									>
 										<p>{data.author}</p>
 									</td>
 								</tr>

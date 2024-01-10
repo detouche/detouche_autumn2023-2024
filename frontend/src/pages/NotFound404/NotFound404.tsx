@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import style from './NotFound404.module.scss';
 
@@ -7,6 +8,22 @@ import { Button } from '../../components/UI/Button';
 
 export function NotFound404() {
 	const navigate = useNavigate();
+	const logoutSystem = async () => {
+		try {
+			const response = await axios.post(
+				`http://localhost:8000/auth/logout`,
+				{},
+				{
+					withCredentials: true,
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+		} catch (error) {
+			return;
+		}
+	};
 	return (
 		<div>
 			<Logo />
@@ -18,7 +35,14 @@ export function NotFound404() {
 					или вы просто неверно указали адрес страницы
 				</p>
 				<div className={style.not_found_404_button__container}>
-					<Button onClick={() => navigate('/login')}>Перейти на главную</Button>
+					<Button
+						onClick={() => {
+
+							navigate('/my-application');
+						}}
+					>
+						Перейти на главную
+					</Button>
 				</div>
 			</div>
 		</div>

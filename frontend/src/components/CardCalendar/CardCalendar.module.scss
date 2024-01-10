@@ -1,116 +1,121 @@
 .cardContainer {
-  padding: 4px;
-  margin: 6px 12px;
-  background-color: #C5FFE0;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  position: relative;
+	padding: 4px;
+	margin: 6px 12px;
+	background-color: #c5ffe0;
+	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	cursor: pointer;
+	transition: transform 0.2s ease-in-out;
+	position: relative;
 }
 
 .cardContainer:hover {
-  box-shadow: 0px 0px 6.5px 0px rgba(43, 206, 117, 0.75);
+	box-shadow: 0px 0px 6.5px 0px rgba(43, 206, 117, 0.75);
 }
 
 .title {
-  font-size: 1em;
-  font-weight: bold;
-  margin-bottom: 5px;
+	font-size: 1em;
+	font-weight: bold;
+	margin: 0;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .dates {
-  font-size: 0.85em;
-  color: #555;
+	font-size: 0.85em;
+	color: #555;
 }
 
 * {
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
-ul, li {
-  list-style: none;
+ul,
+li {
+	list-style: none;
 }
 
 .tooltip {
-  position: absolute;
-  box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  background-color: #fff;
-  padding: 16px;
-  z-index: 10;
-  //margin-top: 35px;
-  top: calc(50% + 26px);
-  left: 50%;
-  //transform: translate(-50%, -50%);
-  /* Другие стили для подсказки */
-  transform: translateX(-50%);
-  min-width: 250px;
+	position: absolute;
+	box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.15);
+	border-radius: 8px;
+	background-color: #fff;
+	padding: 16px;
+	z-index: 10;
+	//margin-top: 35px;
+	top: calc(50% + 26px);
+	left: 50%;
+	//transform: translate(-50%, -50%);
+	/* Другие стили для подсказки */
+	transform: translateX(-50%);
 }
 
 .CourseTitle {
-  color: #323232;
-  font-family: Nunito Sans, serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%; /* 14px */
-  margin-bottom: 4px;
+	color: #323232;
+	font-family: Nunito Sans, serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 100%; /* 14px */
+	margin-bottom: 4px;
 }
 
 .CourseTags {
-  display: flex;
-  align-items: flex-start;
-  gap: 4px;
-  margin-bottom: 8px;
+	display: flex;
+	align-items: flex-start;
+	gap: 4px;
+	margin-bottom: 8px;
 }
 
 .CourseTags > p {
-  color: #323232;
-  font-family: Nunito Sans, serif;
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  border-radius: 4px;
-  background: #E4E4E4;
-  display: flex;
-  padding: 2px 8px;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
+	color: #323232;
+	font-family: Nunito Sans, serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	border-radius: 4px;
+	background: #e4e4e4;
+	display: flex;
+	padding: 2px 8px;
+	justify-content: center;
+	align-items: center;
+	gap: 4px;
 }
 
 .CourseDates {
-  color: #323232;
-  font-family: Nunito Sans, serif;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 100%; /* 12px */
-  margin-bottom: 8px;
+	color: #323232;
+	font-family: Nunito Sans, serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 100%; /* 12px */
+	margin-bottom: 8px;
 }
 
 .CourseMember {
-  color: #323232;
-  font-family: Nunito Sans, serif;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 100%; /* 12px */
-  margin-bottom: 4px;
+	color: #323232;
+	font-family: Nunito Sans, serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 100%; /* 12px */
+	margin-bottom: 4px;
 }
 
 .tooltip::after {
-  content: "";
-  position: absolute;
-  bottom: 100%; /* Позиционирование над tooltip */
-  left: 50%;
-  margin-left: -12px; /* Сдвиг для центрирования */
-  border-width: 13px;
-  border-style: solid;
-  border-color: transparent transparent #fff transparent;
+	content: '';
+	position: absolute;
+	bottom: 100%; /* Позиционирование над tooltip */
+	left: 50%;
+	margin-left: -12px; /* Сдвиг для центрирования */
+	border-width: 13px;
+	border-style: solid;
+	border-color: transparent transparent #fff transparent;
 }
