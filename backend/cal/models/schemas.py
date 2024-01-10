@@ -1,25 +1,19 @@
-from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, field_serializer
+from pydantic import BaseModel
 
-from docs.models.db import DocumentCommand
+from docs.models.schemas import CourseSchema
 
 
-# TODO: формат даты изменить
-class CourseSchema(BaseModel):
-    title: str
-    description: str
-    cost: float
-    start_date: datetime
-    end_date: datetime
-    goal: str
-    type: str
-    category: str
-    education_center: str
+class EventFiltersSchema(BaseModel):
+    title: Optional[str] = None
+    education_center: Optional[str] = None
+    category: Optional[str] = None
+    type: Optional[str] = None
+    division_id: Optional[UUID] = None
 
-class DocumentSchema(BaseModel):
+class EventSchema(BaseModel):
     manager_id: UUID
     director_id: UUID
     administrator_id: UUID
@@ -33,10 +27,9 @@ class DocumentSchema(BaseModel):
     state: str = '1'
     is_completed: bool = False
     course: CourseSchema | None = None
-    commands: list | None = None
 
-    def to_read_model(application, course, commands):
-        return DocumentSchema(
+    def to_read_model(application, course):
+        return EventSchema(
         manager_id=application.manager_id,
         director_id=application.director_id,
         administrator_id=application.administrator_id,
@@ -49,7 +42,6 @@ class DocumentSchema(BaseModel):
         course_id=application.course_id,
         state=application.state,
         is_completed=application.is_completed,
-        commands=commands,
         course=CourseSchema(
             title=course.title,
             description=course.description,
@@ -61,16 +53,3 @@ class DocumentSchema(BaseModel):
             category=course.category,
             education_center=course.education_center
         ))
-
-
-class CourseTemplateSchema(BaseModel):
-    title: str
-    description: str
-    type: str
-    category: str
-    education_center: str
-
-
-class CourseTemplateIDSchema(CourseTemplateSchema):
-    id: UUID
-

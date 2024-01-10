@@ -13,7 +13,8 @@ docs_router = APIRouter(prefix='/docs', tags=['course-templates'])
 
 
 @docs_router.post("/course-template/create", response_model=CourseTemplateSchema)
-async def create_course_template(document: CourseTemplateSchema, user: User = Depends(current_user)) -> CourseTemplateSchema:
+async def create_course_template(document: CourseTemplateSchema,
+                                 user: User = Depends(current_user)) -> CourseTemplateSchema:
     """Создание шаблона курса"""
     document_dict = document.model_dump()
     if await CourseTemplateRepository().find_all(document_dict):
@@ -23,21 +24,19 @@ async def create_course_template(document: CourseTemplateSchema, user: User = De
     return document
 
 
-# TODO: посик по title не фурычит
 @docs_router.post("/course-template/update", response_model=CourseTemplateIDSchema)
-async def update_course_template(document: CourseTemplateIDSchema, user: User = Depends(current_user)) -> CourseTemplateIDSchema:
+async def update_course_template(document: CourseTemplateIDSchema,
+                                 user: User = Depends(current_user)) -> CourseTemplateIDSchema:
     """Редактирование шаблона курса"""
-    document_dict = document.model_dump()
-    if not await CourseTemplateRepository().find_title(document_dict['title']):
-        await CourseTemplateRepository().update_one(document_dict['id'], document_dict)
-        result = await CourseTemplateRepository().get_one(document_dict['id'])
-    else:
-        raise HTTPException(status_code=409, detail="Кал")
-    return document
+    try:
+        await CourseTemplateRepository().update_one(document.id, document.model_dump())
+        return await CourseTemplateRepository().get_one(document.id)
+    except:
+        raise HTTPException(status_code=409, detail="Шаблон курса не найден")
 
 
-@docs_router.get("/course-template", response_model=List[CourseTemplateIDSchema])
-async def get_all_course_template(user: User = Depends(current_user)) -> List[CourseTemplateIDSchema]:
+@docs_router.get("/course-template")
+async def get_all_course_template(user: User = Depends(current_user)):
     """Вывод списка шаблонов курсов"""
     templates = await CourseTemplateRepository().find_all()
     return templates
