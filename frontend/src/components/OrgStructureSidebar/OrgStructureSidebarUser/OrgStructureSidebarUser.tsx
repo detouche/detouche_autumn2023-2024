@@ -316,16 +316,16 @@ export function OrgStructureSidebarUser({ user_ID, onClose, isAdmin }) {
 											Редактировать
 										</button>
 									</li>
-									<li>
-										<button
-											onClick={() => {
-												setShowConfirmationDeleteWindow(true);
-											}}
-											className={style.sidebar_button_reject}
-										>
-											Удалить
-										</button>
-									</li>
+									{/*<li>*/}
+									{/*	<button*/}
+									{/*		onClick={() => {*/}
+									{/*			setShowConfirmationDeleteWindow(true);*/}
+									{/*		}}*/}
+									{/*		className={style.sidebar_button_reject}*/}
+									{/*	>*/}
+									{/*		Удалить*/}
+									{/*	</button>*/}
+									{/*</li>*/}
 									<li>
 										<button className={style.sidebar_button_more}>
 											<img src='/img/more_horiz.svg' alt='more_horiz' />

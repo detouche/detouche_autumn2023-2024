@@ -37,8 +37,8 @@ export function NotFound404() {
 				<div className={style.not_found_404_button__container}>
 					<Button
 						onClick={() => {
-							logoutSystem();
-							navigate('/login');
+
+							navigate('/my-application');
 						}}
 					>
 						Перейти на главную

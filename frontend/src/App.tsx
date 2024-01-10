@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 import './App.module.scss';
 
@@ -30,7 +31,6 @@ function App() {
 	const [isAdmin, setIsAdmin] = useState(null);
 	const [isAuthorization, setIsAuthorization] = useState(null);
 	const [loading, setLoading] = useState(true);
-
 	useEffect(() => {
 		async function fetchData() {
 			try {
@@ -126,8 +126,11 @@ function App() {
 							element={<OrganizationStructureStaffUnit />}
 						/>
 					)}
-
-					<Route path='*' element={<NotFound404 />} />
+					{isAuthorization ? (
+						<Route path='*' element={<NotFound404 />} />
+					) : (
+						<Route path='*' element={<Navigate to='/login'/>} />
+					)}
 				</Routes>
 			)}
 		</>
