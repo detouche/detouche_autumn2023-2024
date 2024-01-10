@@ -1,0 +1,1 @@
+export { CourseTemplateSidebar } from './CourseTemplateSidebar';

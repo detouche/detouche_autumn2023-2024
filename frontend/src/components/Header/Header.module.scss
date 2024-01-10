@@ -49,6 +49,12 @@
 		height: 24px;
 		width: 24px;
 	}
+
+	.header_active_page {
+		border: solid var(--header-button-focus-border-color);
+		background-color: var(--header-button-focus-background-color);
+		outline: none;
+	}
 }
 
 .header_container__content_button:hover {

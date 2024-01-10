@@ -3,9 +3,10 @@ import style from './ConfirmationWindow.module.scss';
 export function ConfirmationWindow({
 	setConfirmation,
 	setShowConfirmationWindow,
+	confirmationWindowStyle = {},
 }) {
 	return (
-		<div className={style.main}>
+		<div className={style.main} style={confirmationWindowStyle}>
 			<div className={style.confirmation_window_container}>
 				<h1 className={style.confirmation_window_title}>
 					Подтвердите действие

@@ -10,7 +10,8 @@
 	}
 
 	.administration_title_container {
-		align-items: center;
+		display: flex;
+		align-items: flex-end;
 	}
 
 	.administration_upload_button_container {
@@ -40,4 +41,168 @@
 	.administration_upload_button_img {
 		margin-right: 8px;
 	}
+
+	.administration_navigate_button_container {
+		display: flex;
+		margin-left: 40px;
+	}
+
+	.administration_navigate_button_container li:not(:first-child) {
+		margin-left: 28px;
+	}
+
+	.administration_navigate_button {
+		color: #c9cacd;
+		font-size: 20px;
+		font-weight: 600;
+		cursor: pointer;
+		background-color: transparent;
+		outline: none;
+		border: none;
+	}
+
+	.administration_navigate_button_active {
+		color: #323232;
+		border: none;
+		font-size: 20px;
+		font-weight: 600;
+		border-bottom: 2px solid #323232;
+		cursor: pointer;
+		padding-bottom: 8px;
+		background-color: transparent;
+		outline: none;
+	}
+
+	.administration_course_template_create_button_container {
+		margin-top: 30px;
+	}
+
+	.administration_course_template_create_button {
+		color: #979ba0;
+		font-size: 16px;
+		font-weight: 600;
+		border-radius: 8px;
+		border: 1px solid #979ba0;
+		cursor: pointer;
+		background-color: transparent;
+		outline: none;
+		padding: 6px 10px;
+		display: flex;
+		align-items: center;
+	}
+
+	.administration_course_template_create_button img {
+		margin-right: 6px;
+	}
+
+	ul {
+		margin: 0px;
+		padding: 0px;
+		list-style: none;
+	}
+
+	.administration_table_column {
+		background-color: #f8f8f8;
+	}
+
+	.administration_table_column td {
+		padding: 0px;
+		padding: 12px;
+		color: #323232;
+		font-size: 18px;
+		font-weight: 600;
+	}
+
+	.administration_table_column p {
+		margin: 0px;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+		display: -webkit-box;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.administration_table {
+		width: 1714px;
+	}
+
+	.administration_table thead {
+		position: sticky;
+		top: 0;
+	}
+
+	.administration_table_container {
+		margin-top: 30px;
+		width: 1725px;
+		max-height: 630px;
+		overflow-x: auto;
+		min-height: 200px;
+	}
+
+	.administration_table_column_title {
+		width: 95%;
+		max-width: 95%;
+		height: 23px;
+		cursor: pointer;
+	}
+
+	// .administration_table_column_create_date_title {
+	// 	width: 40%;
+	// 	max-width: 40%;
+	//  height: 23px;
+	// }
+
+	.administration_table_column_action {
+		width: 5%;
+		max-width: 5%;
+		height: 23px;
+	}
+
+	.administration_table_content td {
+		padding: 0px;
+		padding: 12px;
+		color: #323232;
+		font-size: 16px;
+		font-weight: 600;
+		border-bottom: 1px solid #efefef;
+	}
+
+	.administration_table_content p {
+		margin: 0px;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+		display: -webkit-box;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.administration_table_action_button_container {
+		display: flex;
+		align-items: center;
+	}
+
+	.administration_table_action_button_container li:not(:first-child) {
+		margin-left: 20px;
+	}
+
+	.administration_table_action_button {
+		background-color: transparent;
+		border: none;
+		outline: none;
+		cursor: pointer;
+	}
+
+	.administration_title_h2_error {
+		color: #323232;
+		opacity: 0.2;
+		font-size: 50px;
+		font-weight: 800;
+		margin-top: 40px;
+		display: flex;
+		justify-content: center;
+	}
+}
+
+.administration_table_content:hover {
+	background-color: #f9f9f9;
 }

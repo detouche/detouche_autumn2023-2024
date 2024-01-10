@@ -6,9 +6,10 @@ import style from './OrgStructureSidebarUser.module.scss';
 
 import { useDebounce } from '../../../hooks/UseDebounce';
 import { Input } from '../../UI/Input';
+import { useInput } from '../../../hooks/UseInput';
 import { ConfirmationWindow } from '../../ConfirmationWindow';
 
-export function OrgStructureSidebarUser({ user_ID, onClose }) {
+export function OrgStructureSidebarUser({ user_ID, onClose, isAdmin }) {
 	const [userData, setUserData] = useState([{}]);
 	const [userStaffUnitData, setUserStaffUnitData] = useState([{}]);
 	const [editingUserData, setEditingUserData] = useState(false);
@@ -47,6 +48,10 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 		selectedEditingUserStaffUnitValue,
 		setEditingUserStaffUnitSelectedValue,
 	] = useState(null);
+	const [errorText, setErrorText] = useState('');
+	let email = useInput(`${editingUserEmail}`, {
+		correctEmail: true,
+	});
 
 	useEffect(() => {
 		const getUserData = async () => {
@@ -111,7 +116,7 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 				{
 					employee_id: `${user_ID}`,
 					name: editingUserName,
-					email: editingUserEmail,
+					email: email.value,
 					surname: editingUserSurname,
 					patronymic: editingUserPatronymic,
 					employee_status_id: editingStatusDate.id,
@@ -127,8 +132,15 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 				}
 			);
 			window.location.reload();
-		} catch (err) {
-			return;
+		} catch (error) {
+			if (error.response.status === 400) {
+				if (
+					error.response.data.detail.code === 'EMPLOYEE_EMAIL_IS_ALREADY_EXISTS'
+				) {
+					setErrorText('Данная почта уже существует');
+				}
+			}
+			setConfirmationEditing(false);
 		}
 	};
 
@@ -256,7 +268,7 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 			editingUserPatronymic.trim() !== '' &&
 			editingEndDate.trim() !== '' &&
 			editingStartDate.trim() !== '' &&
-			editingUserEmail.trim() !== '' &&
+			email.inputValid &&
 			editingStatusDate.id !== null &&
 			selectedEditingUserDivisionValue !== null &&
 			selectedEditingUserStaffUnitValue !== null
@@ -293,33 +305,35 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 								<img src='/img/close_button.svg' alt='close_button' />
 							</button>
 						</div>
-						<div className={style.sidebar_button_group}>
-							<ul className={style.sidebar_button_group}>
-								<li>
-									<button
-										onClick={() => setEditingUserData(true)}
-										className={style.sidebar_button_affirmative}
-									>
-										Редактировать
-									</button>
-								</li>
-								<li>
-									<button
-										onClick={() => {
-											setShowConfirmationDeleteWindow(true);
-										}}
-										className={style.sidebar_button_reject}
-									>
-										Удалить
-									</button>
-								</li>
-								<li>
-									<button className={style.sidebar_button_more}>
-										<img src='/img/more_horiz.svg' alt='more_horiz' />
-									</button>
-								</li>
-							</ul>
-						</div>
+						{isAdmin && (
+							<div>
+								<ul className={style.sidebar_button_group}>
+									<li>
+										<button
+											onClick={() => setEditingUserData(true)}
+											className={style.sidebar_button_affirmative}
+										>
+											Редактировать
+										</button>
+									</li>
+									<li>
+										<button
+											onClick={() => {
+												setShowConfirmationDeleteWindow(true);
+											}}
+											className={style.sidebar_button_reject}
+										>
+											Удалить
+										</button>
+									</li>
+									<li>
+										<button className={style.sidebar_button_more}>
+											<img src='/img/more_horiz.svg' alt='more_horiz' />
+										</button>
+									</li>
+								</ul>
+							</div>
+						)}
 						<div className={style.sidebar_description_group}>
 							<h2 className={style.sidebar_title_h2}>Email</h2>
 							<p className={style.sidebar_description}>{userEmail}</p>
@@ -369,12 +383,31 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 						</div>
 						<div className={style.sidebar_description_group}>
 							<h2 className={style.sidebar_title_h2}>Email</h2>
-							<Input
+							{/* <Input
 								type='text'
 								value={editingUserEmail}
 								onChange={e => setEditingUserEmail(e.target.value)}
+								placeholder='Введите email' */}
+							<Input
+								type='text'
+								// value={userEmail}
+								// onChange={e => setUserEmail(e.target.value)}
 								placeholder='Введите email'
+								maxLength='41'
+								onChange={e => {
+									email.onChange(e);
+									setErrorText('');
+								}}
+								onBlur={() => email.onBlur()}
+								value={email.value}
+								name='email'
+								errorValidation={email.isDirty && email.emailError}
 							/>
+							{email.isDirty && email.emailError && (
+								<div className={style.sidebar_error__validation}>
+									Почта должна содержать корпоративный домен
+								</div>
+							)}
 						</div>
 						<div className={style.sidebar_description_group}>
 							<h2 className={style.sidebar_title_h2}>Статус</h2>
@@ -450,6 +483,11 @@ export function OrgStructureSidebarUser({ user_ID, onClose }) {
 								/>
 							</div>
 						</div>
+						{errorText !== '' && (
+							<div className={style.organization_structure_error__validation}>
+								{<p>{errorText}</p>}
+							</div>
+						)}
 						<ul className={style.sidebar_button_group}>
 							<li>
 								<button

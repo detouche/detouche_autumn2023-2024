@@ -21,6 +21,7 @@ export function Registration() {
 		correctPassword: true,
 	});
 	const [showPassword, setShowPassword] = useState(false);
+	const [errorText, setErrorText] = useState('');
 	// const [error, setError] = useState('error');
 	// const [resp, setResp] = useState(null)
 	const navigate = useNavigate();
@@ -48,41 +49,28 @@ export function Registration() {
 				});
 			}
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 			if (error.response.status === 400) {
 				if (
 					error.response.data.detail.code === 'REGISTER_NOT_AVAILABLE_EMAIL'
 				) {
-					console.log('Нету в системе');
-					// setError('Нету в системе');
-					// console.log(error)
+					setErrorText('Данной почты нет в системе');
 				} else if (
 					error.response.data.detail === 'REGISTER_USER_ALREADY_EXISTS'
 				) {
-					console.log('Уже зарегистрирован');
-					// setError('Уже зарегистрирован');
+					setErrorText('Данная почта уже зарегистрирована');
 				} else if (
 					error.response.data.detail.code === 'REGISTER_INVALID_PASSWORD'
 				) {
-					console.log('Пароль не валиден');
+					setErrorText('Пароль не проходит валидацию');
 				} else if (
 					error.response.data.detail.code === 'REGISTER_WRONG_EMAIL_DOMAIN'
 				) {
-					console.log('Неправильный домен');
+					setErrorText('Неправильный домен почты');
 				}
 			}
 		}
 	};
-
-	// const message = async () => {
-	// 	const resp = (await axios.get('http://localhost:8000/unprotected-route'))
-	// 		.data
-	// 	setResp(resp)
-	// }
-
-	// useEffect(() => {
-	// 	message()
-	// }, [])
 
 	return (
 		<div>
@@ -96,7 +84,10 @@ export function Registration() {
 					<div className={style.registration_input__group}>
 						<label className={style.registration_label}>Почта</label>
 						<Input
-							onChange={e => email.onChange(e)}
+							onChange={e => {
+								email.onChange(e);
+								setErrorText('');
+							}}
 							onBlur={() => email.onBlur()}
 							value={email.value}
 							type='text'
@@ -116,7 +107,10 @@ export function Registration() {
 						<label className={style.registration_label}>Пароль</label>
 						<div className={style.registration_password__group_container}>
 							<Input
-								onChange={e => password.onChange(e)}
+								onChange={e => {
+									password.onChange(e);
+									setErrorText('');
+								}}
 								onBlur={() => password.onBlur()}
 								value={password.value}
 								type={showPassword ? 'text' : 'password'}
@@ -141,9 +135,14 @@ export function Registration() {
 							</div>
 						)}
 					</div>
+					{errorText !== '' && (
+						<div className={style.registration_error__validation}>
+							{<p>{errorText}</p>}
+						</div>
+					)}
 					<div className={style.registration_button__container}>
 						<Button
-							// disabled={!email.inputValid || !password.inputValid}
+							disabled={!email.inputValid || !password.inputValid}
 							type='submit'
 						>
 							Зарегистрироваться

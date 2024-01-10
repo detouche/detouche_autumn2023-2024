@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
 
 import style from './OrganizationStructureStaffUnit.module.scss';
 
@@ -20,9 +21,9 @@ export function OrganizationStructureStaffUnit() {
 	const [showConfirmationCreateWindow, setShowConfirmationCreateWindow] =
 		useState(false);
 	const [confirmationCreate, setConfirmationCreate] = useState();
-	const [showConfirmationDeleteWindow, setShowConfirmationDeleteWindow] =
-		useState(false);
-	const [confirmationDelete, setConfirmationDelete] = useState();
+	// const [showConfirmationDeleteWindow, setShowConfirmationDeleteWindow] =
+	// 	useState(false);
+	// const [confirmationDelete, setConfirmationDelete] = useState();
 	const [showConfirmationEditingWindow, setShowConfirmationEditingWindow] =
 		useState(false);
 	const [confirmationEditing, setConfirmationEditing] = useState();
@@ -31,6 +32,9 @@ export function OrganizationStructureStaffUnit() {
 	const getStaffUniteDataRef = useRef();
 	const [editingStaffUniteDate, setEditingStaffUniteDate] = useState([]);
 	const [currentEditingStaffUnitID, setCurrentEditingStaffUnitID] = useState();
+	const [showActionButtonStaffUnitID, setShowActionButtonStaffUnitID] =
+		useState();
+	const [showActionButton, setShowActionButton] = useState(false);
 
 	const debouncedStaffUnitDivisionInputValue = useDebounce(
 		staffUnitDivisionInputValue,
@@ -101,13 +105,13 @@ export function OrganizationStructureStaffUnit() {
 		}
 	}, [confirmationCreate]);
 
-	useEffect(() => {
-		if (confirmationDelete) {
-			deleteStaffUnit();
-		} else if (confirmationDelete === false) {
-			setShowConfirmationDeleteWindow(false);
-		}
-	}, [confirmationDelete]);
+	// useEffect(() => {
+	// 	if (confirmationDelete) {
+	// 		deleteStaffUnit();
+	// 	} else if (confirmationDelete === false) {
+	// 		setShowConfirmationDeleteWindow(false);
+	// 	}
+	// }, [confirmationDelete]);
 
 	useEffect(() => {
 		if (confirmationEditing) {
@@ -164,40 +168,52 @@ export function OrganizationStructureStaffUnit() {
 				getStaffUniteDataRef.current();
 			}
 			setConfirmationEditing(false);
-			setCurrentEditingStaffUnitID("");
+			setCurrentEditingStaffUnitID('');
 		} catch (err) {
 			return;
 		}
 	};
 
-	const deleteStaffUnit = async () => {
-		try {
-			const responseData = await axios.delete(
-				`http://localhost:8000/org/staff-unit?staff_unit_id=${currentStaffUnitID}`,
-				{
-					withCredentials: true,
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				}
-			);
-			if (getStaffUniteDataRef.current) {
-				getStaffUniteDataRef.current();
-			}
-			setConfirmationDelete(false);
-		} catch (err) {
-			return;
-		}
-	};
-
+	// const deleteStaffUnit = async () => {
+	// 	try {
+	// 		const responseData = await axios.delete(
+	// 			`http://localhost:8000/org/staff-unit?staff_unit_id=${currentStaffUnitID}`,
+	// 			{
+	// 				withCredentials: true,
+	// 				headers: {
+	// 					'Content-Type': 'application/json',
+	// 				},
+	// 			}
+	// 		);
+	// 		if (getStaffUniteDataRef.current) {
+	// 			getStaffUniteDataRef.current();
+	// 		}
+	// 		setConfirmationDelete(false);
+	// 	} catch (err) {
+	// 		return;
+	// 	}
+	// };
+	const navigate = useNavigate();
 	return (
 		<div>
 			<Drawer />
-			<Header />
+			<Header PageID={1} />
 			<div className={style.organization_structure_staff_unit_container}>
-				<h1 className={style.organization_structure_staff_unit_title}>
-					Должности
-				</h1>
+				<div className={style.organization_structure_staff_unit_title_group}>
+					<button
+						className={
+							style.organization_structure_staff_unit_title_group_button
+						}
+						onClick={() => navigate('/organization-structure')}
+					>
+						<img src='/img/arrow_back.svg' alt='arrow_back' />
+						Назад
+					</button>
+					<h1 className={style.organization_structure_staff_unit_title}>
+						Должности
+					</h1>
+				</div>
+
 				<div
 					className={style.organization_structure_staff_unit_description_group}
 				>
@@ -270,13 +286,20 @@ export function OrganizationStructureStaffUnit() {
 												<p>Название подразделения</p>
 											</td>
 											<td className={style.staff_unit_table_column_action}>
-												<p>Действия</p>
+												{/* <p>Действия</p> */}
 											</td>
 										</tr>
 									</thead>
 									{staffUniteData !== null &&
 										staffUniteData.map(data => (
-											<tr className={style.staff_unit_table_content}>
+											<tr
+												className={style.staff_unit_table_content}
+												onMouseEnter={() => {
+													setShowActionButton(true);
+													setShowActionButtonStaffUnitID(data.id);
+												}}
+												onMouseLeave={() => setShowActionButton(false)}
+											>
 												<td className={style.staff_unit_table_column_title}>
 													{!(currentEditingStaffUnitID === data.id) ? (
 														<p>{data.name}</p>
@@ -299,7 +322,9 @@ export function OrganizationStructureStaffUnit() {
 																setEditingStaffUniteDate(editingStaffUniteName);
 															}}
 															placeholder='Введите название должности'
-															className={style.staff_unit_table_column_title_input}
+															className={
+																style.staff_unit_table_column_title_input
+															}
 														/>
 													)}
 												</td>
@@ -322,56 +347,68 @@ export function OrganizationStructureStaffUnit() {
 												</td>
 												<td className={style.staff_unit_table_column_action}>
 													{!(currentEditingStaffUnitID === data.id) ? (
-														<ul
-															className={
-																style.staff_unit_table_action_button_container
-															}
-														>
-															<li>
-																<button
-																	className={
-																		style.staff_unit_table_action_button
-																	}
-																	onClick={() => {
-																		setCurrentEditingStaffUnitID(data.id);
-																	}}
-																>
-																	<img src='/img/edit.svg' alt='edit' />
-																</button>
-															</li>
-															<li>
-																<button
-																	className={
-																		style.staff_unit_table_action_button
-																	}
-																	onClick={() => {
-																		setCurrentStaffUnitID(data.id);
-																		setShowConfirmationDeleteWindow(true);
-																	}}
-																>
-																	<img src='/img/delete.svg' alt='delete' />
-																</button>
-															</li>
-														</ul>
+														<div>
+															{showActionButton &&
+																showActionButtonStaffUnitID === data.id && (
+																	<ul
+																		className={
+																			style.staff_unit_table_action_button_container
+																		}
+																	>
+																		<li>
+																			<button
+																				className={
+																					style.staff_unit_table_action_button
+																				}
+																				onClick={() => {
+																					setCurrentEditingStaffUnitID(data.id);
+																				}}
+																			>
+																				<img src='/img/edit.svg' alt='edit' />
+																			</button>
+																		</li>
+																		{/* <li>
+																			<button
+																				className={
+																					style.staff_unit_table_action_button
+																				}
+																				onClick={() => {
+																					setCurrentStaffUnitID(data.id);
+																					setShowConfirmationDeleteWindow(true);
+																				}}
+																			>
+																				<img
+																					src='/img/delete.svg'
+																					alt='delete'
+																				/>
+																			</button>
+																		</li> */}
+																	</ul>
+																)}
+														</div>
 													) : (
 														<ul
 															className={
 																style.staff_unit_table_action_button_container
 															}
 														>
-															<li>
-																<button
-																	className={
-																		style.staff_unit_table_action_button
-																	}
-																	onClick={() => {
-																		setCurrentStaffUnitID(data.id);
-																		setShowConfirmationEditingWindow(true);
-																	}}
-																>
-																	<img src='/img/accept.svg' alt='accept' />
-																</button>
-															</li>
+															{editingStaffUniteDate
+																.find(item => item.id === data.id)
+																.name.trim() !== '' && (
+																<li>
+																	<button
+																		className={
+																			style.staff_unit_table_action_button
+																		}
+																		onClick={() => {
+																			setCurrentStaffUnitID(data.id);
+																			setShowConfirmationEditingWindow(true);
+																		}}
+																	>
+																		<img src='/img/accept.svg' alt='accept' />
+																	</button>
+																</li>
+															)}
 															<li>
 																<button
 																	className={
@@ -406,18 +443,21 @@ export function OrganizationStructureStaffUnit() {
 				<ConfirmationWindow
 					setConfirmation={setConfirmationCreate}
 					setShowConfirmationWindow={setShowConfirmationCreateWindow}
+					confirmationWindowStyle={{ height: `100vh` }}
 				/>
 			)}
-			{showConfirmationDeleteWindow && (
+			{/* {showConfirmationDeleteWindow && (
 				<ConfirmationWindow
 					setConfirmation={setConfirmationDelete}
 					setShowConfirmationWindow={setShowConfirmationDeleteWindow}
+					confirmationWindowStyle={{ height: `100vh` }}
 				/>
-			)}
+			)} */}
 			{showConfirmationEditingWindow && (
 				<ConfirmationWindow
 					setConfirmation={setConfirmationEditing}
 					setShowConfirmationWindow={setShowConfirmationEditingWindow}
+					confirmationWindowStyle={{ height: `100vh` }}
 				/>
 			)}
 		</div>

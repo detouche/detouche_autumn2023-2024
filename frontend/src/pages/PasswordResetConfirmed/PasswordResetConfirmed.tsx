@@ -156,10 +156,10 @@ export function PasswordResetConfirmed() {
 					</div>
 					<div className={style.password_reset_confirmed_button__container}>
 						<Button
-							// disabled={
-							// 	!password.inputValid ||
-							// 	confirmationPassword.value !== password.value
-							// }
+							disabled={
+								!password.inputValid ||
+								confirmationPassword.value !== password.value
+							}
 							type='submit'
 						>
 							Восстановить

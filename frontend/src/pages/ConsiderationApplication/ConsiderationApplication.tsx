@@ -55,8 +55,6 @@ export function ConsiderationApplication() {
 		setShowSidebar(true);
 	};
 
-	console.log(coursesData);
-
 	return (
 		<div className={style.main}>
 			<Drawer PageID={4} />

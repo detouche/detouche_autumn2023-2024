@@ -9,21 +9,19 @@ import { Input } from '../../UI/Input';
 import { ConfirmationWindow } from '../../ConfirmationWindow';
 import { InputCheckbox } from '../../UI/InputCheckbox';
 
-
-
-export function OrgStructureSidebarChildren({ children_ID, onClose }) {
+export function OrgStructureSidebarChildren({ children_ID, onClose, isAdmin }) {
 	const [childrenData, setChildrenData] = useState([{}]);
 	const [childrenName, setChildrenName] = useState();
 	const [editingChildrenName, setEditingChildrenName] = useState();
 	const [childrenStatus, setChildrenStatus] = useState();
 	const [editingChildrenStatus, setEditingChildrenStatus] = useState();
 	const [editingChildrenData, setEditingChildrenData] = useState(false);
-		const [showConfirmationEditingWindow, setShowConfirmationEditingWindow] =
-			useState(false);
-		const [confirmationEditing, setConfirmationEditing] = useState();
-		const [showConfirmationDeleteWindow, setShowConfirmationDeleteWindow] =
-			useState(false);
-		const [confirmationDelete, setConfirmationDelete] = useState();
+	const [showConfirmationEditingWindow, setShowConfirmationEditingWindow] =
+		useState(false);
+	const [confirmationEditing, setConfirmationEditing] = useState();
+	const [showConfirmationDeleteWindow, setShowConfirmationDeleteWindow] =
+		useState(false);
+	const [confirmationDelete, setConfirmationDelete] = useState();
 	const [childrenParentDivision, setChildrenParentDivision] = useState({});
 	const [editingChildrenParentDivision, setEditingChildrenParentDivision] =
 		useState({});
@@ -256,33 +254,35 @@ export function OrgStructureSidebarChildren({ children_ID, onClose }) {
 								<img src='/img/close_button.svg' alt='close_button' />
 							</button>
 						</div>
-						<div className={style.sidebar_button_group}>
-							<ul className={style.sidebar_button_group}>
-								<li>
-									<button
-										onClick={() => setEditingChildrenData(true)}
-										className={style.sidebar_button_affirmative}
-									>
-										Редактировать
-									</button>
-								</li>
-								<li>
-									<button
-										onClick={() => {
-											setShowConfirmationDeleteWindow(true);
-										}}
-										className={style.sidebar_button_reject}
-									>
-										Удалить
-									</button>
-								</li>
-								<li>
-									<button className={style.sidebar_button_more}>
-										<img src='/img/more_horiz.svg' alt='more_horiz' />
-									</button>
-								</li>
-							</ul>
-						</div>
+						{isAdmin && (
+							<div>
+								<ul className={style.sidebar_button_group}>
+									<li>
+										<button
+											onClick={() => setEditingChildrenData(true)}
+											className={style.sidebar_button_affirmative}
+										>
+											Редактировать
+										</button>
+									</li>
+									<li>
+										<button
+											onClick={() => {
+												setShowConfirmationDeleteWindow(true);
+											}}
+											className={style.sidebar_button_reject}
+										>
+											Удалить
+										</button>
+									</li>
+									<li>
+										<button className={style.sidebar_button_more}>
+											<img src='/img/more_horiz.svg' alt='more_horiz' />
+										</button>
+									</li>
+								</ul>
+							</div>
+						)}
 					</div>
 				)}
 				{editingChildrenData && (

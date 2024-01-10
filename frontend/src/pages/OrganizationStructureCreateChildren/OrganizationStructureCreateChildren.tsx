@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
 
 import style from './OrganizationStructureCreateChildren.module.scss';
 
@@ -102,18 +103,52 @@ export function OrganizationStructureCreateChildren() {
 			childrenParentDivisionSelectedValue !== null
 		);
 	};
+
+	const navigate = useNavigate();
+
 	return (
 		<div>
 			<Drawer />
-			<Header />
+			<Header PageID={1} />
 			<div className={style.organization_structure_create_children_container}>
 				<div>
 					<div className={style.organization_structure_create_children_content}>
-						<div className={style.organization_structure_create_children_title_group}>
-							<h1 className={style.organization_structure_create_children_title}>Создание подразделения</h1>
+						<div
+							className={
+								style.organization_structure_create_children_title_group
+							}
+						>
+							<div
+								className={
+									style.organization_structure_create_children_title_group
+								}
+							>
+								<button
+									className={
+										style.organization_structure_create_children_title_group_button
+									}
+									onClick={() => navigate('/organization-structure')}
+								>
+									<img src='/img/arrow_back.svg' alt='arrow_back' />
+									Назад
+								</button>
+								<h1
+									className={style.organization_structure_create_children_title}
+								>
+									Создание подразделения
+								</h1>
+							</div>
 						</div>
-						<div className={style.organization_structure_create_children_description_group}>
-							<h2 className={style.organization_structure_create_children_title_h2}>
+						<div
+							className={
+								style.organization_structure_create_children_description_group
+							}
+						>
+							<h2
+								className={
+									style.organization_structure_create_children_title_h2
+								}
+							>
 								Родительское подразделения
 							</h2>
 							<div>
@@ -127,8 +162,18 @@ export function OrganizationStructureCreateChildren() {
 								/>
 							</div>
 						</div>
-						<div className={style.organization_structure_create_children_description_group}>
-							<h2 className={style.organization_structure_create_children_title_h2}>Название подразделения</h2>
+						<div
+							className={
+								style.organization_structure_create_children_description_group
+							}
+						>
+							<h2
+								className={
+									style.organization_structure_create_children_title_h2
+								}
+							>
+								Название подразделения
+							</h2>
 							<Input
 								type='text'
 								value={childrenName}
@@ -136,19 +181,35 @@ export function OrganizationStructureCreateChildren() {
 								placeholder='Введите название подразделения'
 							/>
 						</div>
-						<div className={style.organization_structure_create_children_description_group}>
-							<h2 className={style.organization_structure_create_children_title_h2}>Статус подразделения</h2>
+						<div
+							className={
+								style.organization_structure_create_children_description_group
+							}
+						>
+							<h2
+								className={
+									style.organization_structure_create_children_title_h2
+								}
+							>
+								Статус подразделения
+							</h2>
 							<InputCheckbox
 								type='checkbox'
 								checked={childrenStatus}
 								onChange={() => setChildrenStatus(!childrenStatus)}
 							/>
 						</div>
-						<ul className={style.organization_structure_create_children_button_group}>
+						<ul
+							className={
+								style.organization_structure_create_children_button_group
+							}
+						>
 							<li>
 								<button
 									onClick={() => setShowConfirmationWindow(true)}
-									className={style.organization_structure_create_children_button_affirmative}
+									className={
+										style.organization_structure_create_children_button_affirmative
+									}
 									disabled={!isValid()}
 								>
 									Создать подразделение
@@ -161,6 +222,7 @@ export function OrganizationStructureCreateChildren() {
 					<ConfirmationWindow
 						setConfirmation={setConfirmation}
 						setShowConfirmationWindow={setShowConfirmationWindow}
+						confirmationWindowStyle={{ height: `100vh` }}
 					/>
 				)}
 			</div>
