@@ -1,1 +1,0 @@
-export { ConsiderationApplication } from './ConsiderationApplication';

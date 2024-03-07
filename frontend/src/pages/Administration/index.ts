@@ -1,1 +1,0 @@
-export { Administration } from './Administration';

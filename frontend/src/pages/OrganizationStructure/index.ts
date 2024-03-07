@@ -1,1 +1,0 @@
-export { OrganizationStructure } from './OrganizationStructure';

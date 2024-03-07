@@ -1,1 +1,0 @@
-export { VerifyError } from './VerifyError';

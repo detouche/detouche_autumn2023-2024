@@ -1,1 +1,0 @@
-export { OrgStructureSidebarUser } from './OrgStructureSidebarUser';

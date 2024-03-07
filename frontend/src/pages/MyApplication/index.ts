@@ -1,1 +1,0 @@
-export { MyApplication } from './MyApplication';

@@ -1,1 +1,0 @@
-export { PersonalAccount } from './PersonalAccount';
