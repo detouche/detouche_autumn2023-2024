@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import calendarReducer from './features/calendarSlice'
+import datapickerReducer from './features/datapickerSlice'
 
 export const store = configureStore({
   reducer: {
     calendar: calendarReducer,
+    datapicker: datapickerReducer,
   },
 })
 

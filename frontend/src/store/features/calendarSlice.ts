@@ -8,11 +8,11 @@ export interface CalendarState {
 
 const initialState: CalendarState = {
   calendarType: "month",
-  date: new Date(Date.now())
+  date: new Date(Date.now()),
 }
 
 export const calendarSlice = createSlice({
-  name: 'counter',
+  name: 'calendar',
   initialState,
   reducers: {
     switchCalendarType: (state, action) => {

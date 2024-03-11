@@ -15,6 +15,7 @@ import { CalendarMonth } from "./components/Calendar/CalendarMonth"
 import { CalendarWeek } from "./components/Calendar/CalendarWeek"
 import { CardCalendar } from "./components/Calendar/CardCalendar/CardCalendar"
 import { Calendar } from "./pages/Calendar"
+import { DataPicker } from "./components/DataPicker"
 
 function App() {
   const course = {
@@ -47,7 +48,7 @@ function App() {
   //h-[100vh] p-[25px]
 
   return (
-    <div className="h-[100vh] p-[25px]">
+    <div className="grid place-items-center h-[100vh]">
       {/* <Button text={"Hello"} type={"error"} styles={"w-[200px]"} /> */}
       {/* <button className="border-button">
         <ChevronLeft className="svg-button" />
@@ -66,7 +67,8 @@ function App() {
       {/* <CalendarMonth /> */}
       {/* <CalendarWeek /> */}
       {/* <CardCalendar course={course} width={width} type="hard" /> */}
-      <Calendar />
+      {/* <Calendar /> */}
+      <DataPicker type="start" />
     </div>
   )
 }
