@@ -1,25 +1,26 @@
 /// <reference types="vite-plugin-svgr/client" />
-import { Button } from "./components/Button"
-import { Input } from "./components/Input/Input"
-import ChevronLeft from "./img/chevron_left.svg?react"
-import { Login } from "./pages/Auth/Login"
-import { Register } from "./pages/Auth/Register"
-import { CheckEmail } from "./pages/Auth/CheckEmail"
-import { ResetEnterEmail } from "./pages/ResetPassword/ResetEnterEmail"
-import { ResetCheckEmail } from "./pages/ResetPassword/ResetCheckEmail"
-import { ResetRecoverPassword } from "./pages/ResetPassword/ResetRecoverPassword"
-import { NotVerificate } from "./pages/Errors/NotVerificate"
-import { WrongLink } from "./pages/Errors/WrongLink"
-import { NotFound404 } from "./pages/Errors/NotFound404"
-import { CalendarMonth } from "./components/Calendar/CalendarMonth"
-import { CalendarWeek } from "./components/Calendar/CalendarWeek"
-import { CardCalendar } from "./components/Calendar/CardCalendar/CardCalendar"
-import { Calendar } from "./pages/Calendar"
+import { Button } from "./components/Button";
+import { Input } from "./components/Input/Input";
+import ChevronLeft from "./img/chevron_left.svg?react";
+import { Login } from "./pages/Auth/Login";
+import { Register } from "./pages/Auth/Register";
+import { CheckEmail } from "./pages/Auth/CheckEmail";
+import { ResetEnterEmail } from "./pages/ResetPassword/ResetEnterEmail";
+import { ResetCheckEmail } from "./pages/ResetPassword/ResetCheckEmail";
+import { ResetRecoverPassword } from "./pages/ResetPassword/ResetRecoverPassword";
+import { NotVerificate } from "./pages/Errors/NotVerificate";
+import { WrongLink } from "./pages/Errors/WrongLink";
+import { NotFound404 } from "./pages/Errors/NotFound404";
+import { CalendarMonth } from "./components/Calendar/CalendarMonth";
+import { CalendarWeek } from "./components/Calendar/CalendarWeek";
+import { CardCalendar } from "./components/Calendar/CardCalendar/CardCalendar";
+import { Calendar } from "./pages/Calendar";
+import { PersonalAccountCard } from "./components/PersonalAccount/PersonalAccountCard";
 
 function App() {
   const course = {
-    startDate: new Date('August 10, 2022'),
-    endDate: new Date('August 18, 2022'),
+    startDate: new Date("August 10, 2022"),
+    endDate: new Date("August 18, 2022"),
     title: "Detouche Front",
     type: "Очный",
     category: "Soft skills",
@@ -27,27 +28,32 @@ function App() {
       {
         surname: "Messi",
         name: "Leo",
-        patronymic: "Jorgevich"
+        patronymic: "Jorgevich",
       },
       {
         surname: "Ronaldo",
         name: "Cristiano",
-        patronymic: "Jozevich"
+        patronymic: "Jozevich",
       },
       {
         surname: "Hauland",
         name: "Erling",
-        patronymic: "Ingevich"
+        patronymic: "Ingevich",
       },
-    ]
-  }
-  const width = 1200
+    ],
+  };
+  const width = 1200;
 
   //grid place-items-center h-[100vh]
   //h-[100vh] p-[25px]
 
+  const personalInformation = {
+    name: "Голубев Игорь Юрьевич",
+    staffUnitPost: "Младший дизайнер",
+  };
+
   return (
-    <div className="h-[100vh] p-[25px]">
+    <div className="h-[100vh]">
       {/* <Button text={"Hello"} type={"error"} styles={"w-[200px]"} /> */}
       {/* <button className="border-button">
         <ChevronLeft className="svg-button" />
@@ -66,9 +72,10 @@ function App() {
       {/* <CalendarMonth /> */}
       {/* <CalendarWeek /> */}
       {/* <CardCalendar course={course} width={width} type="hard" /> */}
-      <Calendar />
+      {/* <Calendar /> */}
+      <PersonalAccountCard personalData={personalInformation} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
