@@ -16,10 +16,10 @@ export const Tooltip = ({course}: {course: Course}) => {
                 {course.title}
             </p>
             <div className="flex items-start gap-1 mb-2">
-                <div className="p-[2px_8px] rounded bg-[#E4E4E4]">
+                <div className="p-[2px_8px] rounded bg-s-accent-150">
                     {course.type}
                 </div>
-                <div className="p-[2px_8px] rounded bg-[#E4E4E4]">
+                <div className="p-[2px_8px] rounded bg-s-accent-150">
                     {course.category}
                 </div>
             </div>

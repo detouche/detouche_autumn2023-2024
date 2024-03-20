@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tooltip } from "./Tooltip";
+import Cast from "../../../img/cast.svg?react"
 
 type Course = {
 	startDate: Date;
@@ -33,13 +34,16 @@ export const CardCalendar = ({course, width, type}:
 		(type === "hard" && "bg-[#F3DBFF] hover:shadow-[0_0_6.5px_0_rgba(189,98,230,0.75)]"))}`}>
 			{duration === 1 ? (
 				<div className="text-[12px] font-semibold text-black">
-					Н
+					<Cast />
 				</div>
 			) : (
-				<div className="mr-1 text-[12px] font-semibold text-black whitespace-nowrap
-				text-ellipsis overflow-hidden">
-					{course.title}
-				</div>
+				<>
+					<Cast className="min-w-[12px] mr-1" />
+					<div className="mr-1 text-[12px] font-semibold text-black whitespace-nowrap
+					text-ellipsis overflow-hidden flex">
+						{course.title}
+					</div>
+				</>
 			)}
 			{duration > 3 && (
 				<div className={`p-[2px_8px] rounded mr-1 text-[10px] text-s-gray-900

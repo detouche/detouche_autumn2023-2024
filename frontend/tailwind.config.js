@@ -29,8 +29,9 @@ export default {
         's-green-300': '#4AB073',
         's-green-400': '#319358',
         's-error-100': '#F78C8C',
+        's-error-200': '#F26969',
         's-error-300': '#EC4646',
-        's-error-400': '#EC4646',
+        's-error-400': '#C72E2E',
         's-error-900': '#B12323',
       },
       boxShadow: {
