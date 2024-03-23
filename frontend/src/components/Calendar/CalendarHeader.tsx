@@ -1,12 +1,16 @@
 import Chevron from "../../img/chevron_left.svg?react"
-import { useState } from "react";
 import { Button } from "../Button";
+import FiltersSvg from "../../img/filters.svg?react"
 import { Switch } from "../Switch";
 import { useDispatch, useSelector } from "react-redux";
 import { getNextMonth, getPrevMonth, getNextWeek, getPrevWeek } from "../../store/features/calendarSlice";
 import type { RootState } from "../../store/store";
 
 export const CalendarHeader = ({date}: {date: Date}) => {
+    const handleClick = () => {
+        alert('Button Clicked!');
+    };
+
     const dispatch = useDispatch()
     const calendarType = useSelector((state: RootState) => state.calendar.calendarType)
 
@@ -55,7 +59,12 @@ export const CalendarHeader = ({date}: {date: Date}) => {
             <div className="flex mr-4">
                 <Switch  />
             </div>
-            <Button text={"Фильтры"} type={"black"} styles="text-[16px] p-[6px_10px]" />
+            {/* <Button onClick={handleClick} size="small"
+            text={"Фильтры"} type={"black"} styles="max-w-[280px]" /> */}
+            <button title="filters" className="border-button" 
+            style={{paddingTop: "16px", paddingBottom: "16px"}}>
+                <FiltersSvg className="svg-button" />
+            </button>
         </div>
     )
 }

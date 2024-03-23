@@ -100,7 +100,7 @@ export const DataPicker = ({type}: {type: string}) => {
     }
 
     return (
-        <div className="w-[280px] h-auto p-4 bg-white rounded-2xl text-black
+        <div className="w-[inherit] h-auto p-4 bg-white rounded-2xl text-black
         shadow-[0_5px_13px_0_rgba(0,0,0,0.11),0_1px_3px_0_rgba(0,0,0,0.25)]">
             <div className="mb-1 flex items-center">
                 <button onClick={() => {

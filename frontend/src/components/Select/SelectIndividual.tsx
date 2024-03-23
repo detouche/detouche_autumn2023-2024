@@ -2,11 +2,18 @@ import RedPoint from "../../img/red_point.svg?react"
 import Chevron from "../../img/chevron_left.svg?react"
 import { useState } from "react"
 
+type SelectIndividualProps = {
+    label: string;
+    placeholder: string;
+    point: boolean;
+    selectList: object[];
+    styles: string;
+}
+
 // используется для селекта одного элемента, передавать можно: лейбл, плейсхолдер,
 // красную точку сверху, массив элементов для селекта, а также стили
 export const SelectIndividual = ({label, placeholder, point, selectList, styles}:
-    {label: string, placeholder: string, point: boolean, selectList: object[],
-        styles: string}) => {
+    SelectIndividualProps) => {
     // выбранный элемент
     const [selectedData, setSelectedData] = useState("")
     // показ дропдауна
@@ -31,7 +38,7 @@ export const SelectIndividual = ({label, placeholder, point, selectList, styles}
     }
     
     return (
-        <div className="float-left">
+        <div className={`float-left w-full ${styles}`}>
             <div className="flex items-baseline">
                 <label className="block text-s-gray-900 text-base mr-1" 
                 htmlFor="select">
@@ -46,7 +53,7 @@ export const SelectIndividual = ({label, placeholder, point, selectList, styles}
                 className={`p-[12px_14px] outline-none border
                 border-s-gray-150 placeholder:text-s-gray-200 placeholder:text-lg block
                 text-lg text-s-gray-900
-                invalid:border-s-error-300 w-[490px]
+                invalid:border-s-error-300 w-full
                 ${dropdown ? 'rounded-t-lg' : 'rounded-lg'} ${styles}`}
                 placeholder={placeholder} id="input" />
                 <Chevron onClick={() => {

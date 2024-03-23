@@ -6,9 +6,11 @@ type ButtonProps = {
     size: string;
     styles: string;
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    imgLeft: string;
+    imgRight: string;
 }
 
-export const Button = ({text, type, size, styles, onClick}: ButtonProps) => {
+export const Button = ({text, type, size, styles, onClick, imgLeft, imgRight}: ButtonProps) => {
     const baseStyle = "text-white bg-s-accent-300 hover:bg-s-accent-400 " +
     "active:bg-s-accent-500 disabled:bg-[#F8D8AC] disabled:text-s-accent-500"
     const blackStyle = "text-[#979BA0] border border-[#979BA0] hover:text-s-gray-400 " +
@@ -27,12 +29,19 @@ export const Button = ({text, type, size, styles, onClick}: ButtonProps) => {
     const baseButton = "text-xl p-[10px_14px]"
 
     return (
-        <button onClick={onClick} className={`rounded-xl font-semibold ease-out duration-100
-        ${size === 'small' ? smallButton : (type === 'base' && baseButton)}
+        <button onClick={onClick} className={`rounded-xl font-semibold ease-out duration-100 w-full
+        justify-between flex items-center
+        ${size === 'small' ? smallButton : (size === 'base' && baseButton)}
         ${type === 'base' ? baseStyle : (type === 'happy' ? happyStyle : (type === 'black'
         ? blackStyle : (type === 'error' ? errorStyle : (type === 'without' && withoutStyle))))} 
         ${styles}`}>
-            {text}
+            {imgLeft != "" && <img className={`${size === 'small' ? 'w-6 h-6' 
+            : (size === 'base' && 'w-8 h-8')}`}
+            src={imgLeft} alt="" />}
+            <span className="flex-[1]">{text}</span>
+            {imgRight != "" && <img className={`${size === 'small' ? 'w-6 h-6' 
+            : (size === 'base' && 'w-8 h-8')}`} 
+            src={imgRight} alt="" />}
         </button>
     )
 }

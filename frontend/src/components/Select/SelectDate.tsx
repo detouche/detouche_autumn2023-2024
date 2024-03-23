@@ -45,7 +45,7 @@ export const SelectDate = ({label, type, placeholder, point, styles}: SelectDate
     }
 
     return (
-        <div className="float-left">
+        <div className={`float-left w-full ${styles}`}>
             <div className="flex items-baseline">
                 <label className="block text-s-gray-900 text-base mr-1" 
                 htmlFor="select">
@@ -53,13 +53,13 @@ export const SelectDate = ({label, type, placeholder, point, styles}: SelectDate
                 </label>
                 {point && <RedPoint />}            
             </div>
-            <div className="relative w-[280px]">
+            <div className="relative">
                 <input
                 value={takeValue(type)}
                 onFocus={() => setCalendar(true)}
                 className={`p-[12px_14px] outline-none border
                 border-s-gray-150 placeholder:text-s-gray-200 placeholder:text-lg block
-                text-lg text-s-gray-900 rounded-lg invalid:border-s-error-300 w-[inherit]
+                text-lg text-s-gray-900 rounded-lg invalid:border-s-error-300 w-full
                 ${styles}`}
                 placeholder={placeholder}
                 type="text" />

@@ -8,11 +8,18 @@ import { useDispatch, useSelector } from "react-redux"
 import { updateGroupSelect, clearGroupSelect } from "../../store/features/selectSlice"
 import type { RootState } from "../../store/store"
 
+type SelectGroupProps = {
+    label: string;
+    placeholder: string;
+    point: boolean;
+    selectList: object[];
+    styles: string;
+}
+
 // используется для селекта множества элементов, передавать можно: лейбл, плейсхолдер,
 // красную точку сверху, массив элементов для селекта, а также стили
 export const SelectGroup = ({label, placeholder, point, selectList, styles}:
-    {label: string, placeholder: string, point: boolean, selectList: object[],
-        styles: string}) => {
+    SelectGroupProps) => {
     // поиск элементов в инпуте
     const [searchData, setSearchData] = useState("")
     // показ дропдауна
@@ -45,7 +52,7 @@ export const SelectGroup = ({label, placeholder, point, selectList, styles}:
     }
     
     return (
-        <div className="float-left">
+        <div className={`float-left w-full ${styles}`}>
             <div className="flex items-baseline">
                 <label className="block text-s-gray-900 text-base mr-1" 
                 htmlFor="select">
@@ -53,13 +60,13 @@ export const SelectGroup = ({label, placeholder, point, selectList, styles}:
                 </label>
                 {point && <RedPoint />}            
             </div>
-            <div className="relative w-[490px]">
+            <div className="relative">
                 <input onChange={handleChange} 
                 onFocus={() => setDropdown(true)}
                 className={`p-[12px_14px] outline-none border
                 border-s-gray-150 placeholder:text-s-gray-200 placeholder:text-lg block
                 text-lg text-s-gray-900
-                invalid:border-s-error-300 w-[inherit]
+                invalid:border-s-error-300 w-full
                 ${selectedData.length > 0 ? 'rounded-t-lg rounded-b-none border-b-0'
                 : 'rounded-lg'}
                 ${dropdown ? 'rounded-t-lg rounded-b-none' : 'rounded-lg'}

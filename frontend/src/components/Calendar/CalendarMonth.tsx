@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useContainerDimensions} from "../../hooks/useContainerDimensions";
 
 export const CalendarMonth = ({date}: {date: Date}) => {

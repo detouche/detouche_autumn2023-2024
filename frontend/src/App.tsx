@@ -11,18 +11,17 @@ import { ResetRecoverPassword } from "./pages/ResetPassword/ResetRecoverPassword
 import { NotVerificate } from "./pages/Errors/NotVerificate"
 import { WrongLink } from "./pages/Errors/WrongLink"
 import { NotFound404 } from "./pages/Errors/NotFound404"
-import { CalendarMonth } from "./components/Calendar/CalendarMonth"
-import { CalendarWeek } from "./components/Calendar/CalendarWeek"
 import { CardCalendar } from "./components/Calendar/CardCalendar/CardCalendar"
 import { Calendar } from "./pages/Calendar"
-import { DataPicker } from "./components/DataPicker"
 import { SelectIndividual } from "./components/Select/SelectIndividual"
 import { SelectGroup } from "./components/Select/SelectGroup"
 import { SelectDate } from "./components/Select/SelectDate"
 
+import Vite from "../public/vite.svg"
+
 function App() {
   const course = {
-    startDate: new Date('August 14, 2022'),
+    startDate: new Date('August 11, 2022'),
     endDate: new Date('August 18, 2022'),
     title: "Detouche Front",
     type: "Очный",
@@ -112,16 +111,19 @@ function App() {
   const handleClick = () => {
     alert('Button Clicked!');
   };
+  const handleChange = (event: any) => {
+    // console.log(event?.target.value)
+  }
 
   return (
-    <div className="h-[100vh] p-[25px]">
-      {/* <Button text={"Hello"} type={"base"} size={"base"} styles={"w-[200px]"}
-      onClick={handleClick} /> */}
+    <div className="grid place-items-center h-[100vh]">
+      <Button text={"Hello"} type={"base"} size={"small"} styles={"max-w-[200px]"}
+      onClick={handleClick} imgLeft="" imgRight={Vite} />
       {/* <button className="border-button">
         <ChevronLeft className="svg-button" />
       </button> */}
-      {/* <Input type={"search"} placeholder={"Placeholder"}
-      point={true} label={"Label"} styles="" /> */}
+      {/* <Input id="search" type={"search"} placeholder={"Placeholder"} onChange={handleChange}
+      point={true} label={"Label"} styles="max-w-[490px]" value={undefined} /> */}
       {/* <Login /> */}
       {/* <Register /> */}
       {/* <CheckEmail /> */}
@@ -131,17 +133,14 @@ function App() {
       {/* <NotVerificate /> */}
       {/* <WrongLink error={"reset"} /> */}
       {/* <NotFound404 /> */}
-      {/* <CalendarMonth /> */}
-      {/* <CalendarWeek /> */}
-      {/* <CardCalendar course={course} width={width} type="hard" /> */}
-      <Calendar />
-      {/* <DataPicker type="start" /> */}
-      {/* <SelectIndividual selectList={employee} styles="" label="Label"
+      {/* <CardCalendar course={course} width={width} type="manage" /> */}
+      {/* <Calendar /> */}
+      {/* <SelectIndividual selectList={employee} styles="max-w-[490px]" label="Label"
       point={true} placeholder="Placeholder" /> */}
-      {/* <SelectGroup selectList={employee} styles="" label="Label"
+      {/* <SelectGroup selectList={employee} styles="max-w-[490px]" label="Label"
       point={true} placeholder="Placeholder" /> */}
       {/* <SelectDate type="finish" label="Label" point={true} placeholder="Placeholder"
-      styles="" /> */}
+      styles="max-w-[490px]" /> */}
     </div>
   )
 }

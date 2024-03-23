@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Tooltip } from "./Tooltip";
-import Cast from "../../../img/cast.svg?react"
+import ManageSvg from "../../../img/manage.svg?react"
+import HardSvg from "../../../img/computer.svg?react"
+import SoftSvg from "../../../img/soft.svg?react"
 
 type Course = {
 	startDate: Date;
@@ -34,11 +36,16 @@ export const CardCalendar = ({course, width, type}:
 		(type === "hard" && "bg-[#F3DBFF] hover:shadow-[0_0_6.5px_0_rgba(189,98,230,0.75)]"))}`}>
 			{duration === 1 ? (
 				<div className="text-[12px] font-semibold text-black">
-					<Cast />
+					{type === "manage" ? <ManageSvg /> 
+					: (type === "soft" ? <SoftSvg /> 
+					: (type === "hard" && <HardSvg />))}
 				</div>
 			) : (
 				<>
-					<Cast className="min-w-[12px] mr-1" />
+					{type === "manage" ? <ManageSvg className="min-w-[12px] mr-1" /> 
+					: (type === "soft" ? <SoftSvg className="min-w-[12px] mr-1" /> 
+					: (type === "hard" && <HardSvg className="min-w-[12px] mr-1" />))}
+					{/* <Cast className="min-w-[12px] mr-1" /> */}
 					<div className="mr-1 text-[12px] font-semibold text-black whitespace-nowrap
 					text-ellipsis overflow-hidden flex">
 						{course.title}
