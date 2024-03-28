@@ -33,6 +33,14 @@
     .svg-button:disabled * {
         fill: #C9CACD;
     }
+    .custom-ul > li:not(:first-child) {
+        @apply mt-5;
+    }
+    .border-button-sidebar {
+        border-radius: 8px;
+        border: 1px solid #979BA0;
+        padding: 6px 10px;
+    }
 }
 
 body {

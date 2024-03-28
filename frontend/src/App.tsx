@@ -16,6 +16,10 @@ import { CalendarWeek } from "./components/Calendar/CalendarWeek";
 import { CardCalendar } from "./components/Calendar/CardCalendar/CardCalendar";
 import { Calendar } from "./pages/Calendar";
 import { PersonalAccountCard } from "./components/PersonalAccount/PersonalAccountCard";
+import { AdminCard } from './components/AdminCard.tsx';
+import { CourseTemplate } from './pages/CourseTemplate.tsx';
+
+import {IUser} from "./models/IUser.ts";
 
 function App() {
   const course = {
@@ -47,9 +51,12 @@ function App() {
   //grid place-items-center h-[100vh]
   //h-[100vh] p-[25px]
 
-  const personalInformation = {
-    name: "Голубев Игорь Юрьевич",
-    staffUnitPost: "Младший дизайнер",
+  const personalInformation : IUser = {
+    id: 1,
+    username: "Голубев Игорь Юрьевич",
+    staffUnit: {
+      name: "Младший дизайнер"
+    },
   };
 
   return (
@@ -73,7 +80,9 @@ function App() {
       {/* <CalendarWeek /> */}
       {/* <CardCalendar course={course} width={width} type="hard" /> */}
       {/* <Calendar /> */}
-      <PersonalAccountCard personalData={personalInformation} />
+      {/*<PersonalAccountCard personalData={personalInformation} />*/}
+      {/* <AdminCard />*/}
+      <CourseTemplate />
     </div>
   );
 }

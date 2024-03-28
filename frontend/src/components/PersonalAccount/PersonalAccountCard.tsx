@@ -1,17 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+
+import { IUser } from "../../models/IUser.ts";
 
 import { Button } from "../../components/Button";
 import { PersonalAccountSidebar } from "./PersonalAccountSidebar";
-
-type PersonalData = {
-  name: string;
-  staffUnitPost: string;
-};
+import { useOutsideClick } from "../../hooks/useOutsideClick.ts";
 
 export const PersonalAccountCard = ({
   personalData,
 }: {
-  personalData: PersonalData;
+  personalData: IUser;
 }) => {
   const [showPersonalAccountSidebar, setShowPersonalAccountSidebar] =
     useState(false);
@@ -20,24 +18,8 @@ export const PersonalAccountCard = ({
   const handleOpen = () => setShowPersonalData(true);
   const handleClose = () => setShowPersonalData(false);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        handleClose();
-      }
-    };
-
-    // Добавляем обработчик событий при монтировании компонента
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Возвращаем функцию для очистки, которая удаляет обработчик событий при размонтировании компонента
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [modalRef]);
+  // Используем хук для обработки клика вне компонента
+  useOutsideClick(modalRef, handleClose);
 
   return (
     <>
@@ -58,12 +40,12 @@ export const PersonalAccountCard = ({
           <div
             className={`text-[16px] text-s-gray-900 font-semibold leading-[100%]`}
           >
-            {personalData.name}
+            {personalData.username}
           </div>
           <div
             className={`text-[14px] text-s-gray-300 font-normal leading-[100%] mt-1`}
           >
-            {personalData.staffUnitPost}
+            {personalData.staffUnit?.name}
           </div>
           <div
             onClick={() => {
